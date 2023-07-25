@@ -36,7 +36,7 @@ def main():
 
 ##################
 # AUTHENTICATION #
-################ #
+##################
 
 """
 Bacon OK integration: mostly ported from OK Client
