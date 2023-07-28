@@ -12,7 +12,7 @@
 └── README.md	        #说明文档
 ```
 
-完成上述任务的集体过程详见：[Rex's CS61A Blog](https://maxwell2020152049.github.io/categories/cs61a/)
+完成上述任务的具体过程详见：[Rex's CS61A Blog](https://maxwell2020152049.github.io/categories/cs61a/)
 
 ## 关于`.gitignore`
 
