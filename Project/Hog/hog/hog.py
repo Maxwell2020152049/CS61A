@@ -251,8 +251,6 @@ def announce_highest(who, last_score=0, running_high=0):
     # BEGIN PROBLEM 7
     "*** YOUR CODE HERE ***"
     def func(score0, score1):
-        nonlocal last_score
-        nonlocal running_high
         ls = last_score
         rh = running_high
         if who == 0:
