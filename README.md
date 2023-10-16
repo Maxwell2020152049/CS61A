@@ -44,7 +44,7 @@
 - [X] Week13
 - [X] Week14
 - [X] Week15
-- [X] Week16(Final Exam)
+- [X] Week16(No Lecture: Final Exam)
 
 ### Homework
 
@@ -57,18 +57,17 @@
 - [X] HW07
 - [X] HW08
 - [X] HW09
-- [X] HW10(Finale)
+- [X] HW10(Nothing to do: Finale)
 
 ### Lab
 - [X] Lab00
 - [X] Lab01
 - [X] Lab02
 - [X] Lab03
-- [X] Lab04
 - [X] Lab05
 - [X] Lab06
 - [X] Lab07
-- [ ] Lab08
+- [X] Lab08
 - [X] Lab10
 - [X] Lab11
 - [X] Lab12
