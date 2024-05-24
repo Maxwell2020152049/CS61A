@@ -1,0 +1,719 @@
+<!DOCTYPE html>
+<!-- saved from url=(0070)https://inst.eecs.berkeley.edu/~cs61a/sp21/assets/slides/12-Trees.html -->
+<html class="reveal-full-page"><head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+		
+		<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+		<title>Dictionaries, Matrices, and Trees</title>
+		<link rel="stylesheet" href="./Dictionaries, Matrices, and Trees_files/reset.css">
+		<link rel="stylesheet" href="./Dictionaries, Matrices, and Trees_files/reveal.css">
+		<link rel="stylesheet" href="./Dictionaries, Matrices, and Trees_files/simple.css" id="theme">
+		<link rel="stylesheet" href="./Dictionaries, Matrices, and Trees_files/mono-blue.css">
+		<link rel="stylesheet" href="./Dictionaries, Matrices, and Trees_files/css">
+		<style>
+			.reveal {
+				font-family: "Work Sans", sans-serif;
+			}
+
+			.reveal .slides section {
+				text-align: left;
+				font-size: smaller;
+			}
+
+			.reveal pre {
+				background-color: #f5f5f5;
+				width: 100%;
+				border: 1px solid #ccc;
+				border-radius: 4px;
+				box-shadow: none;
+			}
+
+			.reveal h1, .reveal h2, .reveal h3, .reveal h4, .reveal h5, .reveal h6 {
+				font-family: "Roboto", sans-serif;
+				color: #0072c1;
+			}
+		</style>
+	<style type="text/css">.hljs-ln{border-collapse:collapse}.hljs-ln td{padding:0}.hljs-ln-n:before{content:attr(data-line-number)}</style></head>
+	<body class="reveal-viewport" style="--slide-width: 960px; --slide-height: 700px;">
+		<div class="reveal slide focused has-horizontal-slides ready" role="application" data-transition-speed="default" data-background-transition="fade" style="">
+			<div class="slides" style="width: 960px; height: 700px; zoom: 1.08771;">
+				<section style="text-align: center; display: block;" class="present">
+					<h2>Dictionaries, Matrices, and Trees</h2>
+				</section>
+
+				<section style="text-align: center; display: block;" hidden="" aria-hidden="true" class="future">
+					<h2>Today will cover...</h2>
+					<ul>
+						<li>Announcements</li>
+						<li>Dictionary type</li>
+						<li>Matrix abstraction</li>
+						<li>Tree abstraction</li>
+						<li>Tree processing</li>
+					</ul>
+				</section>
+
+				<section hidden="" aria-hidden="true" class="future" style="display: block;">
+					<h3>Review: Layers of abstraction</h3>
+					<tr">
+							</tr"><table>
+						<tbody><tr>
+							<td style="font-weight:bold;">Primitive Representation</td>
+							<td><code>1 2 3</code> <code>True False</code><br><code>(..,..)</code> <code>[..,..]</code></td>
+						</tr>
+						<tr><td style="font-weight:bold;" rowspan="2">Data abstraction</td>
+							<td style="border-bottom: 1px dashed;"><code>make_rat()</code> <code>numer()</code> <code>denom()</code></td>
+						</tr>
+						<tr>
+							<td><code>add_rat()</code> <code>mul_rat()</code> <code>print_rat()</code> <code>equal_rat()</code></td>
+						</tr>
+						<tr>
+							<td style="font-weight:bold;">User program</td>
+							<td><code>exact_harmonic_number()</code></td>
+						</tr>
+					</tbody></table>
+					<p>
+						Each layer only uses the layer above it.
+					</p>
+				</section>
+
+				<section style="display: none;" hidden="" aria-hidden="true" class="future">
+					<h3>Review: Python types</h3>
+					<table class="r-stretch" style="height: 700px; width: 960px;">
+						<tbody><tr>
+							<th>Type</th>
+							<th>Examples</th>
+						</tr>
+						<tr>
+							<td>Integers</td>
+							<td><code>0 -1 0xFF 0b1101</code></td>
+						</tr>
+						<tr>
+							<td>Booleans</td>
+							<td><code>True False</code></td>
+						</tr>
+						<tr>
+							<td>Functions</td>
+							<td><code>def f(x)...</code>
+								<code>lambda x: ...</code>
+							</td>
+						</tr>
+						<tr>
+							<td>Strings</td>
+							<td><code>"pear"</code><code>"I say, \"hello!\""</code></td>
+						</tr>
+						<tr>
+							<td>Tuples</td>
+							<td><code>(1, 10) ("Oh", "hi", 11)</code></td>
+						</tr>
+						<tr>
+							<td>Ranges</td>
+							<td><code>range(11) range(1, 6)</code></td>
+						</tr>
+						<tr>
+							<td>Lists</td>
+							<td><code>[] ["apples", "bananas"]</code><br>
+								<code>[x**3 for x in range(2)]</code>
+							</td>
+						</tr>
+					</tbody></table>
+				</section>
+				<section hidden="" aria-hidden="true" class="future" style="display: none;">
+					<h3>Dictionaries</h3>
+					<p>A <code>dict</code> is a mutable mapping of key-value pairs</p>
+					<pre><code data-trim="" data-noescape="" class="hljs ebnf"><span class="hljs-attribute">states</span> = {
+	<span class="hljs-string">"CA"</span>: <span class="hljs-string">"California"</span>,
+	<span class="hljs-string">"DE"</span>: <span class="hljs-string">"Delaware"</span>,
+	<span class="hljs-string">"NY"</span>: <span class="hljs-string">"New York"</span>,
+	<span class="hljs-string">"TX"</span>: <span class="hljs-string">"Texas"</span>,
+	<span class="hljs-string">"WY"</span>: <span class="hljs-string">"Wyoming"</span>
+}</code></pre>
+					<p>Queries:</p>
+					<pre><code data-trim="" data-noescape="" class="hljs ruby"><span class="hljs-meta">&gt;&gt;</span>&gt; len(states)
+<span class="fragment" data-fragment-index="0"><span class="hljs-number">5</span></span></code></pre>
+					<pre><code data-trim="" data-noescape="" class="hljs ruby"><span class="hljs-meta">&gt;&gt;</span>&gt; <span class="hljs-string">"CA"</span> in states
+<span class="fragment" data-fragment-index="1">True</span></code></pre>
+					<pre><code data-trim="" data-noescape="" class="hljs ruby"><span class="hljs-meta">&gt;&gt;</span>&gt; <span class="hljs-string">"ZZ"</span> in states
+<span class="fragment" data-fragment-index="2">False</span></code></pre>
+					<aside class="notes">
+					How many keys do you count?
+					How many values?
+					</aside>
+				</section>
+				<section hidden="" aria-hidden="true" class="future" style="display: none;">
+					<h3>Dictionary selection</h3>
+					<pre><code data-trim="" data-noescape="" class="hljs applescript"><span class="hljs-built_in">words</span> = {
+	<span class="hljs-string">"más"</span>: <span class="hljs-string">"more"</span>,
+	<span class="hljs-string">"otro"</span>: <span class="hljs-string">"other"</span>,
+	<span class="hljs-string">"agua"</span>: <span class="hljs-string">"water"</span>
+}</code></pre>
+					<p>Select a value:</p>
+					<pre><code data-trim="" data-noescape="" class="hljs ruby"><span class="hljs-meta">&gt;&gt;</span>&gt; words[<span class="hljs-string">"otro"</span>]
+<span class="fragment" data-fragment-index="0"><span class="hljs-string">'other'</span></span></code></pre>
+					<pre><code data-trim="" data-noescape="" class="hljs ruby"><span class="hljs-meta">&gt;&gt;</span>&gt; first_word = <span class="hljs-string">"agua"</span>
+<span class="hljs-meta">&gt;&gt;</span>&gt; words[first_word]
+<span class="fragment" data-fragment-index="1"><span class="hljs-string">'water'</span></span></code></pre>
+					<pre><code data-trim="" data-noescape="" class="hljs ruby"><span class="hljs-meta">&gt;&gt;</span>&gt; words[<span class="hljs-string">"pavo"</span>]
+<span class="fragment" data-fragment-index="2"><span class="hljs-symbol">KeyError:</span> pavo</span></code></pre>
+					<pre><code data-trim="" data-noescape="" class="hljs ruby"><span class="hljs-meta">&gt;&gt;</span>&gt; words.get(<span class="hljs-string">"pavo"</span>, <span class="hljs-string">"🤔"</span>)
+<span class="fragment" data-fragment-index="3"><span class="hljs-string">'🤔'</span></span></code></pre>
+				</section>
+				<section hidden="" aria-hidden="true" class="future" style="display: none;">
+					<h3>Dictionary mutation</h3>
+					<p>Create an empty dict:</p>
+					<pre><code data-trim="" data-noescape="" class="hljs ini"><span class="hljs-attr">users</span> = {}</code></pre>
+					<p>Add values:</p>
+					<pre><code data-trim="" data-noescape="" class="hljs perl">users[<span class="hljs-string">"profpamela"</span>] = <span class="hljs-string">"b3stp@ssEvErDontHackMe"</span></code></pre>
+					<p>Change values:</p>
+					<pre><code data-trim="" data-noescape="" class="hljs prolog">users[<span class="hljs-string">"profpamela"</span>] += <span class="hljs-string">"itsLongerSoItsMoreSecure!!"</span></code></pre>
+					<pre><code data-trim="" data-noescape="" class="hljs ruby"><span class="hljs-meta">&gt;&gt;</span>&gt; users[<span class="hljs-string">"profpamela"</span>]
+<span class="fragment" data-fragment-index="0"><span class="hljs-string">'b3stp@ssEvErDontHackMeitsLongerSoItsMoreSecure!!'</span></span></code></pre>
+				</section>
+				<section hidden="" aria-hidden="true" class="future" style="display: none;">
+					<h3>Dictionary rules</h3>
+					<ul>
+						<li>A key <strong>cannot</strong> be a list or dictionary (or any mutable type)</li>
+						<li>All keys in a dictionary are distinct (there can only be one value per key)</li>
+						<li>The values can be any type, however!</li>
+					</ul>
+					<pre><code data-trim="" data-noescape="" class="hljs ebnf"><span class="hljs-attribute">spiders</span> = {
+  <span class="hljs-string">"smeringopus"</span>: {
+	  <span class="hljs-string">"name"</span>: <span class="hljs-string">"Pale Daddy Long-leg"</span>,
+	  <span class="hljs-string">"length"</span>: 7
+  },
+  <span class="hljs-string">"holocnemus pluchei"</span>: {
+	  <span class="hljs-string">"name"</span>: <span class="hljs-string">"Marbled cellar spider"</span>,
+	  <span class="hljs-string">"length"</span>: (5, 7)
+  }
+}</code></pre>
+					<aside class="notes">
+						Show what happens if a dictionary has two keys that are the same
+
+						Access way inside the dictionary!
+						Its all mutable, so we can mutate all of it!
+					</aside>
+				</section>
+				<section hidden="" aria-hidden="true" class="future" style="display: none;">
+					<h3>Dictionary iteration</h3>
+					<pre><code data-trim="" data-noescape="" class="hljs apache"><span class="hljs-attribute">insects</span> = {<span class="hljs-string">"spiders"</span>: <span class="hljs-number">8</span>, <span class="hljs-string">"centipedes"</span>: <span class="hljs-number">100</span>, <span class="hljs-string">"bees"</span>: <span class="hljs-number">6</span>}
+<span class="hljs-attribute">for</span> name in insects:
+    <span class="hljs-attribute">print</span>(insects[name])</code></pre>
+					<p style="font-size:smaller;">...is the same as:</p>
+					<pre><code data-trim="" data-noescape="" class="hljs applescript"><span class="hljs-keyword">for</span> <span class="hljs-built_in">name</span> <span class="hljs-keyword">in</span> <span class="hljs-built_in">list</span>(insects):
+    print(insects[<span class="hljs-built_in">name</span>])</code></pre>
+					<p style="font-size:smaller;">What will be the order of items?</p>
+					<pre class="fragment" data-fragment-index="0"><code data-trim="" data-noescape="" class="hljs basic"><span class="hljs-symbol">8 </span><span class="hljs-number">100</span> <span class="hljs-number">6</span></code></pre>
+					<p class="fragment" data-fragment-index="0" style="font-size:smaller;">Keys are iterated over in the order they are first added.</p>
+					<aside class="notes">
+						<ul>
+						<li>Python 2: The iteration could go in any order. Dictionaries were unordered.</li>
+						<li>Python 3.0: The iteration would go in order of key insertion, but that is not to be relied upon.</li>
+						<li>Python 3.7+: The insertion sort order is considered a part of the language, so dictionaries are ordered.</li>
+						</ul>
+						<p>Show example like:
+						d[3] = 3; d[1] = 2; print(d); d[3] = 4; print(d)
+					</p>
+					</aside>
+				</section>
+
+				<section hidden="" aria-hidden="true" class="future" style="display: none;">
+					<h3>Nested data</h3>
+					<table style="font-size:smaller;">
+						<tbody><tr>
+							<td style="font-weight:bold;">Lists of lists</td>
+							<td><code>[ [1, 2], [3, 4] ]</code></td>
+						</tr>
+						<tr>
+							<td style="font-weight:bold;">Lists of tuples</td>
+							<td><code>[ (1, 2), (3, 4) ]</code></td>
+						</tr>
+						<tr>
+							<td style="font-weight:bold;">Tuples of tuples</td>
+							<td><code>( (1, 2), (3, 4) )</code></td>
+						</tr>
+						<tr>
+							<td style="font-weight:bold;">Dicts of tuples</td>
+							<td><code>{"x": (1, 2), "y": (3, 4)}</code></td>
+						</tr>
+						<tr>
+							<td style="font-weight:bold;">Dicts of lists</td>
+							<td><code>{"heights": [89, 97], "ages": [6, 8]}</code></td>
+						</tr>
+					</tbody></table>
+					<p>...what else?! <span class="fragment" data-fragment-index="0">Dicts of dicts, Lists of dicts, etc.</span></p>
+				</section>
+
+				<section hidden="" aria-hidden="true" class="future" style="display: none;">
+					<h3>Next up: more abstractions</h3>
+				</section>
+
+				<section hidden="" aria-hidden="true" class="future" style="display: none;">
+					<h3>Matrices</h3>
+					<p>Consider a matrix (two-dimensional table) like this:</p>
+					<table>
+						<tbody><tr><td>1</td><td>2</td><td>0</td><td>4</td></tr>
+						<tr><td>0</td><td>1</td><td>3</td><td>-1</td></tr>
+						<tr><td>0</td><td>0</td><td>1</td><td>8</td></tr>
+					</tbody></table>
+					<p>That matrix has three <strong>rows</strong> and four <strong>columns</strong>, with integer values in each location.</p>
+				</section>
+
+				<section hidden="" aria-hidden="true" class="future" style="display: none;">
+					<h3>Matrices: Data abstraction</h3>
+					<p>We want this constructor, selector, and mutator:</p>
+					<table style="font-size:smaller;">
+						<tbody><tr>
+							<td style="font-size:smaller;"><code>matrix(rows, cols)</code></td>
+							<td>Returns a ROWS x COLS matrix with all values set to 0</td>
+						</tr>
+						<tr>
+							<td style="font-size:smaller;"><code>value(matrix, row, col)</code></td>
+							<td>Returns value of MATRIX at (ROW, COL)</td>
+						</tr>
+						<tr>
+							<td style="font-size:smaller;"><code>set_value(matrix, row, col, val)</code></td>
+							<td>Sets value of MATRIX at (ROW, COL) to VAL</td>
+						</tr>
+					</tbody></table>
+					<p>How could we implement? <a target="_blank" href="https://docs.google.com/forms/d/e/1FAIpQLSdqK7tE3ker0p_mADI45lZqBHnigg7n4FI3X3Nn3pg5J_n1Tg/viewform">Answer the poll!</a>
+					</p>
+				</section>
+
+				<section hidden="" aria-hidden="true" class="future" style="display: none;">
+					<h3>Matrices: Implementation A</h3>
+
+					<p>A list of lists, row-major order:</p>
+					<code>[ [1,2,0,4], [0,1,3,-1], [0,0,1,8] ]</code>
+
+					<pre><code data-trim="" data-noescape="" class="hljs stan">def <span class="hljs-keyword">matrix</span>(<span class="hljs-built_in">rows</span>, <span class="hljs-built_in">cols</span>):
+	<span class="hljs-keyword">return</span> [ [<span class="hljs-number">0</span> <span class="hljs-keyword">for</span> <span class="hljs-built_in">col</span> <span class="hljs-keyword">in</span> range(<span class="hljs-built_in">cols</span>)] <span class="hljs-keyword">for</span> <span class="hljs-built_in">row</span> <span class="hljs-keyword">in</span> range(<span class="hljs-built_in">rows</span>) ]
+
+def value(<span class="hljs-keyword">matrix</span>, <span class="hljs-built_in">row</span>, <span class="hljs-built_in">col</span>):
+	<span class="hljs-keyword">return</span> <span class="hljs-keyword">matrix</span>[<span class="hljs-built_in">row</span>][<span class="hljs-built_in">col</span>]
+
+def set_value(<span class="hljs-keyword">matrix</span>, <span class="hljs-built_in">row</span>, <span class="hljs-built_in">col</span>, val):
+	<span class="hljs-keyword">matrix</span>[<span class="hljs-built_in">row</span>][<span class="hljs-built_in">col</span>] = val</code></pre>
+
+					<pre><code data-trim="" data-noescape="" class="hljs angelscript">m = matrix(<span class="hljs-number">3</span>, <span class="hljs-number">4</span>)
+set_value(m, <span class="hljs-number">0</span>, <span class="hljs-number">0</span>, <span class="hljs-number">1</span>)
+set_value(m, <span class="hljs-number">0</span>, <span class="hljs-number">1</span>, <span class="hljs-number">2</span>)
+set_value(m, <span class="hljs-number">0</span>, <span class="hljs-number">3</span>, <span class="hljs-number">4</span>)</code></pre>
+				</section>
+
+				<section hidden="" aria-hidden="true" class="future" style="display: none;">
+					<h3>Matrices: Implementation B</h3>
+
+					<p>A list of lists, column-major order:</p>
+					<code>[ [1,0,0],  [2,1,0], [0,3,1], [4,-1,8] ]</code>
+
+					<pre><code data-trim="" data-noescape="" class="hljs stan">def <span class="hljs-keyword">matrix</span>(<span class="hljs-built_in">rows</span>, <span class="hljs-built_in">cols</span>):
+	<span class="hljs-keyword">return</span> [ [<span class="hljs-number">0</span> <span class="hljs-keyword">for</span> <span class="hljs-built_in">row</span> <span class="hljs-keyword">in</span> range(<span class="hljs-built_in">rows</span>)] <span class="hljs-keyword">for</span> <span class="hljs-built_in">col</span> <span class="hljs-keyword">in</span> range(<span class="hljs-built_in">cols</span>) ]
+
+def value(<span class="hljs-keyword">matrix</span>, <span class="hljs-built_in">row</span>, <span class="hljs-built_in">col</span>):
+	<span class="hljs-keyword">return</span> <span class="hljs-keyword">matrix</span>[<span class="hljs-built_in">col</span>][<span class="hljs-built_in">row</span>]
+
+def set_value(<span class="hljs-keyword">matrix</span>, <span class="hljs-built_in">row</span>, <span class="hljs-built_in">col</span>, val):
+	<span class="hljs-keyword">matrix</span>[<span class="hljs-built_in">col</span>][<span class="hljs-built_in">row</span>] = val</code></pre>
+
+					<pre><code data-trim="" data-noescape="" class="hljs angelscript">m = matrix(<span class="hljs-number">3</span>, <span class="hljs-number">4</span>)
+set_value(m, <span class="hljs-number">0</span>, <span class="hljs-number">0</span>, <span class="hljs-number">1</span>)
+set_value(m, <span class="hljs-number">0</span>, <span class="hljs-number">1</span>, <span class="hljs-number">2</span>)
+set_value(m, <span class="hljs-number">0</span>, <span class="hljs-number">3</span>, <span class="hljs-number">4</span>)</code></pre>
+				</section>
+
+				<section hidden="" aria-hidden="true" class="future" style="display: none;">
+					<h3>Matrices: Implementation C</h3>
+
+					<p>A tuple of lists, row-major order:</p>
+					<code>( [1,0,0],  [2,1,0], [0,3,1], [4, -1,8] )</code>
+
+					<pre><code data-trim="" data-noescape="" class="hljs stan">def <span class="hljs-keyword">matrix</span>(<span class="hljs-built_in">rows</span>, <span class="hljs-built_in">cols</span>):
+	<span class="hljs-keyword">return</span> tuple( [<span class="hljs-number">0</span> <span class="hljs-keyword">for</span> <span class="hljs-built_in">col</span> <span class="hljs-keyword">in</span> range(<span class="hljs-built_in">cols</span>)] <span class="hljs-keyword">for</span> <span class="hljs-built_in">row</span> <span class="hljs-keyword">in</span> range(<span class="hljs-built_in">rows</span>) )
+
+def value(<span class="hljs-keyword">matrix</span>, <span class="hljs-built_in">row</span>, <span class="hljs-built_in">col</span>):
+	<span class="hljs-keyword">return</span> <span class="hljs-keyword">matrix</span>[<span class="hljs-built_in">row</span>][<span class="hljs-built_in">col</span>]
+
+def set_value(<span class="hljs-keyword">matrix</span>, <span class="hljs-built_in">row</span>, <span class="hljs-built_in">col</span>, val):
+	<span class="hljs-keyword">matrix</span>[<span class="hljs-built_in">row</span>][<span class="hljs-built_in">col</span>] = val</code></pre>
+
+					<pre><code data-trim="" data-noescape="" class="hljs angelscript">m = matrix(<span class="hljs-number">3</span>, <span class="hljs-number">4</span>)
+set_value(m, <span class="hljs-number">0</span>, <span class="hljs-number">0</span>, <span class="hljs-number">1</span>)
+set_value(m, <span class="hljs-number">0</span>, <span class="hljs-number">1</span>, <span class="hljs-number">2</span>)
+set_value(m, <span class="hljs-number">0</span>, <span class="hljs-number">3</span>, <span class="hljs-number">4</span>)</code></pre>
+				</section>
+
+				<section hidden="" aria-hidden="true" class="future" style="display: none;">
+					<h3>Matrices: Implementation D <span class="fragment" data-fragment-index="0">❌</span></h3>
+
+					<p>A list of tuples?</p>
+					<code>[ (1,2,0,4), (0,1,3,-1), (0,0,1,8) ]</code>
+
+					<pre><code data-trim="" data-noescape="" class="hljs stan">def <span class="hljs-keyword">matrix</span>(<span class="hljs-built_in">rows</span>, <span class="hljs-built_in">cols</span>):
+    <span class="hljs-keyword">return</span> [ tuple(<span class="hljs-number">0</span> <span class="hljs-keyword">for</span> <span class="hljs-built_in">col</span> <span class="hljs-keyword">in</span> range(<span class="hljs-built_in">cols</span>))
+        <span class="hljs-keyword">for</span> <span class="hljs-built_in">row</span> <span class="hljs-keyword">in</span> range(<span class="hljs-built_in">rows</span>) ]
+
+def value(<span class="hljs-keyword">matrix</span>, <span class="hljs-built_in">row</span>, <span class="hljs-built_in">col</span>):
+    <span class="hljs-keyword">return</span> <span class="hljs-keyword">matrix</span>[<span class="hljs-built_in">row</span>][<span class="hljs-built_in">col</span>]
+
+def set_value(<span class="hljs-keyword">matrix</span>, <span class="hljs-built_in">row</span>, <span class="hljs-built_in">col</span>, val):
+    <span class="hljs-keyword">matrix</span>[<span class="hljs-built_in">row</span>][<span class="hljs-built_in">col</span>] = val</code></pre>
+
+					<pre><code data-trim="" data-noescape="" class="hljs angelscript">m = matrix(<span class="hljs-number">3</span>, <span class="hljs-number">4</span>)
+set_value(m, <span class="hljs-number">0</span>, <span class="hljs-number">0</span>, <span class="hljs-number">1</span>) <span class="fragment" data-fragment-index="0">❌</span>
+set_value(m, <span class="hljs-number">0</span>, <span class="hljs-number">1</span>, <span class="hljs-number">2</span>) <span class="fragment" data-fragment-index="0">❌</span>
+set_value(m, <span class="hljs-number">0</span>, <span class="hljs-number">3</span>, <span class="hljs-number">4</span>) <span class="fragment" data-fragment-index="0">❌</span></code></pre>
+				</section>
+
+				<section hidden="" aria-hidden="true" class="future" style="display: none;">
+					<h3>Matrices: Implementation D2</h3>
+
+					<p>A list of tuples?</p>
+					<code>[ (1,2,0,4), (0,1,3,-1), (0,0,1,8) ]</code>
+
+					<pre><code data-trim="" data-noescape="" class="hljs markdown">def matrix(rows, cols):
+<span class="hljs-code">    return [ tuple(0 for col in range(cols))
+        for row in range(rows) ]
+</span>
+def value(matrix, row, col):
+<span class="hljs-code">    return matrix[row][col]
+</span>
+<strong>def set<span class="hljs-emphasis">_value(matrix, row, col, val):
+    matrix[<span class="hljs-string">row</span>] = matrix[<span class="hljs-string">row</span>][<span class="hljs-symbol">:col</span>] + (val,) + matrix[<span class="hljs-string">row</span>][<span class="hljs-symbol">col+1:</span>]</span></strong></code></pre>
+
+					<pre><code data-trim="" data-noescape="" class="hljs angelscript">m = matrix(<span class="hljs-number">3</span>, <span class="hljs-number">4</span>)
+set_value(m, <span class="hljs-number">0</span>, <span class="hljs-number">0</span>, <span class="hljs-number">1</span>)
+set_value(m, <span class="hljs-number">0</span>, <span class="hljs-number">1</span>, <span class="hljs-number">2</span>)
+set_value(m, <span class="hljs-number">0</span>, <span class="hljs-number">3</span>, <span class="hljs-number">4</span>)</code></pre>
+				</section>
+
+				<section hidden="" aria-hidden="true" class="future" style="display: none;">
+					<h3>Designing an implementation</h3>
+
+					<p>Which implementation was your favorite? <br>
+						<a target="_blank" href="https://docs.google.com/forms/d/e/1FAIpQLSc-rcEaZI1jCzqc4fILlRS0vxt_7HYcwY2ktI1Fj9f6MdOTcA/viewform">Answer the poll!</a>
+					</p>
+
+					<p>When might you use a tuple?</p>
+
+					<p>When might you use a list?</p>
+
+					<p>When might you use a dict?</p>
+				</section>
+
+				<section style="display: none;" hidden="" aria-hidden="true" class="future">
+					<h3>Trees</h3>
+					<img class="r-stretch" src="./Dictionaries, Matrices, and Trees_files/cruE1N2.png" alt="Diagram of tree" style="height: 360px; width: 960px;">
+					<ul>
+						<li>Each oval is a <strong>node</strong></li>
+						<li>Top node is the <strong>root</strong></li>
+						<li>Each node is itself the root of another tree (called a <strong>subtree</strong>);
+							the nodes immediately below are its <strong>children</strong></li>
+						<li>Nodes without children are <strong>leaves</strong>; others are <strong>inner nodes</strong></li>
+						<li>Each node generally has a <strong>label</strong></li>
+					</ul>
+				</section>
+
+				<section hidden="" aria-hidden="true" class="future" style="display: none;">
+					<h3>Trees: Data abstraction</h3>
+
+					<p>We want this constructor and selectors:</p>
+
+					<table style="font-size:smaller;">
+						<tbody><tr>
+							<td style="font-size:smaller;"><code>tree(label, children)</code></td>
+							<td>Returns a tree with given LABEL at its root, whose children are CHILDREN</td>
+						</tr>
+						<tr>
+							<td style="font-size:smaller;"><code>label(tree)</code></td>
+							<td>Returns the label of root node of TREE</td>
+						</tr>
+						<tr>
+							<td style="font-size:smaller;"><code>children(tree)</code></td>
+							<td>Returns the children of TREE (each a tree).</td>
+						</tr>
+						<tr>
+							<td style="font-size:smaller;"><code>is_leaf(tree)</code></td>
+							<td>Returns true if TREE is a leaf node.</td>
+						</tr>
+					</tbody></table>
+					<p>How could we implement?
+					   <a target="_blank" href="https://docs.google.com/forms/d/e/1FAIpQLSeCtz3eetqEb8WGerIs2afz5hjwnzUy6ZS5N1uDobYqsn5pzQ/viewform">Answer the poll!</a>
+					</p>
+				</section>
+
+				<section hidden="" aria-hidden="true" class="future" style="display: none;">
+					<h3>Trees: Implementation A</h3>
+
+					<p>A list of label + list for each tree/subtree:</p>
+					<code style="font-size:smaller;">[20,[12,[9,[7],[2]],[3]],[8,[4],[4]]]</code>
+
+					<pre><code data-trim="" data-noescape="" class="hljs ruby"><span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">tree</span><span class="hljs-params">(label, children=[])</span></span>:
+	<span class="hljs-keyword">return</span> [label] + children
+
+<span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">label</span><span class="hljs-params">(tree)</span></span>:
+	<span class="hljs-keyword">return</span> tree[<span class="hljs-number">0</span>]
+
+<span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">children</span><span class="hljs-params">(tree)</span></span>:
+	<span class="hljs-keyword">return</span> tree[<span class="hljs-number">1</span><span class="hljs-symbol">:</span>]
+
+<span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">is_leaf</span><span class="hljs-params">(tree)</span></span>:
+	<span class="hljs-keyword">return</span> len(children(tree)) == <span class="hljs-number">0</span></code></pre>
+
+					<pre><code data-trim="" data-noescape="" class="hljs lisp"><span class="hljs-literal">t</span> = tree(<span class="hljs-number">20</span>, [tree(<span class="hljs-number">12</span>,
+               [tree(<span class="hljs-number">9</span>,
+                  [tree(<span class="hljs-number">7</span>), tree(<span class="hljs-number">2</span>)]),
+                tree(<span class="hljs-number">3</span>)]),
+              tree(<span class="hljs-number">8</span>,
+                [tree(<span class="hljs-number">4</span>), tree(<span class="hljs-number">4</span>)])])</code></pre>
+				</section>
+
+				<section hidden="" aria-hidden="true" class="future" style="display: none;">
+					<h3>Trees: Implementation B</h3>
+
+					<p>A number-list tuple for each tree/subtree:</p>
+					<code style="font-size:smaller;">(20,[(12,[(9,[(7,[]),(2, [])]),(3, [])]),(8,[(4,[]),(4,[])])])</code>
+
+					<pre><code data-trim="" data-noescape="" class="hljs ruby"><span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">tree</span><span class="hljs-params">(label, children=[])</span></span>:
+  <span class="hljs-keyword">return</span> (label, children)
+
+<span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">label</span><span class="hljs-params">(tree)</span></span>:
+  <span class="hljs-keyword">return</span> tree[<span class="hljs-number">0</span>]
+
+<span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">children</span><span class="hljs-params">(tree)</span></span>:
+  <span class="hljs-keyword">return</span> tree[<span class="hljs-number">1</span>]</code></pre>
+
+					<pre><code data-trim="" data-noescape="" class="hljs lisp"><span class="hljs-literal">t</span> = tree(<span class="hljs-number">20</span>, [tree(<span class="hljs-number">12</span>,
+               [tree(<span class="hljs-number">9</span>,
+                 [tree(<span class="hljs-number">7</span>), tree(<span class="hljs-number">2</span>)]),
+                tree(<span class="hljs-number">3</span>)]),
+              tree(<span class="hljs-number">8</span>,
+               [tree(<span class="hljs-number">4</span>), tree(<span class="hljs-number">4</span>)])])</code></pre>
+				</section>
+
+				<section hidden="" aria-hidden="true" class="future" style="display: none;">
+					<h3>Trees: Implementation C</h3>
+
+					<p>A dictionary for each tree/subtree:</p>
+					<code style="font-size:50%; line-height: 1.2em">{'l':20,'c':[{'l':12,'c':[{'l':9,'c':[{'l':7,'c': []},{'l':2,'c':[]}]},{'l':3,'c':[]}]},{'l':8,'c':[{'l':4,'c':[]},{'l':4,'c':[]}]}]}</code>
+
+					<pre><code data-trim="" data-noescape="" class="hljs ruby"><span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">tree</span><span class="hljs-params">(label, children=[])</span></span>:
+    <span class="hljs-keyword">return</span> {<span class="hljs-string">"l"</span>: label, <span class="hljs-string">"c"</span>: children}
+
+<span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">label</span><span class="hljs-params">(tree)</span></span>:
+    <span class="hljs-keyword">return</span> tree[<span class="hljs-string">"l"</span>]
+
+<span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">children</span><span class="hljs-params">(tree)</span></span>:
+       <span class="hljs-keyword">return</span> tree[<span class="hljs-string">"c"</span>]</code></pre>
+
+					<pre><code data-trim="" data-noescape="" class="hljs lisp"><span class="hljs-literal">t</span> = tree(<span class="hljs-number">20</span>, [tree(<span class="hljs-number">12</span>,
+               [tree(<span class="hljs-number">9</span>,
+                 [tree(<span class="hljs-number">7</span>), tree(<span class="hljs-number">2</span>)]),
+                tree(<span class="hljs-number">3</span>)]),
+              tree(<span class="hljs-number">8</span>,
+                [tree(<span class="hljs-number">4</span>), tree(<span class="hljs-number">4</span>)])])</code></pre>
+				</section>
+
+				<section hidden="" aria-hidden="true" class="future" style="display: none;">
+					<h3>Tree processing</h3>
+
+					<p>A tree is a recursive structure.</p>
+
+					<p>Each tree has:</p>
+					<ul>
+						<li>A label</li>
+						<li>0 or more children, each a tree</li>
+					</ul>
+
+					<p>Recursive structure implies recursive algorithm!</p>
+				</section>
+
+				<section style="display: none;" hidden="" aria-hidden="true" class="future">
+					<h3>Tree processing: Counting leaves</h3>
+
+					<img class="r-stretch" src="./Dictionaries, Matrices, and Trees_files/cruE1N2.png" alt="Diagram of tree" style="height: 360px; width: 960px;">
+
+					<pre><code data-trim="" data-noescape="" class="hljs python"><span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">count_leaves</span>(<span class="hljs-params">t</span>):</span>
+    <span class="hljs-string">"""Returns the number of leaf nodes in T."""</span>
+    <span class="hljs-keyword">if</span> <span class="fragment" data-fragment-index="0">is_leaf(t):</span>
+        <span class="fragment" data-fragment-index="1"><span class="hljs-keyword">return</span> <span class="hljs-number">1</span></span>
+    <span class="hljs-keyword">else</span>:
+        <span class="fragment" data-fragment-index="2">children_leaves = <span class="hljs-number">0</span>
+        <span class="hljs-keyword">for</span> c <span class="hljs-keyword">in</span> children(t):
+            children_leaves += count_leaves(c)
+        <span class="hljs-keyword">return</span> children_leaves</span></code></pre>
+
+					<p>What's the base case? What's the recursive call?</p>
+
+				</section>
+
+				<section hidden="" aria-hidden="true" class="future" style="display: none;">
+					<h3>Tree processing: Counting leaves</h3>
+
+					<p>The <a target="_blank" href="https://docs.python.org/3/library/functions.html#sum"><code>sum()</code></a>
+						function sums up the items of an iterable.</p>
+
+					<pre><code data-trim="" data-noescape="" class="hljs angelscript">&gt;&gt;&gt; sum([<span class="hljs-number">1</span>, <span class="hljs-number">1</span>, <span class="hljs-number">1</span>, <span class="hljs-number">1</span>])
+<span class="hljs-number">4</span></code></pre>
+
+					<div class="fragment" data-fragment-index="0">
+					<p>That leads to this shorter function:</p>
+					<pre><code data-trim="" data-noescape="" class="hljs python"><span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">count_leaves</span>(<span class="hljs-params">t</span>):</span>
+    <span class="hljs-string">"""Returns the number of leaf nodes in T."""</span>
+    <span class="hljs-keyword">if</span> is_leaf(t):
+        <span class="hljs-keyword">return</span> <span class="hljs-number">1</span>
+    <span class="hljs-keyword">else</span>:
+        <span class="hljs-keyword">return</span> sum([count_leaves(c) <span class="hljs-keyword">for</span> c <span class="hljs-keyword">in</span> children(t)])</code></pre>
+					</div>
+
+				</section>
+
+				<section style="display: none;" hidden="" aria-hidden="true" class="future">
+					<h3>Creating trees</h3>
+
+					<p>A function that creates a tree from another tree is also often recursive.</p>
+
+					<img class="r-stretch" src="./Dictionaries, Matrices, and Trees_files/eVpV2gv.png" style="height: 700px; width: 702.545px;">
+				</section>
+
+
+				<section style="display: none;" hidden="" aria-hidden="true" class="future">
+					<h3>Creating trees: Doubling labels</h3>
+
+					<img class="r-stretch" src="./Dictionaries, Matrices, and Trees_files/cruE1N2.png" alt="Diagram of tree" style="height: 360px; width: 960px;">
+
+					<pre><code data-trim="" data-noescape="" class="hljs python"><span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">double</span>(<span class="hljs-params">t</span>):</span>
+    <span class="hljs-string">"""Returns a tree identical to T, but with all labels doubled."""</span>
+    <span class="hljs-keyword">if</span> <span class="fragment" data-fragment-index="0">is_leaf(t):</span>
+        <span class="fragment" data-fragment-index="1"><span class="hljs-keyword">return</span> tree(label(t) * <span class="hljs-number">2</span>)</span>
+    <span class="hljs-keyword">else</span>:
+        <span class="fragment" data-fragment-index="2"><span class="hljs-keyword">return</span> tree(label(t) * <span class="hljs-number">2</span>,
+            [double(c) <span class="hljs-keyword">for</span> c <span class="hljs-keyword">in</span> children(t)])</span></code></pre>
+
+					<p>What's the base case? What's the recursive call?</p>
+
+				</section>
+
+				<section hidden="" aria-hidden="true" class="future" style="display: none;">
+					<h3>Creating trees: Doubling labels</h3>
+
+					<p>Longer...</p>
+					<pre><code data-trim="" data-noescape="" class="hljs python"><span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">double</span>(<span class="hljs-params">t</span>):</span>
+	<span class="hljs-string">"""Returns a tree identical to T, but with all labels doubled."""</span>
+    <span class="hljs-keyword">if</span> is_leaf(t):
+        <span class="hljs-keyword">return</span> tree(label(t) * <span class="hljs-number">2</span>)
+    <span class="hljs-keyword">else</span>:
+        doubled_children = []
+        <span class="hljs-keyword">for</span> c <span class="hljs-keyword">in</span> children(t):
+            doubled_children.append(double(c))
+        <span class="hljs-keyword">return</span> tree(label(t) * <span class="hljs-number">2</span>, doubled_children)</code></pre>
+
+					<p>Shorter!</p>
+					<pre><code data-trim="" data-noescape="" class="hljs python"><span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">double</span>(<span class="hljs-params">t</span>):</span>
+    <span class="hljs-string">"""Returns the number of leaf nodes in T."""</span>
+    <span class="hljs-keyword">return</span> tree(label(t) * <span class="hljs-number">2</span>,
+            [double(c) <span class="hljs-keyword">for</span> c <span class="hljs-keyword">in</span> children(t)])</code></pre>
+
+				</section>
+
+				<section hidden="" aria-hidden="true" class="future" style="display: none;">
+					<h3>Challenge: List of leaves</h3>
+
+					<p>Try this on your own:</p>
+
+					<pre><code data-trim="" data-noescape="" class="hljs python"><span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">list_of_leaves</span>(<span class="hljs-params">t</span>):</span>
+    <span class="hljs-string">"""Return a list containing the leaf labels of T.
+
+    &gt;&gt;&gt; leaves(t) # Using the t from the slides
+    [7, 2, 3, 4, 4]
+    """</span>
+    <span class="hljs-keyword">if</span> ______:
+        <span class="hljs-keyword">return</span> ______
+    <span class="hljs-keyword">else</span>:
+        ______
+        <span class="hljs-keyword">return</span> ______</code></pre>
+
+					<p style="font-size:smaller;">Hint: If you sum a list of lists, you get a list containing the elements of those lists.
+					The sum function takes a second argument, the starting value of the sum.
+					</p>
+				</section>
+
+				<section hidden="" aria-hidden="true" class="future" style="display: none;">
+					<h3>Tree: Layers of abstraction</h3>
+					<table>
+						<tbody><tr>
+							<td style="font-weight:bold;">Primitive Representation</td>
+							<td><code>1 2 3</code> <code>True False</code><br><code>(..,..)</code> <code>[..,..]</code> <code>{...}</code></td>
+						</tr>
+						<tr>
+							<td style="font-weight:bold;" rowspan="2">Data abstraction</td>
+							<td style="border-bottom: 1px dashed;"><code>tree()</code> <code>children()</code> <code>label()</code></td>
+						</tr>
+						<tr>
+							<td><code>is_leaf()</code></td>
+						</tr>
+						<tr>
+							<td style="font-weight:bold;">User program</td>
+							<td><code>double(t)</code> <code>count_leaves(t)</code></td>
+						</tr>
+					</tbody></table>
+					<p>
+						Each layer only uses the layer above it.
+					</p>
+				</section>
+
+				<section hidden="" aria-hidden="true" class="future" style="display: none;">
+					<h3>Trees, trees, everywhere!</h3>
+
+				</section>
+
+				<section style="display: none;" hidden="" aria-hidden="true" class="future">
+					<h3>Directory structures</h3>
+
+					<img class="r-stretch" src="./Dictionaries, Matrices, and Trees_files/cs61a-tree.png" alt="Tree for a directory structure" style="height: 294.987px; width: 960px;">
+				</section>
+
+				<section style="display: none;" hidden="" aria-hidden="true" class="future">
+					<h3>Parse trees</h3>
+
+					<p>For natural languages...</p>
+
+					<img class="r-stretch" src="./Dictionaries, Matrices, and Trees_files/1000px-Amouse.svg.png" alt="Parse tree for English sentence: A mouse eats a cat" style="height: 700px; width: 782.998px;">
+					<p style="font-size:smaller">Key: S = Sentence, NP = Noun phrase, D = Determiner, N = Noun, V = Verb, VP = Verb Phrase</p>
+				</section>
+
+				<section style="display: none;" hidden="" aria-hidden="true" class="future">
+					<h3>Parse trees</h3>
+
+					<p>For programming languages, too...</p>
+
+					<img class="r-stretch" src="./Dictionaries, Matrices, and Trees_files/800px-Parse_Tree_Derivations_ETF.svg.png" alt="Parse tree for an arithmetic expression" style="height: 504px; width: 960px;">
+
+					<p style="font-size:smaller">Key: E = expression</p>
+				</section>
+
+
+
+			</div>
+		<div class="backgrounds"><div class="slide-background present" data-loaded="true" style="display: block;"><div class="slide-background-content"></div></div><div class="slide-background future" data-loaded="true" style="display: block;"><div class="slide-background-content"></div></div><div class="slide-background future" data-loaded="true" style="display: block;"><div class="slide-background-content"></div></div><div class="slide-background future" style="display: none;"><div class="slide-background-content"></div></div><div class="slide-background future" style="display: none;"><div class="slide-background-content"></div></div><div class="slide-background future" style="display: none;"><div class="slide-background-content"></div></div><div class="slide-background future" style="display: none;"><div class="slide-background-content"></div></div><div class="slide-background future" style="display: none;"><div class="slide-background-content"></div></div><div class="slide-background future" style="display: none;"><div class="slide-background-content"></div></div><div class="slide-background future" style="display: none;"><div class="slide-background-content"></div></div><div class="slide-background future" style="display: none;"><div class="slide-background-content"></div></div><div class="slide-background future" style="display: none;"><div class="slide-background-content"></div></div><div class="slide-background future" style="display: none;"><div class="slide-background-content"></div></div><div class="slide-background future" style="display: none;"><div class="slide-background-content"></div></div><div class="slide-background future" style="display: none;"><div class="slide-background-content"></div></div><div class="slide-background future" style="display: none;"><div class="slide-background-content"></div></div><div class="slide-background future" style="display: none;"><div class="slide-background-content"></div></div><div class="slide-background future" style="display: none;"><div class="slide-background-content"></div></div><div class="slide-background future" style="display: none;"><div class="slide-background-content"></div></div><div class="slide-background future" style="display: none;"><div class="slide-background-content"></div></div><div class="slide-background future" style="display: none;"><div class="slide-background-content"></div></div><div class="slide-background future" style="display: none;"><div class="slide-background-content"></div></div><div class="slide-background future" style="display: none;"><div class="slide-background-content"></div></div><div class="slide-background future" style="display: none;"><div class="slide-background-content"></div></div><div class="slide-background future" style="display: none;"><div class="slide-background-content"></div></div><div class="slide-background future" style="display: none;"><div class="slide-background-content"></div></div><div class="slide-background future" style="display: none;"><div class="slide-background-content"></div></div><div class="slide-background future" style="display: none;"><div class="slide-background-content"></div></div><div class="slide-background future" style="display: none;"><div class="slide-background-content"></div></div><div class="slide-background future" style="display: none;"><div class="slide-background-content"></div></div><div class="slide-background future" style="display: none;"><div class="slide-background-content"></div></div><div class="slide-background future" style="display: none;"><div class="slide-background-content"></div></div><div class="slide-background future" style="display: none;"><div class="slide-background-content"></div></div><div class="slide-background future" style="display: none;"><div class="slide-background-content"></div></div><div class="slide-background future" style="display: none;"><div class="slide-background-content"></div></div><div class="slide-background future" style="display: none;"><div class="slide-background-content"></div></div></div><div class="slide-number" style="display: block;"><a href="https://inst.eecs.berkeley.edu/~cs61a/sp21/assets/slides/12-Trees.html#/">
+					<span class="slide-number-a">1</span>
+					</a></div><aside class="controls" data-controls-layout="bottom-right" data-controls-back-arrows="faded" style="display: block;"><button class="navigate-left" aria-label="previous slide" disabled="disabled"><div class="controls-arrow"></div></button>
+			<button class="navigate-right enabled highlight" aria-label="next slide"><div class="controls-arrow"></div></button>
+			<button class="navigate-up" aria-label="above slide" disabled="disabled"><div class="controls-arrow"></div></button>
+			<button class="navigate-down" aria-label="below slide" disabled="disabled"><div class="controls-arrow"></div></button></aside><div class="progress" style="display: block;"><span style="transform: scaleX(0);"></span></div><div class="speaker-notes" data-prevent-swipe="" tabindex="0"></div><div class="pause-overlay"><button class="resume-button">Resume presentation</button></div><div class="aria-status" aria-live="polite" aria-atomic="true" style="position: absolute; height: 1px; width: 1px; overflow: hidden; clip: rect(1px, 1px, 1px, 1px);">Dictionaries, Matrices, and Trees </div></div>
+
+		<script src="./Dictionaries, Matrices, and Trees_files/reveal.js.下载"></script>
+		<script src="./Dictionaries, Matrices, and Trees_files/highlight.js.下载"></script>
+		<script>
+			const srcUrlPrefix = "https://cdn.jsdelivr.net/npm/reveal.js@4.1.0/";
+			Reveal.initialize({
+				hash: true,
+				center: false,
+				slideNumber: true,
+				showNotes: false,
+				margin: 0.1,
+				preloadIframes: true,
+				plugins: [ RevealHighlight ],
+				pdfSeparateFragments: true
+			});
+		</script>
+	
+
+</body></html>

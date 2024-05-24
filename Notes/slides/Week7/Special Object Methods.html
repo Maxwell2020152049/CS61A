@@ -1,0 +1,843 @@
+<!DOCTYPE html>
+<!-- saved from url=(0087)https://inst.eecs.berkeley.edu/~cs61a/sp21/assets/slides/18-Special_Object_Methods.html -->
+<html class="reveal-full-page"><head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+		
+		<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+		<title>Special Object Methods</title>
+		<link rel="stylesheet" href="./Special Object Methods_files/reset.css">
+		<link rel="stylesheet" href="./Special Object Methods_files/reveal.css">
+		<link rel="stylesheet" href="./Special Object Methods_files/simple.css" id="theme">
+		<link rel="stylesheet" href="./Special Object Methods_files/mono-blue.css">
+		<link rel="stylesheet" href="./Special Object Methods_files/css">
+		<style>
+			.reveal {
+				font-family: "Work Sans", sans-serif;
+			}
+
+			.reveal .slides section {
+				text-align: left;
+				font-size: smaller;
+			}
+
+			.reveal pre {
+				background-color: #f5f5f5;
+				width: 100%;
+				border: 1px solid #ccc;
+				border-radius: 4px;
+				box-shadow: none;
+			}
+
+			.reveal h1, .reveal h2, .reveal h3, .reveal h4, .reveal h5, .reveal h6 {
+				font-family: "Roboto", sans-serif;
+				color: #0072c1;
+			}
+
+			.reveal section.heading-only {
+				text-align:center;
+				padding-top:20%;
+			}
+
+            .column .code-badge, .no-code-badge .code-badge {
+                display: none;
+            }
+
+            .code-badge-language {
+                display: none;
+            }
+
+			.python-tutor-link {
+				font-size: smaller;
+			}
+
+			.python-tutor-link:before {
+				content: "";
+				display: block;
+				background: url("http://pythontutor.com/favicon.ico") no-repeat;
+				width: 48px;
+				height: 48px;
+				float: left;
+				margin: 0 6px 0 0;
+			}
+
+			.reveal h3 {
+				margin-bottom: 40px;
+			}
+
+            .smaller {
+                font-size: smaller;
+            }
+
+            code {
+                padding: 2px 4px;
+                font-size: 90%;
+                color: #0072c1;
+                background-color: #f9f2f4;
+                border-radius: 4px;
+            }
+
+            p.padded {
+                margin-top: 32px;
+            }
+
+            section .row {
+                display: flex;
+            }
+
+            section .column {
+                flex: 48%;
+                margin: 10px;
+            }
+
+			@media print
+			{
+				.no-print, .no-print *
+				{
+					display: none !important;
+				}
+			}
+		</style>
+	<style type="text/css">.hljs-ln{border-collapse:collapse}.hljs-ln td{padding:0}.hljs-ln-n:before{content:attr(data-line-number)}</style></head>
+	<body class="reveal-viewport" style="--slide-width: 960px; --slide-height: 700px;">
+		<div class="reveal slide focused has-horizontal-slides ready" role="application" data-transition-speed="default" data-background-transition="fade">
+			<div class="slides" style="width: 960px; height: 700px; inset: 50% auto auto 50%; transform: translate(-50%, -50%) scale(0.957857);">
+				<section class="heading-only present" style="display: block;">
+					<h1>Special Object Methods</h1>
+
+					<div class="no-print" style="text-align: left; margin-top: 100px; font-size: 70%;">
+						Tips for navigating the slides:
+						<ul>
+							<li>Press O or Escape for overview mode.</li>
+							<li>Visit <a href="https://inst.eecs.berkeley.edu/~cs61a/sp21/assets/slides/18-Special_Object_Methods.html?print-pdf" target="_blank">this link</a> for a nice printable version</li>
+							<li>Press the copy icon on the upper right of code blocks to copy the code</li>
+						</ul>
+					</div>
+				</section>
+
+                <section class="heading-only future" hidden="" aria-hidden="true" style="display: block;">
+                    <h2>(Revisit)<br>Composition</h2>
+                </section>
+
+                <section hidden="" aria-hidden="true" class="future" style="display: block;">
+                    <h3>A composition challenge</h3>
+
+                    <p class="smaller">Composition: When one object is composed of another object(s).</p>
+
+                    <pre style="font-size:0.6em" class="code-badge-pre"><div class="code-badge">
+        <div class="code-badge-language">python</div>
+        <div title="Copy to clipboard">
+            <i class="fa fa-copy code-badge-copy-icon">📄</i>
+        </div>
+     </div><code data-trim="" data-noescape="" class="python hljs"><span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">Lamb</span>:</span>
+    species_name = <span class="hljs-string">"Lamb"</span>
+    scientific_name = <span class="hljs-string">"Ovis aries"</span>
+
+    <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">__init__</span>(<span class="hljs-params">self, name</span>):</span>
+        self.name = name
+
+<span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">Human</span>:</span>
+    species_name = <span class="hljs-string">"Human"</span>
+    scientific_name = <span class="hljs-string">"Homo sapiens"</span>
+
+    <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">__init__</span>(<span class="hljs-params">self, name</span>):</span>
+        self.name = name
+
+lamb = Lamb(<span class="hljs-string">"little"</span>)
+mary = Human(<span class="hljs-string">"Mary"</span>)</code></pre>
+
+                    <p>How can we make it so that Mary has a little lamb?</p>
+
+                </section>
+
+                <section hidden="" aria-hidden="true" class="future" style="display: none;">
+                    <h3>Approach 1: Assign object in method</h3>
+
+                    <p class="smaller">Without changing the <code>__init__</code>,
+                        we can add a method that assigns a new instance variable.</p>
+
+                    <pre style="font-size:0.6em" class="code-badge-pre"><div class="code-badge">
+        <div class="code-badge-language">python</div>
+        <div title="Copy to clipboard">
+            <i class="fa fa-copy code-badge-copy-icon">📄</i>
+        </div>
+     </div><code data-trim="" data-noescape="" class="python hljs"><span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">Human</span>:</span>
+    species_name = <span class="hljs-string">"Human"</span>
+    scientific_name = <span class="hljs-string">"Homo sapiens"</span>
+
+    <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">__init__</span>(<span class="hljs-params">self, name</span>):</span>
+        self.name = name
+
+    <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">adopt</span>(<span class="hljs-params">self, pet</span>):</span>
+        self.pet = pet
+        print(<span class="hljs-string">f"I have a pet named <span class="hljs-subst">{self.pet.name}</span>"</span>)
+
+lamb = Lamb(<span class="hljs-string">"little"</span>)
+mary = Human(<span class="hljs-string">"Mary"</span>)
+mary.adopt(lamb)
+print(mary.pet)</code></pre>
+
+                    <p class="smaller">What will happen if we call <code>mary.pet</code> before <code>mary.adopt(pet)</code>?
+                    <span class="fragment" data-fragment-index="0">❌ AttributeError!</span>
+                    </p>
+
+                </section>
+
+                <section hidden="" aria-hidden="true" class="future" style="display: none;">
+                    <h3>Approach 2: Assign during initialization</h3>
+
+                    <p class="smaller">We can change <code>__init__</code>
+                     to accept the object as an argument and initialize the instance variable immediately.</p>
+
+                    <pre style="font-size:0.6em" class="code-badge-pre"><div class="code-badge">
+        <div class="code-badge-language">python</div>
+        <div title="Copy to clipboard">
+            <i class="fa fa-copy code-badge-copy-icon">📄</i>
+        </div>
+     </div><code data-trim="" data-noescape="" class="python hljs"><span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">Human</span>:</span>
+    species_name = <span class="hljs-string">"Human"</span>
+    scientific_name = <span class="hljs-string">"Homo sapiens"</span>
+
+    <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">__init__</span>(<span class="hljs-params">self, name, pet=None</span>):</span>
+        self.name = name
+        self.pet = pet
+        print(<span class="hljs-string">f"I have a pet named <span class="hljs-subst">{self.pet.name}</span>"</span>)
+
+lamb = Lamb(<span class="hljs-string">"little"</span>)
+mary = Human(<span class="hljs-string">"Mary"</span>, lamb)</code></pre>
+
+                    <p class="smaller">How would you construct a <code>Human</code> that has no pet? <span class="fragment" data-fragment-index="0"><code>Human("Colby")</code></span>
+                        <br>
+                    What will their <code>pet</code> attribute be? <span class="fragment" data-fragment-index="0"><code>None</code></span>
+                    </p>
+
+                </section>
+
+
+                <section hidden="" aria-hidden="true" class="future" style="display: none;">
+                    <h3>Approach 3: Update a list</h3>
+
+                    <p class="smaller">We can initialize an empty list in <code>__init__</code>
+                    and use a method to update the list.</p>
+
+                    <pre style="font-size:0.6em" class="code-badge-pre"><div class="code-badge">
+        <div class="code-badge-language">python</div>
+        <div title="Copy to clipboard">
+            <i class="fa fa-copy code-badge-copy-icon">📄</i>
+        </div>
+     </div><code data-trim="" data-noescape="" class="python hljs"><span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">Human</span>:</span>
+    species_name = <span class="hljs-string">"Human"</span>
+    scientific_name = <span class="hljs-string">"Homo sapiens"</span>
+
+    <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">__init__</span>(<span class="hljs-params">self, name</span>):</span>
+        self.name = name
+        self.pets = []
+
+    <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">adopt</span>(<span class="hljs-params">self, pet</span>):</span>
+        self.pets.append(pet)
+        print(<span class="hljs-string">f"I have a pet named <span class="hljs-subst">{pet.name}</span>"</span>)
+
+lamb = Lamb(<span class="hljs-string">"little"</span>)
+mary = Human(<span class="hljs-string">"Mary"</span>)
+mary.adopt(lamb)</code></pre>
+
+                    <p class="smaller">What method would be useful to add to this class? <span class="fragment" data-fragment-index="0">Something to remove a pet, in case the pet runs away or something happens...</span></p>
+
+                </section>
+
+                <section class="heading-only future" hidden="" aria-hidden="true" style="display: none;">
+                    <h2>Objects</h2>
+                </section>
+
+                <section hidden="" aria-hidden="true" class="future" style="display: none;">
+                    <h3>So many objects</h3>
+
+                    <p>What are the objects in this code?</p>
+
+                    <pre style="font-size:0.6em" class="code-badge-pre"><div class="code-badge">
+        <div class="code-badge-language">python</div>
+        <div title="Copy to clipboard">
+            <i class="fa fa-copy code-badge-copy-icon">📄</i>
+        </div>
+     </div><code data-trim="" data-noescape="" class="python hljs"><span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">Lamb</span>:</span>
+    species_name = <span class="hljs-string">"Lamb"</span>
+    scientific_name = <span class="hljs-string">"Ovis aries"</span>
+
+    <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">__init__</span>(<span class="hljs-params">self, name</span>):</span>
+        self.name = name
+
+    <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">play</span>(<span class="hljs-params">self</span>):</span>
+        self.happy = <span class="hljs-literal">True</span>
+
+lamb = Lamb(<span class="hljs-string">"Lil"</span>)
+owner = <span class="hljs-string">"Mary"</span>
+had_a_lamb = <span class="hljs-literal">True</span>
+fleece = {<span class="hljs-string">"color"</span>: <span class="hljs-string">"white"</span>, <span class="hljs-string">"fluffiness"</span>: <span class="hljs-number">100</span>}
+kids_at_school = [<span class="hljs-string">"Billy"</span>, <span class="hljs-string">"Tilly"</span>, <span class="hljs-string">"Jilly"</span>]
+day = <span class="hljs-number">1</span></code></pre>
+
+                    <p class="smaller fragment" data-fragment-index="0"><code>lamb</code>, <code>owner</code>, <code>had_a_lamb</code>, <code>fleece</code>,
+                        <code>kids_at_school</code>, <code>day</code>, etc.<br>
+                        We can prove it by checking <code>object.__class__.__bases__</code>, which reports the base class(es) of the object's class.
+                    </p>
+
+                </section>
+
+                <section style="display: none;" hidden="" aria-hidden="true" class="future">
+                    <h3>It's all objects</h3>
+
+                    <p>All the built-in types inherit from <code>object</code>:</p>
+
+                    <img class="r-stretch" src="./Special Object Methods_files/A3WUUvn.png" alt="Diagram of object inheritance" style="height: 574.144px; width: 960px;">
+
+                </section>
+
+                <section hidden="" aria-hidden="true" class="future" style="display: none;">
+                    <h3>Built-in object attributes</h3>
+
+                    <p>If all the built-in types and user classes inherit from <code>object</code>,
+                        what are they inheriting?</p>
+
+                    <p>Just ask <code>dir()</code>, a built-in function that returns
+                        a list of all the attributes on an object.</p>
+
+                    <pre style="font-size:0.9em" class="code-badge-pre"><div class="code-badge">
+        <div class="code-badge-language">python</div>
+        <div title="Copy to clipboard">
+            <i class="fa fa-copy code-badge-copy-icon">📄</i>
+        </div>
+     </div><code data-trim="" data-noescape="" class="python hljs">dir(object)</code></pre>
+
+                    <ul class="fragment" data-fragment-index="0" style="font-size:0.5em;">
+                        <li>For string representation: <code>__repr__</code>, <code>__str__</code>, <code>__format__</code></li>
+                        <li>For comparisons: <code>__eq__</code>, <code>__ge__</code>, <code>__gt__</code>, <code>__le__</code>, <code>__lt__</code>, <code>__ne__</code></li>
+                        <li>Related to classes: <code>__bases__</code>, <code>__class__</code>, <code>__new__</code>, <code>__init__</code>,
+                            <code>__init_subclass__</code>, <code>__subclasshook__</code>, <code>__setattr__</code>, <code>__delattr__</code>, <code>__getattribute__</code></li>
+                        <li>Others: <code>__dir__</code>, <code>__hash__</code>, <code>__module__</code>, <code>__reduce__</code>, <code>__reduce_ex__</code></li>
+                    </ul>
+
+                    <p class="smaller fragment" data-fragment-index="0">Python calls these methods behind these scenes, so we are often not aware
+                        when the "dunder" methods are being called. <br>💡 Let us become enlightened! 💡</p>
+                </section>
+
+
+                <section class="heading-only future" hidden="" aria-hidden="true" style="display: none;">
+                    <h2>String representation</h2>
+                </section>
+
+                <section hidden="" aria-hidden="true" class="future" style="display: none;">
+                    <h3>__str__</h3>
+
+                    <p>The <code>__str__</code> method returns a human readable
+                    string representation of an object.</p>
+
+                    <pre style="font-size:0.7em" class="code-badge-pre"><div class="code-badge">
+        <div class="code-badge-language">python</div>
+        <div title="Copy to clipboard">
+            <i class="fa fa-copy code-badge-copy-icon">📄</i>
+        </div>
+     </div><code data-trim="" data-noescape="" class="python hljs"><span class="hljs-keyword">from</span> fractions <span class="hljs-keyword">import</span> Fraction
+
+one_third = <span class="hljs-number">1</span>/<span class="hljs-number">3</span>
+one_half = Fraction(<span class="hljs-number">1</span>, <span class="hljs-number">2</span>)</code></pre>
+
+                    <pre style="font-size:0.7em" class="code-badge-pre"><div class="code-badge">
+        <div class="code-badge-language">python</div>
+        <div title="Copy to clipboard">
+            <i class="fa fa-copy code-badge-copy-icon">📄</i>
+        </div>
+     </div><code data-trim="" data-noescape="" class="python hljs">float.__str__(one_third)      <span class="fragment" data-fragment-index="0"><span class="hljs-comment"># '0.3333333333333333'</span></span>
+Fraction.__str__(one_half)    <span class="fragment" data-fragment-index="0"><span class="hljs-comment"># '1/2'</span></span></code></pre>
+                </section>
+
+                <section hidden="" aria-hidden="true" class="future" style="display: none;">
+                    <h3>__str__ usage</h3>
+
+                    <p>The <code>__str__</code> method is used in multiple places by Python: <code>print()</code> function,
+                        <code>str()</code> constructor, f-strings, and more.
+                    </p>
+
+                    <pre style="font-size:0.7em" class="code-badge-pre"><div class="code-badge">
+        <div class="code-badge-language">python</div>
+        <div title="Copy to clipboard">
+            <i class="fa fa-copy code-badge-copy-icon">📄</i>
+        </div>
+     </div><code data-trim="" data-noescape="" class="python hljs"><span class="hljs-keyword">from</span> fractions <span class="hljs-keyword">import</span> Fraction
+
+one_third = <span class="hljs-number">1</span>/<span class="hljs-number">3</span>
+one_half = Fraction(<span class="hljs-number">1</span>, <span class="hljs-number">2</span>)</code></pre>
+
+                    <pre style="font-size:0.7em" class="code-badge-pre"><div class="code-badge">
+        <div class="code-badge-language">python</div>
+        <div title="Copy to clipboard">
+            <i class="fa fa-copy code-badge-copy-icon">📄</i>
+        </div>
+     </div><code data-trim="" data-noescape="" class="python hljs">print(one_third)             <span class="fragment" data-fragment-index="0"><span class="hljs-comment"># '0.3333333333333333'</span></span>
+print(one_half)              <span class="fragment" data-fragment-index="0"><span class="hljs-comment"># '1/2'</span></span>
+
+str(one_third)               <span class="fragment" data-fragment-index="0"><span class="hljs-comment"># '0.3333333333333333'</span></span>
+str(one_half)                <span class="fragment" data-fragment-index="0"><span class="hljs-comment"># '1/2'</span></span>
+
+<span class="hljs-string">f"<span class="hljs-subst">{one_half}</span> &gt; <span class="hljs-subst">{one_third}</span>"</span>  <span class="fragment" data-fragment-index="0"><span class="hljs-comment"># '1/2 &gt; 0.3333333333333333'</span></span></code></pre>
+
+                </section>
+
+                <section hidden="" aria-hidden="true" class="future" style="display: none;">
+                    <h3>Custom __str__ behavior</h3>
+
+                    <p>When making custom classes, we can override <code>__str__</code>
+                        to define our human readable string representation.</p>
+
+                    <pre style="font-size:0.7em" class="code-badge-pre"><div class="code-badge">
+        <div class="code-badge-language">python</div>
+        <div title="Copy to clipboard">
+            <i class="fa fa-copy code-badge-copy-icon">📄</i>
+        </div>
+     </div><code data-trim="" data-noescape="" class="python hljs"><span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">Lamb</span>:</span>
+    species_name = <span class="hljs-string">"Lamb"</span>
+    scientific_name = <span class="hljs-string">"Ovis aries"</span>
+
+    <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">__init__</span>(<span class="hljs-params">self, name</span>):</span>
+        self.name = name
+
+    <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">__str__</span>(<span class="hljs-params">self</span>):</span>
+        <span class="hljs-keyword">return</span> <span class="hljs-string">"🐑 : "</span> + self.name</code></pre>
+
+                    <pre style="font-size:0.7em" class="code-badge-pre"><div class="code-badge">
+        <div class="code-badge-language">python</div>
+        <div title="Copy to clipboard">
+            <i class="fa fa-copy code-badge-copy-icon">📄</i>
+        </div>
+     </div><code data-trim="" data-noescape="" class="python hljs">lil = Lamb(<span class="hljs-string">"Lil lamb"</span>)
+
+str(lil)
+
+print(lil) <span class="hljs-comment"># Currently broken on code.cs61a.org!</span></code></pre>
+
+                    <aside class="notes">Show how lil still shows Lamb object as a lead in for next slide
+                    </aside>
+                </section>
+
+
+                <section hidden="" aria-hidden="true" class="future" style="display: none;">
+                    <h3>__repr__</h3>
+
+                    <p>The <code>__repr__</code> method returns
+                        a string that would evaluate to an object with the same values.
+                    </p>
+
+                    <pre style="font-size:0.7em" class="code-badge-pre"><div class="code-badge">
+        <div class="code-badge-language">python</div>
+        <div title="Copy to clipboard">
+            <i class="fa fa-copy code-badge-copy-icon">📄</i>
+        </div>
+     </div><code data-trim="" data-noescape="" class="python hljs"><span class="hljs-keyword">from</span> fractions <span class="hljs-keyword">import</span> Fraction
+
+one_half = Fraction(<span class="hljs-number">1</span>, <span class="hljs-number">2</span>)
+Fraction.__repr__(one_half)           <span class="hljs-comment"># 'Fraction(1, 2)'</span></code></pre>
+
+                    <p class="padded smaller">If implemented correctly, calling <code>eval()</code>
+                        on the result should return back that same-valued object.</p>
+
+                    <pre style="font-size:0.7em" class="code-badge-pre"><div class="code-badge">
+        <div class="code-badge-language">python</div>
+        <div title="Copy to clipboard">
+            <i class="fa fa-copy code-badge-copy-icon">📄</i>
+        </div>
+     </div><code data-trim="" data-noescape="" class="python hljs">another_half = eval(Fraction.__repr__(one_half))</code></pre>
+
+                </section>
+
+                <section hidden="" aria-hidden="true" class="future" style="display: none;">
+                    <h3>__repr__ usage</h3>
+
+                    <p>
+                        The <code>__repr__</code> method is used multiple places by Python:
+                        when <code>repr(object)</code> is called
+                        and when displaying an object in an interactive Python session.
+                    </p>
+
+                    <pre style="font-size:0.7em" class="code-badge-pre"><div class="code-badge">
+        <div class="code-badge-language">python</div>
+        <div title="Copy to clipboard">
+            <i class="fa fa-copy code-badge-copy-icon">📄</i>
+        </div>
+     </div><code data-trim="" data-noescape="" class="python hljs"><span class="hljs-keyword">from</span> fractions <span class="hljs-keyword">import</span> Fraction
+
+one_third = <span class="hljs-number">1</span>/<span class="hljs-number">3</span>
+one_half = Fraction(<span class="hljs-number">1</span>, <span class="hljs-number">2</span>)</code></pre>
+
+                    <pre style="font-size:0.7em" class="code-badge-pre"><div class="code-badge">
+        <div class="code-badge-language">python</div>
+        <div title="Copy to clipboard">
+            <i class="fa fa-copy code-badge-copy-icon">📄</i>
+        </div>
+     </div><code data-trim="" data-noescape="" class="python hljs">one_third
+one_half
+repr(one_third)
+repr(one_half)</code></pre>
+
+                </section>
+
+
+                <section hidden="" aria-hidden="true" class="future" style="display: none;">
+                    <h3>Custom __repr__ behavior</h3>
+
+                    <p>When making custom classes, we can override <code>__repr__</code>
+                        to return a more appropriate Python representation.</p>
+
+                    <pre style="font-size:0.7em" class="code-badge-pre"><div class="code-badge">
+        <div class="code-badge-language">python</div>
+        <div title="Copy to clipboard">
+            <i class="fa fa-copy code-badge-copy-icon">📄</i>
+        </div>
+     </div><code data-trim="" data-noescape="" class="python hljs"><span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">Lamb</span>:</span>
+    species_name = <span class="hljs-string">"Lamb"</span>
+    scientific_name = <span class="hljs-string">"Ovis aries"</span>
+
+    <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">__init__</span>(<span class="hljs-params">self, name</span>):</span>
+        self.name = name
+
+    <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">__str__</span>(<span class="hljs-params">self</span>):</span>
+        <span class="hljs-keyword">return</span> <span class="hljs-string">"🐑 : "</span> + self.name
+
+    <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">__repr__</span>(<span class="hljs-params">self</span>):</span>
+        <span class="hljs-keyword">return</span> <span class="hljs-string">f"Lamb(<span class="hljs-subst">{repr(self.name)}</span>)"</span></code></pre>
+
+                    <pre style="font-size:0.7em" class="code-badge-pre"><div class="code-badge">
+        <div class="code-badge-language">python</div>
+        <div title="Copy to clipboard">
+            <i class="fa fa-copy code-badge-copy-icon">📄</i>
+        </div>
+     </div><code data-trim="" data-noescape="" class="python hljs">lil = Lamb(<span class="hljs-string">"Lil lamb"</span>)
+repr(lil)
+lil</code></pre>
+
+                    <aside class="notes">Show how lil still shows Lamb object as a lead in for next slide
+                    </aside>
+                </section>
+
+                <section class="heading-only future" hidden="" aria-hidden="true" style="display: none;">
+                    <h2>Attribute access</h2>
+                </section>
+
+                <section hidden="" aria-hidden="true" class="future" style="display: none;">
+                    <h3>Get attribute with dot notation</h3>
+
+                    <p><code>expression.attribute</code> evaluates to the value of
+                        <code>attribute</code> in the object referenced by <code>expression</code>.</p>
+
+                    <pre style="font-size:0.7em" class="code-badge-pre"><div class="code-badge">
+        <div class="code-badge-language">python</div>
+        <div title="Copy to clipboard">
+            <i class="fa fa-copy code-badge-copy-icon">📄</i>
+        </div>
+     </div><code data-trim="" data-noescape="" class="python hljs"><span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">Bunny</span>:</span>
+    species_name = <span class="hljs-string">"Bunny"</span>
+    scientific_name = <span class="hljs-string">"Bunnius Bunalot"</span>
+
+    <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">__init__</span>(<span class="hljs-params">self, name</span>):</span>
+        self.name = name</code></pre>
+
+                    <pre style="font-size:0.7em" class="code-badge-pre"><div class="code-badge">
+        <div class="code-badge-language">python</div>
+        <div title="Copy to clipboard">
+            <i class="fa fa-copy code-badge-copy-icon">📄</i>
+        </div>
+     </div><code data-trim="" data-noescape="" class="python hljs">bunny = Bunny(<span class="hljs-string">"Boo"</span>)
+bunny.name
+bunny.species_name
+bunny.scientific_name
+bunny.ears_hang_low      <span class="fragment" data-fragment-index="0"><span class="hljs-comment"># ❌ AttributeError!</span></span>
+bunny.tie_ears()         <span class="fragment" data-fragment-index="0"><span class="hljs-comment"># ❌ AttributeError!</span></span></code></pre>
+
+                    <p class="fragment smaller" data-fragment-index="0">
+                    Python raises an exception if you try to access an attribute that does
+                    not exist.
+                    </p>
+
+                </section>
+
+                <section hidden="" aria-hidden="true" class="future" style="display: none;">
+                    <h3>Get attribute with getattr()</h3>
+
+                    <p><code>getattr(object, name[, default])</code>
+                    looks up the attribute by <code>name</code> on <code>object</code>.
+                    </p>
+                    <p>
+                    If it's undefined, it returns <code>default</code> if provided
+                    or raises <code>AttributeError</code> otherwise.</p>
+
+                    <pre style="font-size:0.8em" class="code-badge-pre"><div class="code-badge">
+        <div class="code-badge-language">python</div>
+        <div title="Copy to clipboard">
+            <i class="fa fa-copy code-badge-copy-icon">📄</i>
+        </div>
+     </div><code data-trim="" data-noescape="" class="python hljs">bunny = Bunny(<span class="hljs-string">"Bugs"</span>)
+getattr(bunny, <span class="hljs-string">"ears_hang_low"</span>)          <span class="fragment" data-fragment-index="0"><span class="hljs-comment"># ❌ AttributeError!</span></span>
+getattr(bunny, <span class="hljs-string">"ears_hang_low"</span>, <span class="hljs-literal">False</span>)   <span class="fragment" data-fragment-index="0"><span class="hljs-comment"># False</span></span>
+getattr(bunny, <span class="hljs-string">"tie_ears"</span>)               <span class="fragment" data-fragment-index="0"><span class="hljs-comment"># ❌ AttributeError!</span></span>
+getattr(bunny, <span class="hljs-string">"tie_ears"</span>,               <span class="fragment" data-fragment-index="0"><span class="hljs-comment"># lambda</span></span>
+               <span class="hljs-keyword">lambda</span> self: print(<span class="hljs-string">"ears tied!"</span>))</code></pre>
+
+                </section>
+
+                <section hidden="" aria-hidden="true" class="future" style="display: none;">
+                    <h3>Behind the scenes: __getattribute__</h3>
+
+                    <p>
+                    When we call <code>object.name</code> or <code>getattr(object, name)</code>,
+                    Python calls <code>__getattribute__</code> on the object.
+                    </p>
+
+                    <pre style="font-size:0.8em" class="code-badge-pre"><div class="code-badge">
+        <div class="code-badge-language">python</div>
+        <div title="Copy to clipboard">
+            <i class="fa fa-copy code-badge-copy-icon">📄</i>
+        </div>
+     </div><code data-trim="" data-noescape="" class="python hljs"><span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">Light</span>(<span class="hljs-params">object</span>):</span>
+
+    <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">__init__</span>(<span class="hljs-params">self, brightness</span>):</span>
+        self.brightness = brightness
+
+    <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">__getattribute__</span>(<span class="hljs-params">self, name</span>):</span>
+        print(<span class="hljs-string">'__getattribute__ '</span>, name)
+        <span class="hljs-keyword">return</span> super().__getattribute__(name)</code></pre>
+
+                    <pre style="font-size:0.8em" class="code-badge-pre"><div class="code-badge">
+        <div class="code-badge-language">python</div>
+        <div title="Copy to clipboard">
+            <i class="fa fa-copy code-badge-copy-icon">📄</i>
+        </div>
+     </div><code data-trim="" data-noescape="" class="python hljs">lamp = Light(<span class="hljs-number">750</span>)
+lamp.brightness
+getattr(lamp, <span class="hljs-string">"brightness"</span>)
+Light.__getattribute__(lamp, <span class="hljs-string">"brightness"</span>)</code></pre>
+
+                </section>
+
+
+                <section hidden="" aria-hidden="true" class="future" style="display: none;">
+                    <h3>Check attribute exists with dot notation</h3>
+
+                    <pre style="font-size:0.7em" class="code-badge-pre"><div class="code-badge">
+        <div class="code-badge-language">python</div>
+        <div title="Copy to clipboard">
+            <i class="fa fa-copy code-badge-copy-icon">📄</i>
+        </div>
+     </div><code data-trim="" data-noescape="" class="python hljs"><span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">Bunny</span>:</span>
+    species_name = <span class="hljs-string">"Bunny"</span>
+    scientific_name = <span class="hljs-string">"Bunnius Bunalot"</span>
+
+    <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">__init__</span>(<span class="hljs-params">self, name</span>):</span>
+        self.name = name</code></pre>
+
+                    <pre style="font-size:0.7em" class="code-badge-pre"><div class="code-badge">
+        <div class="code-badge-language">python</div>
+        <div title="Copy to clipboard">
+            <i class="fa fa-copy code-badge-copy-icon">📄</i>
+        </div>
+     </div><code data-trim="" data-noescape="" class="python hljs">bunny = Bunny(<span class="hljs-string">"Shelby"</span>)
+<span class="hljs-keyword">if</span> bunny.ears_hang_low:
+    print(<span class="hljs-string">"Yes my ears hang low, they wobble to and fro"</span>)
+<span class="hljs-keyword">else</span>:
+    print(<span class="hljs-string">"Alas, I am not a lop!"</span>)</code></pre>
+
+                    <p>What will happen?</p>
+
+                    <p class="fragment smaller" data-fragment-index="0">
+                    ❌ AttributeError! Python raises an exception if you try to access an attribute that does
+                    not exist.
+                    </p>
+
+                </section>
+
+                <section hidden="" aria-hidden="true" class="future" style="display: none;">
+                    <h3>Check attribute exists with hasattr()</h3>
+
+                    <p><code>hasattr(object, name)</code>
+                        looks up the attribute by <code>name</code> on <code>object</code>
+                        and returns whether it can find such an attribute.</p>
+
+                    <pre style="font-size:0.6em" class="code-badge-pre"><div class="code-badge">
+        <div class="code-badge-language">python</div>
+        <div title="Copy to clipboard">
+            <i class="fa fa-copy code-badge-copy-icon">📄</i>
+        </div>
+     </div><code data-trim="" data-noescape="" class="python hljs"><span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">Bunny</span>:</span>
+    species_name = <span class="hljs-string">"Bunny"</span>
+    scientific_name = <span class="hljs-string">"Bunnius Bunalot"</span>
+
+    <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">__init__</span>(<span class="hljs-params">self, name</span>):</span>
+        self.name = name</code></pre>
+
+                    <pre style="font-size:0.6em" class="code-badge-pre"><div class="code-badge">
+        <div class="code-badge-language">python</div>
+        <div title="Copy to clipboard">
+            <i class="fa fa-copy code-badge-copy-icon">📄</i>
+        </div>
+     </div><code data-trim="" data-noescape="" class="python hljs">bunny = Bunny(<span class="hljs-string">"Colby"</span>)
+<span class="hljs-keyword">if</span> hasattr(bunny, <span class="hljs-string">"ears_hang_low"</span>):
+    print(<span class="hljs-string">"Yes my ears hang low, they wobble to and fro"</span>)
+<span class="hljs-keyword">else</span>:
+    print(<span class="hljs-string">"Alas, I am not a lop!"</span>)</code></pre>
+
+                    <p class="smaller" data-fragment-index="1">
+                    Python implements this function by calling <code>getattr()</code>
+                    and checking to see if an exception is returned,
+                    so this function also ends up calling <code>__getattribute__</code>.
+                    </p>
+
+                </section>
+
+                <section class="heading-only future" hidden="" aria-hidden="true" style="display: none;">
+                    <h2>There's more!</h2>
+                </section>
+
+                <section hidden="" aria-hidden="true" class="future" style="display: none;">
+                    <h3>Special methods</h3>
+
+                    <p>Here are more special methods on objects:</p>
+
+                    <table class="smaller">
+                        <thead>
+                            <tr>
+                                <th>Method</th>
+                                <th>Implements</th>
+                            </tr>
+                        </thead><tbody>
+                            <tr>
+                                <td><code>__setattr__(obj, "n", v)</code></td>
+                                <td><code>x.n = v</code></td>
+                            </tr>
+                            <tr>
+                                <td><code>__delattr__(obj, "n")</code></td>
+                                <td><code>del x.n</code></td>
+                            </tr>
+                            <tr>
+                                <td><code>__eq__(obj, x)</code></td>
+                                <td><code>obj == x</code></td>
+                            </tr>
+                            <tr>
+                                <td><code>__ne__(obj, x)</code></td>
+                                <td><code>obj != x</code></td>
+                            </tr>
+                            <tr>
+                                <td><code>__ge__(obj, x)</code></td>
+                                <td><code>obj &gt;= x</code></td>
+                            </tr>
+                            <tr>
+                                <td><code>__gt__(obj, x)</code></td>
+                                <td><code>obj &gt; x</code></td>
+                            </tr>
+                            <tr>
+                                <td><code>__le__(obj, x)</code></td>
+                                <td><code>obj &lt;= x</code></td>
+                            </tr>
+                            <tr>
+                                <td><code>__lt__(obj, x)</code></td>
+                                <td><code>obj &lt; x<code></code></code></td>
+                            </tr>
+                        </tbody>
+                    </table>
+
+                    <p class="smaller">That's not all! There are many more <a target="_blank" href="https://docs.python.org/3/reference/datamodel.html#special-method-names">special method names</a>
+                        that you can define on objects to customize how Python operates on them.</p>
+
+                </section>
+
+
+			</div>
+		<div class="backgrounds"><div class="slide-background heading-only present" data-loaded="true" style="display: block;"><div class="slide-background-content"></div></div><div class="slide-background heading-only future" data-loaded="true" style="display: block;"><div class="slide-background-content"></div></div><div class="slide-background future" data-loaded="true" style="display: block;"><div class="slide-background-content"></div></div><div class="slide-background future" style="display: none;"><div class="slide-background-content"></div></div><div class="slide-background future" style="display: none;"><div class="slide-background-content"></div></div><div class="slide-background future" style="display: none;"><div class="slide-background-content"></div></div><div class="slide-background heading-only future" style="display: none;"><div class="slide-background-content"></div></div><div class="slide-background future" style="display: none;"><div class="slide-background-content"></div></div><div class="slide-background future" style="display: none;"><div class="slide-background-content"></div></div><div class="slide-background future" style="display: none;"><div class="slide-background-content"></div></div><div class="slide-background heading-only future" style="display: none;"><div class="slide-background-content"></div></div><div class="slide-background future" style="display: none;"><div class="slide-background-content"></div></div><div class="slide-background future" style="display: none;"><div class="slide-background-content"></div></div><div class="slide-background future" style="display: none;"><div class="slide-background-content"></div></div><div class="slide-background future" style="display: none;"><div class="slide-background-content"></div></div><div class="slide-background future" style="display: none;"><div class="slide-background-content"></div></div><div class="slide-background future" style="display: none;"><div class="slide-background-content"></div></div><div class="slide-background heading-only future" style="display: none;"><div class="slide-background-content"></div></div><div class="slide-background future" style="display: none;"><div class="slide-background-content"></div></div><div class="slide-background future" style="display: none;"><div class="slide-background-content"></div></div><div class="slide-background future" style="display: none;"><div class="slide-background-content"></div></div><div class="slide-background future" style="display: none;"><div class="slide-background-content"></div></div><div class="slide-background future" style="display: none;"><div class="slide-background-content"></div></div><div class="slide-background heading-only future" style="display: none;"><div class="slide-background-content"></div></div><div class="slide-background future" style="display: none;"><div class="slide-background-content"></div></div></div><div class="slide-number" style="display: block;"><a href="https://inst.eecs.berkeley.edu/~cs61a/sp21/assets/slides/18-Special_Object_Methods.html#/">
+					<span class="slide-number-a">1</span>
+					</a></div><aside class="controls" data-controls-layout="bottom-right" data-controls-back-arrows="faded" style="display: block;"><button class="navigate-left" aria-label="previous slide" disabled="disabled"><div class="controls-arrow"></div></button>
+			<button class="navigate-right enabled highlight" aria-label="next slide"><div class="controls-arrow"></div></button>
+			<button class="navigate-up" aria-label="above slide" disabled="disabled"><div class="controls-arrow"></div></button>
+			<button class="navigate-down" aria-label="below slide" disabled="disabled"><div class="controls-arrow"></div></button></aside><div class="progress" style="display: block;"><span style="transform: scaleX(0);"></span></div><div class="speaker-notes" data-prevent-swipe="" tabindex="0"></div><div class="pause-overlay"><button class="resume-button">Resume presentation</button></div><div class="aria-status" aria-live="polite" aria-atomic="true" style="position: absolute; height: 1px; width: 1px; overflow: hidden; clip: rect(1px, 1px, 1px, 1px);">Special Object Methods Tips for navigating the slides: Press O or Escape for overview mode. Visit this link for a nice printable version Press the copy icon on the upper right of code blocks to copy the code </div></div>
+
+		<script src="./Special Object Methods_files/reveal.js.下载"></script>
+        <script src="./Special Object Methods_files/highlight.js.下载"></script>
+        <script src="./Special Object Methods_files/highlightjs-badge.min.js.下载"></script>
+		<script>
+			const srcUrlPrefix = "https://cdn.jsdelivr.net/npm/reveal.js@4.1.0/";
+			Reveal.initialize({
+				hash: true,
+				center: false,
+				slideNumber: true,
+				showNotes: false,
+				margin: 0.1,
+				preloadIframes: true,
+				plugins: [ RevealHighlight ],
+				pdfSeparateFragments: true
+			});
+
+            // add HighlightJS-badge (options are optional)
+            var options = {
+                copyIconContent: "📄",
+                checkIconContent: "✅"
+            };
+            window.highlightJsBadge(options);
+
+            if (window.location.search == "?print-pdf") {
+                var uncounted = document.querySelectorAll("[data-visibility='uncounted']");
+                uncounted.forEach(node => {
+                    node.parentNode.classList.add("no-print")
+                })
+            }
+		</script>
+	
+
+<style>
+@media print {
+   .code-badge { display: none; }
+}
+    .code-badge-pre {
+        position: relative;
+    }
+    .code-badge {
+        display: flex;
+        flex-direction: row;
+        white-space: normal;
+        background: transparent;
+        background: #333;
+        color: white;
+        font-size: 0.875em;
+        opacity: 0.5;
+        transition: opacity linear 0.5s;
+        border-radius: 0 0 0 7px;
+        padding: 5px 8px 5px 8px;
+        position: absolute;
+        right: 0;
+        top: 0;
+    }
+    .code-badge.active {
+        opacity: 0.8;
+    }
+
+    .code-badge:hover {
+        opacity: .95;
+    }
+
+    .code-badge a,
+    .code-badge a:hover {
+        text-decoration: none;
+    }
+
+    .code-badge-language {
+        margin-right: 10px;
+        font-weight: 600;
+        color: goldenrod;
+    }
+    .code-badge-copy-icon {
+        font-size: 1.2em;
+        cursor: pointer;
+        padding: 0 7px;
+        margin-top:2;
+    }
+    .fa.text-success:{ color: limegreen !important }
+</style><div id="CodeBadgeTemplate" style="display:none">
+    <div class="code-badge">
+        <div class="code-badge-language">{{language}}</div>
+        <div title="Copy to clipboard">
+            <i class="{{copyIconClass}} code-badge-copy-icon"></i>
+        </div>
+     </div>
+</div></body></html>

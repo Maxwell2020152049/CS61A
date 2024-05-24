@@ -1,0 +1,1212 @@
+<!DOCTYPE html>
+<!-- saved from url=(0082)https://inst.eecs.berkeley.edu/~cs61a/sp21/assets/slides/19-Recursive_Objects.html -->
+<html class="reveal-full-page"><head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+		
+		<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+		<title>Recursive Objects: Tree + LinkedList</title>
+		<link rel="stylesheet" href="./Recursive Objects_ Tree + LinkedList_files/reset.css">
+		<link rel="stylesheet" href="./Recursive Objects_ Tree + LinkedList_files/reveal.css">
+		<link rel="stylesheet" href="./Recursive Objects_ Tree + LinkedList_files/simple.css" id="theme">
+		<link rel="stylesheet" href="./Recursive Objects_ Tree + LinkedList_files/mono-blue.css">
+		<link rel="stylesheet" href="./Recursive Objects_ Tree + LinkedList_files/css">
+		<style>
+			.reveal {
+				font-family: "Work Sans", sans-serif;
+			}
+
+			.reveal .slides section {
+				text-align: left;
+				font-size: smaller;
+			}
+
+			.reveal pre {
+				background-color: #f5f5f5;
+				width: 100%;
+				border: 1px solid #ccc;
+				border-radius: 4px;
+				box-shadow: none;
+			}
+
+			.reveal h1, .reveal h2, .reveal h3, .reveal h4, .reveal h5, .reveal h6 {
+				font-family: "Roboto", sans-serif;
+				color: #0072c1;
+			}
+
+			.reveal section.heading-only {
+				text-align:center;
+				padding-top:20%;
+			}
+
+            .column .no-code-badge .code-badge {
+                display: none;
+            }
+
+            .code-badge-language {
+                display: none;
+            }
+
+			.python-tutor-link {
+				font-size: smaller;
+			}
+
+			.python-tutor-link:before {
+				content: "";
+				display: block;
+				background: url("http://pythontutor.com/favicon.ico") no-repeat;
+				width: 48px;
+				height: 48px;
+				float: left;
+				margin: 0 6px 0 0;
+			}
+
+			.reveal h3 {
+				margin-bottom: 40px;
+			}
+
+            .smaller {
+                font-size: smaller;
+            }
+
+            code {
+                padding: 2px 4px;
+                font-size: 90%;
+                color: #0072c1;
+                background-color: #f9f2f4;
+                border-radius: 4px;
+            }
+
+            p.padded {
+                margin-top: 32px;
+            }
+
+            section .row {
+                display: flex;
+            }
+
+            section .column {
+                flex: 48%;
+                margin: 10px;
+            }
+
+            #insertion-demo {
+                height: 200px;
+            }
+            .array-address, .array-index, .array-value {
+                background: #ffffc6;
+                text-align: center;
+                border: 1px solid #888;
+                position: absolute;
+                width: 100px;
+                height: 50px;
+                transition: 1s;
+            }
+
+            .array-address {
+                background: #c6f2ff;
+            }
+
+            .array-addresses, .array-indices, .array-values {
+                margin-bottom: 8px;
+            }
+
+            .array-insert-form input, .array-insert-form button, .linkedlist-insert-form input, .linkedlist-insert-form button {
+                font-size: 32px;
+                width: 120px;
+            }
+
+            .linkedlist-visualization {
+                height: 120px;
+                position: relative;
+            }
+
+            .linkedlist-link {
+                position: absolute;
+                top: 0px;
+                left: 0px;
+                width:80px;
+                border: 1px solid #888;
+                font-size: 0.5em;
+                text-align: center;
+            }
+            .linkedlist-parts {
+                background-color: #ffffc6;
+                display: flex;
+            }
+            .linkedlist-value {
+                display:inline-block;
+                width: 40px;
+                border-right: 1px solid #888;
+            }
+            .linkedlist-pointer {
+                display:inline-block;
+                width: 40px;
+            }
+            .linkedlist-address {
+                width:100%;
+                background: #c6f2ff;
+                border-top: 1px solid #888;
+            }
+
+			@media print
+			{
+				.no-print, .no-print *
+				{
+					display: none !important;
+				}
+			}
+		</style>
+	<style type="text/css">.hljs-ln{border-collapse:collapse}.hljs-ln td{padding:0}.hljs-ln-n:before{content:attr(data-line-number)}</style></head>
+	<body class="reveal-viewport" style="--slide-width: 960px; --slide-height: 700px;">
+		<div class="reveal slide focused has-horizontal-slides ready" role="application" data-transition-speed="default" data-background-transition="fade">
+			<div class="slides" style="width: 960px; height: 700px; inset: 50% auto auto 50%; transform: translate(-50%, -50%) scale(0.957857);">
+				<section class="heading-only present" style="display: block;">
+                    <h1 class="smaller">Recursive Objects</h1>
+
+					<div class="no-print" style="text-align: left; margin-top: 100px; font-size: 70%;">
+						Tips for navigating the slides:
+						<ul>
+							<li>Press O or Escape for overview mode.</li>
+							<li>Visit <a href="https://inst.eecs.berkeley.edu/~cs61a/sp21/assets/slides/19-Recursive_Objects.html?print-pdf" target="_blank">this link</a> for a nice printable version</li>
+							<li>Press the copy icon on the upper right of code blocks to copy the code</li>
+						</ul>
+					</div>
+				</section>
+
+                <section class="heading-only future" hidden="" aria-hidden="true" style="display: block;">
+                    <h2>(Revisit)<br>Lecture Quiz</h2>
+                </section>
+
+                <section hidden="" aria-hidden="true" class="future" style="display: block;">
+                    <h3>__str__ and objects</h3>
+
+                    <p class="smaller">Consider the following variable assignments. Which of the created variables can we call <code>__str__</code> on?</p>
+
+                    <pre style="font-size:0.45em" class="code-badge-pre"><div class="code-badge">
+        <div class="code-badge-language">python</div>
+        <div title="Copy to clipboard">
+            <i class="fa fa-copy code-badge-copy-icon">📄</i>
+        </div>
+     </div><code data-trim="" data-noescape="" class="python hljs"><span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">Lamb</span>:</span>
+    species_name = <span class="hljs-string">"Lamb"</span>
+    scientific_name = <span class="hljs-string">"Ovis aries"</span>
+
+    <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">__init__</span>(<span class="hljs-params">self, name</span>):</span>
+        self.name = name
+
+lamb = Lamb(<span class="hljs-string">"Fleecey"</span>)                      <span class="hljs-comment"># 80%</span>
+<span class="fragment" data-fragment-index="0">print(Lamb.__str__(lamb))</span>
+grade = <span class="hljs-number">79.5</span>                                <span class="hljs-comment"># 80%</span>
+<span class="fragment" data-fragment-index="0">print(float.__str__(grade))</span>
+colors = [<span class="hljs-string">"red"</span>, <span class="hljs-string">"orange"</span>, <span class="hljs-string">"yellow"</span>]        <span class="hljs-comment"># 72%</span>
+<span class="fragment" data-fragment-index="0">print(list.__str__(colors))</span>
+translations = {<span class="hljs-string">"one"</span>: <span class="hljs-string">"uno"</span>, <span class="hljs-string">"two"</span>: <span class="hljs-string">"dos"</span>} <span class="hljs-comment"># 65%</span>
+<span class="fragment" data-fragment-index="0">print(dict.__str__(translations))</span>
+is_fluffy = <span class="hljs-literal">True</span>                            <span class="hljs-comment"># 60%</span>
+<span class="fragment" data-fragment-index="0">print(bool.__str__(is_fluffy))</span></code></pre>
+
+                    <p class="fragment smaller" data-fragment-index="0">All of them! All of them inherit from <code>object</code> and thus have a <code>__str__</code> method defined.
+                        Run <code>type(var).__str__(var)</code> to prove it to yourself.
+                    </p>
+                </section>
+
+                <section hidden="" aria-hidden="true" class="future" style="display: none;">
+                    <h3>Attribute access</h3>
+
+                    <p class="smaller">Imagine we have a class <code>Book</code> with a class variable <code>available_formats</code>,
+                        and an instance of that class named <code>bookywook</code>.
+                    </p>
+
+                    <pre style="font-size:0.6em" class="code-badge-pre"><div class="code-badge">
+        <div class="code-badge-language">python</div>
+        <div title="Copy to clipboard">
+            <i class="fa fa-copy code-badge-copy-icon">📄</i>
+        </div>
+     </div><code data-trim="" data-noescape="" class="python hljs"><span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">Book</span>:</span>
+    available_formats = [<span class="hljs-string">"Kindle"</span>, <span class="hljs-string">"paperback"</span>]
+
+    <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">__init__</span>(<span class="hljs-params">self, title</span>):</span>
+        self.title = title
+
+bookywook = Book(<span class="hljs-string">"Where's Boo?"</span>)</code></pre>
+
+                    <p class="smaller">Which line of code would retrieve the value of that attribute?</p>
+
+                    <pre style="font-size:0.6em" class="code-badge-pre"><div class="code-badge">
+        <div class="code-badge-language">python</div>
+        <div title="Copy to clipboard">
+            <i class="fa fa-copy code-badge-copy-icon">📄</i>
+        </div>
+     </div><code data-trim="" data-noescape="" class="python hljs">Book.__getattribute__(bookywook, <span class="hljs-string">"available_formats"</span>)  <span class="hljs-comment"># 61%</span>
+
+getattr(bookywook, <span class="hljs-string">"available_formats"</span>)                <span class="hljs-comment"># 60%</span>
+
+bookywook.available_formats                            <span class="hljs-comment"># 51%</span>
+
+Book.available_formats                                 <span class="hljs-comment"># 20%</span>
+
+getattr(Book, <span class="hljs-string">"available_formats"</span>)                     <span class="hljs-comment"># 19%</span></code></pre>
+
+                    <p class="fragment smaller" data-fragment-index="0">All of them retrieve the value!</p>
+                </section>
+
+                <section class="heading-only future" hidden="" aria-hidden="true" style="display: none;">
+                    <h2>Trees</h2>
+                </section>
+
+                <section style="display: none;" hidden="" aria-hidden="true" class="future">
+                    <h3>Tree concepts</h3>
+
+                    <img class="r-stretch" src="./Recursive Objects_ Tree + LinkedList_files/cruE1N2.png" alt="Diagram of tree" style="height: 360px; width: 960px;">
+
+                    <ul>
+						<li>A tree has a <strong>root label</strong> and a list of <strong>branches</strong></li>
+						<li>Each <strong>branch</strong> is itself a <strong>tree</strong></li>
+						<li>A tree with <strong>zero branches</strong> is called a <strong>leaf</strong></li>
+                    </ul>
+
+                </section>
+
+				<section hidden="" aria-hidden="true" class="future" style="display: none;">
+					<h3>Trees: Data abstraction</h3>
+
+
+					<p>This is what we've been using:</p>
+
+					<table style="font-size:smaller;">
+						<tbody><tr>
+							<td style="font-size:smaller;"><code>tree(label, branches)</code></td>
+							<td>Returns a tree with given LABEL at its root, whose branches are BRANCHES</td>
+						</tr>
+						<tr>
+							<td style="font-size:smaller;"><code>label(tree)</code></td>
+							<td>Returns the label of root node of TREE</td>
+						</tr>
+						<tr>
+							<td style="font-size:smaller;"><code>branches(tree)</code></td>
+							<td>Returns the branches of TREE (each a tree).</td>
+						</tr>
+						<tr>
+							<td style="font-size:smaller;"><code>is_leaf(tree)</code></td>
+							<td>Returns true if TREE is a leaf node.</td>
+						</tr>
+					</tbody></table>
+                </section>
+
+
+				<section hidden="" aria-hidden="true" class="future" style="display: none;">
+					<h3>Trees: Data abstraction</h3>
+
+					<p>Using an implementation like this:</p>
+
+                    <pre style="font-size:0.8em" class="code-badge-pre"><div class="code-badge">
+        <div class="code-badge-language">python</div>
+        <div title="Copy to clipboard">
+            <i class="fa fa-copy code-badge-copy-icon">📄</i>
+        </div>
+     </div><code data-trim="" data-noescape="" class="python hljs"><span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">tree</span>(<span class="hljs-params">label, branches=[]</span>):</span>
+    <span class="hljs-keyword">return</span> [label] + list(branches)
+
+<span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">label</span>(<span class="hljs-params">tree</span>):</span>
+    <span class="hljs-keyword">return</span> tree[<span class="hljs-number">0</span>]
+
+<span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">branches</span>(<span class="hljs-params">tree</span>):</span>
+    <span class="hljs-keyword">return</span> tree[<span class="hljs-number">1</span>:]
+
+<span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">is_leaf</span>(<span class="hljs-params">tree</span>):</span>
+    <span class="hljs-keyword">return</span> <span class="hljs-keyword">not</span> branches(tree)</code></pre>
+
+                    <p>🤔 How could we represent trees as a Python class?</p>
+
+				</section>
+
+                <section hidden="" aria-hidden="true" class="future" style="display: none;">
+					<h3>A Tree class</h3>
+
+                    <pre style="font-size:0.9em" class="code-badge-pre"><div class="code-badge">
+        <div class="code-badge-language">python</div>
+        <div title="Copy to clipboard">
+            <i class="fa fa-copy code-badge-copy-icon">📄</i>
+        </div>
+     </div><code data-trim="" data-noescape="" class="python hljs"><span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">Tree</span>:</span>
+    <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">__init__</span>(<span class="hljs-params">self, label, branches=[]</span>):</span>
+        self.label = label
+        self.branches = list(branches)
+
+    <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">is_leaf</span>(<span class="hljs-params">self</span>):</span>
+        <span class="hljs-keyword">return</span> <span class="hljs-keyword">not</span> self.branches</code></pre>
+
+                    <p>🤔 What's different? What's the same?</p>
+
+                </section>
+
+                <section hidden="" aria-hidden="true" class="future" style="display: none;">
+                    <h3>tree versus Tree</h3>
+
+                    <table class="smaller">
+                        <thead>
+                            <tr><th>tree
+                                </th><th>Tree
+                        </th></tr></thead>
+                        <tbody>
+                            <tr><td><code>t = tree(label, branches=[])</code>
+                                </td><td><code>t = Tree(label, branches=[])</code>
+                            </td></tr>
+                            <tr>
+                                <td><code>branches(t)</code>
+                                </td><td><code>t.branches</code>
+                            </td></tr><tr>
+                                <td><code>label(t)</code>
+                                </td><td><code>t.label</code>
+                            </td></tr><tr>
+                                <td><code>is_leaf(t)</code></td>
+                                <td><code>t.is_leaf()</code></td>
+                            </tr>
+                        </tbody>
+                    </table>
+
+
+                    <div class="row">
+                        <div class="column">
+                            <pre style="font-size:0.6em" class="code-badge-pre"><div class="code-badge">
+        <div class="code-badge-language">python</div>
+        <div title="Copy to clipboard">
+            <i class="fa fa-copy code-badge-copy-icon">📄</i>
+        </div>
+     </div><code data-trim="" data-noescape="" class="python hljs"><span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">fib_tree</span>(<span class="hljs-params">n</span>):</span>
+    <span class="hljs-keyword">if</span> n == <span class="hljs-number">0</span> <span class="hljs-keyword">or</span> n == <span class="hljs-number">1</span>:
+        <span class="hljs-keyword">return</span> tree(n)
+    <span class="hljs-keyword">else</span>:
+        left = fib_tree(n - <span class="hljs-number">2</span>)
+        right = fib_tree(n - <span class="hljs-number">1</span>)
+        fib_n = label(left) + label(right)
+        <span class="hljs-keyword">return</span> tree(fib_n, [left, right])</code></pre>
+                        </div>
+                        <div class="column">
+                            <pre style="font-size:0.6em" class="code-badge-pre"><div class="code-badge">
+        <div class="code-badge-language">python</div>
+        <div title="Copy to clipboard">
+            <i class="fa fa-copy code-badge-copy-icon">📄</i>
+        </div>
+     </div><code data-trim="" data-noescape="" class="python hljs"><span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">fib_tree</span>(<span class="hljs-params">n</span>):</span>
+    <span class="hljs-keyword">if</span> n == <span class="hljs-number">0</span> <span class="hljs-keyword">or</span> n == <span class="hljs-number">1</span>:
+        <span class="hljs-keyword">return</span> Tree(n)
+    <span class="hljs-keyword">else</span>:
+        left = fib_tree(n - <span class="hljs-number">2</span>)
+        right = fib_tree(n - <span class="hljs-number">1</span>)
+        fib_n = left.label + right.label
+        <span class="hljs-keyword">return</span> Tree(fib_n, [left, right])</code></pre>
+                        </div>
+                    </div>
+
+                </section>
+
+
+				<section hidden="" aria-hidden="true" class="future" style="display: none;">
+					<h3>Doubling a Tree</h3>
+
+                    <img src="./Recursive Objects_ Tree + LinkedList_files/oGLyaQD.png" alt="Doubling trees diagram" height="150">
+
+					<pre class="code-badge-pre"><div class="code-badge">
+        <div class="code-badge-language">python</div>
+        <div title="Copy to clipboard">
+            <i class="fa fa-copy code-badge-copy-icon">📄</i>
+        </div>
+     </div><code data-trim="" data-noescape="" class="python hljs"><span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">double</span>(<span class="hljs-params">t</span>):</span>
+    <span class="hljs-string">"""Doubles every label in T, mutating T.
+    &gt;&gt;&gt; t = Tree(1, [Tree(3, [Tree(5)]), Tree(7)])
+    &gt;&gt;&gt; double(t)
+    &gt;&gt;&gt; t
+    Tree(2, [Tree(6, [Tree(10)]), Tree(14)])
+    """</span>
+    t.label = t.label * <span class="hljs-number">2</span>
+    <span class="hljs-keyword">for</span> b <span class="hljs-keyword">in</span> t.branches:
+        double(b)</code></pre>
+
+                    <p class="smaller">Is the <code>Tree</code> object mutable or immutable? <span class="fragment" data-fragment-index="0">Mutable!</span>
+                        <br>
+                       Is <code>double(t)</code> destructive or non-destructive? <span class="fragment" data-fragment-index="1">Destructive!</span>
+                    </p>
+
+					<aside class="notes">
+						Notice no return statement, no explicit base case.
+						Whats the base case?
+					</aside>
+                </section>
+
+                <section hidden="" aria-hidden="true" class="future" style="display: none;">
+                    <h3>A fancier Tree</h3>
+
+                    <p>This is what assignments actually use:</p>
+                    <pre style="font-size:0.35em" class="code-badge-pre"><div class="code-badge">
+        <div class="code-badge-language">python</div>
+        <div title="Copy to clipboard">
+            <i class="fa fa-copy code-badge-copy-icon">📄</i>
+        </div>
+     </div><code data-trim="" data-noescape="" class="python hljs"><span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">Tree</span>:</span>
+
+    <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">__init__</span>(<span class="hljs-params">self, label, branches=[]</span>):</span>
+        self.label = label
+        <span class="hljs-keyword">for</span> branch <span class="hljs-keyword">in</span> branches:
+            <span class="hljs-keyword">assert</span> isinstance(branch, Tree)
+        self.branches = list(branches)
+
+    <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">is_leaf</span>(<span class="hljs-params">self</span>):</span>
+        <span class="hljs-keyword">return</span> <span class="hljs-keyword">not</span> self.branches
+
+    <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">__repr__</span>(<span class="hljs-params">self</span>):</span>
+        <span class="hljs-keyword">if</span> self.branches:
+            branch_str = <span class="hljs-string">', '</span> + repr(self.branches)
+        <span class="hljs-keyword">else</span>:
+            branch_str = <span class="hljs-string">''</span>
+        <span class="hljs-keyword">return</span> <span class="hljs-string">'Tree({0}{1})'</span>.format(self.label, branch_str)
+
+    <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">__str__</span>(<span class="hljs-params">self</span>):</span>
+        <span class="hljs-keyword">return</span> <span class="hljs-string">'\n'</span>.join(self.indented())
+
+    <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">indented</span>(<span class="hljs-params">self</span>):</span>
+        lines = []
+        <span class="hljs-keyword">for</span> b <span class="hljs-keyword">in</span> self.branches:
+            <span class="hljs-keyword">for</span> line <span class="hljs-keyword">in</span> b.indented():
+                lines.append(<span class="hljs-string">'  '</span> + line)
+        <span class="hljs-keyword">return</span> [str(self.label)] + lines</code></pre>
+
+                    <p>It's built in to code.cs61a.org, and remember, you can <code>draw()</code> any tree/Tree.</p>
+
+                </section>
+
+
+                <section class="heading-only future" hidden="" aria-hidden="true" style="display: none;">
+                    <h2>Linked lists</h2>
+                </section>
+
+                <section hidden="" aria-hidden="true" class="future" style="display: none;">
+                    <h3>Why do we need a new list?</h3>
+
+                    <p>Python lists are implemented as a "dynamic array",
+                        which isn't optimal for all use cases.</p>
+
+                    <p class="smaller">😭 Inserting an element is slow, especially near front of list:</p>
+
+                    <div style="position:relative;" id="insertion-demo">
+                    <div style="top: 0px; left: 0px; position: absolute;"><div style="top: 0px; position: absolute;"></div></div><div class="array-values" style="top: 50px; left: 0px; position: absolute;"><div class="array-value" data-index="0" style="left: 0px;">"A"</div><div class="array-value" data-index="1" style="left: 100px;">"B"</div><div class="array-value" data-index="2" style="left: 200px;">"C"</div><div class="array-value" data-index="3" style="left: 300px;">"D"</div><div class="array-value" data-index="4" style="left: 400px;">"E"</div><div class="array-value" data-index="5" style="left: 500px;">"F"</div></div><div style="top: 100px; left: 0px; position: absolute;"><div class="array-index" style="left: 0px;">0</div><div class="array-index" style="left: 100px;">1</div><div class="array-index" style="left: 200px;">2</div><div class="array-index" style="left: 300px;">3</div><div class="array-index" style="left: 400px;">4</div><div class="array-index" style="left: 500px;">5</div></div><div style="top: 150px; left: 0px; position: absolute;"><div class="array-address" style="left: 0px;">3300</div><div class="array-address" style="left: 100px;">3301</div><div class="array-address" style="left: 200px;">3302</div><div class="array-address" style="left: 300px;">3303</div><div class="array-address" style="left: 400px;">3304</div><div class="array-address" style="left: 500px;">3305</div></div></div>
+
+                    <form class="array-insert-form smaller">
+                        <p>What should we insert?</p>
+                        <label>value:</label> <input name="newValue" type="text" value="Z">
+                        <label>@ index:</label> <input name="newIndex" type="number" min="0" value="3">
+                        <button class="btn" type="button" id="insert-button">Insert</button>
+                    </form>
+
+                    <p class="smaller fragment" data-fragment-index="0">😭 Plus inserting too many elements can require
+                        re-creating the entire list in memory,
+                        if it exceeds the pre-allocated memory.</p>
+
+
+                </section>
+
+                <section hidden="" aria-hidden="true" class="future" style="display: none;">
+                    <h3>Linked lists</h3>
+
+                    <p>A linked list is a chain of objects where each object
+                        holds a <strong>value</strong> and a <strong>reference to the next link</strong>.
+                        The list ends when the final reference is empty.
+                    </p>
+
+                    <div id="linkedlist-demo1">
+                        <div class="linkedlist-visualization">
+                        <div class="linkedlist-link" data-index="0" style="left: 100px;"><div class="linkedlist-parts"><div class="linkedlist-value">"A"</div><div class="linkedlist-pointer jtk-managed jtk-endpoint-anchor jtk-connected" data-pointing-at="310" id="jsPlumb_2_1">310</div></div><div class="linkedlist-address" data-address="300">300</div></div><div class="linkedlist-link" data-index="1" style="left: 280px;"><div class="linkedlist-parts"><div class="linkedlist-value">"B"</div><div class="linkedlist-pointer jtk-managed jtk-endpoint-anchor jtk-connected" data-pointing-at="320" id="jsPlumb_2_12">320</div></div><div class="linkedlist-address jtk-managed jtk-endpoint-anchor jtk-connected" data-address="310" id="jsPlumb_2_2">310</div></div><div class="linkedlist-link" data-index="2" style="left: 460px;"><div class="linkedlist-parts"><div class="linkedlist-value">"C"</div><div class="linkedlist-pointer jtk-managed jtk-endpoint-anchor jtk-connected" data-pointing-at="330" id="jsPlumb_2_23">330</div></div><div class="linkedlist-address jtk-managed jtk-endpoint-anchor jtk-connected" data-address="320" id="jsPlumb_2_13">320</div></div><div class="linkedlist-link" data-index="3" style="left: 640px;"><div class="linkedlist-parts"><div class="linkedlist-value">"D"</div><div class="linkedlist-pointer jtk-managed jtk-endpoint-anchor jtk-connected" data-pointing-at="340" id="jsPlumb_2_34">340</div></div><div class="linkedlist-address jtk-managed jtk-endpoint-anchor jtk-connected" data-address="330" id="jsPlumb_2_24">330</div></div><div class="linkedlist-link" data-index="4" style="left: 820px;"><div class="linkedlist-parts"><div class="linkedlist-value">"E"</div><div class="linkedlist-pointer jtk-managed jtk-endpoint-anchor jtk-connected" data-pointing-at="350" id="jsPlumb_2_45">350</div></div><div class="linkedlist-address jtk-managed jtk-endpoint-anchor jtk-connected" data-address="340" id="jsPlumb_2_35">340</div></div><div class="linkedlist-link" data-index="5" style="left: 1000px;"><div class="linkedlist-parts"><div class="linkedlist-value">"F"</div><div class="linkedlist-pointer" data-pointing-at=""></div></div><div class="linkedlist-address jtk-managed jtk-endpoint-anchor jtk-connected" data-address="350" id="jsPlumb_2_46">350</div></div><div class="jtk-endpoint jtk-endpoint-anchor jtk-draggable jtk-droppable" style="display: block; width: 10px; height: 0px; background: transparent; position: absolute; left: 0px; top: 0px;"></div><div class="jtk-endpoint jtk-endpoint-anchor jtk-draggable jtk-droppable" style="display: block; width: 10px; height: 0px; background: transparent; position: absolute; left: 0px; top: 0px;"></div><svg style="position:absolute;left:0px;top:0px" width="1" height="1" pointer-events="none" position="absolute" version="1.1" xmlns="http://www.w3.org/2000/svg" class="jtk-connector"><path pointer-events="all" version="1.1" xmlns="http://www.w3.org/2000/svg" d="" class="" stroke="#456" fill="#456" transform="translate(0,0)"></path></svg><div class="jtk-endpoint jtk-endpoint-anchor jtk-draggable jtk-droppable" style="display: block; width: 10px; height: 0px; background: transparent; position: absolute; left: 0px; top: 0px;"></div><div class="jtk-endpoint jtk-endpoint-anchor jtk-draggable jtk-droppable" style="display: block; width: 10px; height: 0px; background: transparent; position: absolute; left: 0px; top: 0px;"></div><svg style="position:absolute;left:0px;top:0px" width="1" height="1" pointer-events="none" position="absolute" version="1.1" xmlns="http://www.w3.org/2000/svg" class="jtk-connector"><path pointer-events="all" version="1.1" xmlns="http://www.w3.org/2000/svg" d="" class="" stroke="#456" fill="#456" transform="translate(0,0)"></path></svg><div class="jtk-endpoint jtk-endpoint-anchor jtk-draggable jtk-droppable" style="display: block; width: 10px; height: 0px; background: transparent; position: absolute; left: 0px; top: 0px;"></div><div class="jtk-endpoint jtk-endpoint-anchor jtk-draggable jtk-droppable" style="display: block; width: 10px; height: 0px; background: transparent; position: absolute; left: 0px; top: 0px;"></div><svg style="position:absolute;left:0px;top:0px" width="1" height="1" pointer-events="none" position="absolute" version="1.1" xmlns="http://www.w3.org/2000/svg" class="jtk-connector"><path pointer-events="all" version="1.1" xmlns="http://www.w3.org/2000/svg" d="" class="" stroke="#456" fill="#456" transform="translate(0,0)"></path></svg><div class="jtk-endpoint jtk-endpoint-anchor jtk-draggable jtk-droppable" style="display: block; width: 10px; height: 0px; background: transparent; position: absolute; left: 0px; top: 0px;"></div><div class="jtk-endpoint jtk-endpoint-anchor jtk-draggable jtk-droppable" style="display: block; width: 10px; height: 0px; background: transparent; position: absolute; left: 0px; top: 0px;"></div><svg style="position:absolute;left:0px;top:0px" width="1" height="1" pointer-events="none" position="absolute" version="1.1" xmlns="http://www.w3.org/2000/svg" class="jtk-connector"><path pointer-events="all" version="1.1" xmlns="http://www.w3.org/2000/svg" d="" class="" stroke="#456" fill="#456" transform="translate(0,0)"></path></svg><div class="jtk-endpoint jtk-endpoint-anchor jtk-draggable jtk-droppable" style="display: block; width: 10px; height: 0px; background: transparent; position: absolute; left: 0px; top: 0px;"></div><div class="jtk-endpoint jtk-endpoint-anchor jtk-draggable jtk-droppable" style="display: block; width: 10px; height: 0px; background: transparent; position: absolute; left: 0px; top: 0px;"></div><svg style="position:absolute;left:0px;top:0px" width="1" height="1" pointer-events="none" position="absolute" version="1.1" xmlns="http://www.w3.org/2000/svg" class="jtk-connector"><path pointer-events="all" version="1.1" xmlns="http://www.w3.org/2000/svg" d="" class="" stroke="#456" fill="#456" transform="translate(0,0)"></path></svg></div>
+
+                        <form class="linkedlist-insert-form smaller">
+                            <p>What should we insert?</p>
+                            <label>value:</label> <input name="newValue" type="text" value="Z">
+                            <label>@ index:</label> <input name="newIndex" type="number" min="0" value="5">
+                            <button class="btn" type="button">Insert</button>
+                        </form>
+                    </div>
+
+                    <p class="smaller padded fragment" data-fragment-index="0">Linked lists require more space but provide faster insertion.</p>
+
+                </section>
+
+                <section hidden="" aria-hidden="true" class="future" style="display: none;">
+                    <h3>A Link class</h3>
+
+                    <pre style="font-size:0.8em" class="code-badge-pre"><div class="code-badge">
+        <div class="code-badge-language">python</div>
+        <div title="Copy to clipboard">
+            <i class="fa fa-copy code-badge-copy-icon">📄</i>
+        </div>
+     </div><code data-trim="" data-noescape="" class="python hljs"><span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">Link</span>:</span>
+    empty = ()
+
+    <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">__init__</span>(<span class="hljs-params">self, first, rest=empty</span>):</span>
+        self.first = first
+        self.rest = rest</code></pre>
+
+                    <p>How would we use that?</p>
+
+                    <div class="fragment" data-fragment-index="0">
+                    <pre style="font-size:0.8em" class="code-badge-pre"><div class="code-badge">
+        <div class="code-badge-language">python</div>
+        <div title="Copy to clipboard">
+            <i class="fa fa-copy code-badge-copy-icon">📄</i>
+        </div>
+     </div><code data-trim="" data-noescape="" class="python hljs">ll = Link(<span class="hljs-string">"A"</span>, Link(<span class="hljs-string">"B"</span>, Link(<span class="hljs-string">"C"</span>)))</code></pre>
+
+                    <p class="python-tutor-link">
+                        <a target="_blank" href="http://pythontutor.com/composingprograms.html#code=class%20Link%3A%0A%20%20%20%20empty%20%3D%20%28%29%0A%0A%20%20%20%20def%20__init__%28self,%20first,%20rest%3Dempty%29%3A%0A%20%20%20%20%20%20%20%20self.first%20%3D%20first%0A%20%20%20%20%20%20%20%20self.rest%20%3D%20rest%0A%20%20%20%20%20%20%20%20%0All%20%3D%20Link%28%22A%22,%20Link%28%22B%22,%20Link%28%22C%22%29%29%29&amp;cumulative=false&amp;curInstr=14&amp;mode=display&amp;origin=composingprograms.js&amp;py=3&amp;rawInputLstJSON=%5B%5D">
+                        Try in PythonTutor
+                        </a>
+                    </p>
+
+                    </div>
+                </section>
+
+                <section hidden="" aria-hidden="true" class="future" style="display: none;">
+                    <h3>A fancier LinkedList</h3>
+
+                    <pre style="font-size:0.4em" class="code-badge-pre"><div class="code-badge">
+        <div class="code-badge-language">python</div>
+        <div title="Copy to clipboard">
+            <i class="fa fa-copy code-badge-copy-icon">📄</i>
+        </div>
+     </div><code data-trim="" data-noescape="" class="python hljs"><span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">Link</span>:</span>
+    <span class="hljs-string">"""A linked list."""</span>
+    empty = ()
+
+    <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">__init__</span>(<span class="hljs-params">self, first, rest=empty</span>):</span>
+        <span class="hljs-keyword">assert</span> rest <span class="hljs-keyword">is</span> Link.empty <span class="hljs-keyword">or</span> isinstance(rest, Link)
+        self.first = first
+        self.rest = rest
+
+    <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">__repr__</span>(<span class="hljs-params">self</span>):</span>
+        <span class="hljs-keyword">if</span> self.rest:
+            rest_repr = <span class="hljs-string">', '</span> + repr(self.rest)
+        <span class="hljs-keyword">else</span>:
+            rest_repr = <span class="hljs-string">''</span>
+        <span class="hljs-keyword">return</span> <span class="hljs-string">'Link('</span> + repr(self.first) + rest_repr + <span class="hljs-string">')'</span>
+
+    <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">__str__</span>(<span class="hljs-params">self</span>):</span>
+        string = <span class="hljs-string">'&lt;'</span>
+        <span class="hljs-keyword">while</span> self.rest <span class="hljs-keyword">is</span> <span class="hljs-keyword">not</span> Link.empty:
+            string += str(self.first) + <span class="hljs-string">' '</span>
+            self = self.rest
+        <span class="hljs-keyword">return</span> string + str(self.first) + <span class="hljs-string">'&gt;'</span></code></pre>
+
+                    <p class="smaller">It's built-in to code.cs61a.org and you can <code>draw()</code> any Link.</p>
+                </section>
+
+                <section class="heading-only future" hidden="" aria-hidden="true" style="display: none;">
+                    <h3>Creating linked lists</h3>
+                </section>
+
+                <section hidden="" aria-hidden="true" class="future" style="display: none;">
+                    <h3>Creating a range</h3>
+
+                    <p>Similar to <code>[x for x in range(3, 6)]</code></p>
+
+                    <pre style="font-size:0.9em" class="code-badge-pre"><div class="code-badge">
+        <div class="code-badge-language">python</div>
+        <div title="Copy to clipboard">
+            <i class="fa fa-copy code-badge-copy-icon">📄</i>
+        </div>
+     </div><code data-trim="" data-noescape="" class="python hljs"><span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">range_link</span>(<span class="hljs-params">start, end</span>):</span>
+    <span class="hljs-string">"""Return a Link containing consecutive integers
+    from START to END, not including END.
+    &gt;&gt;&gt; range_link(3, 6)
+    Link(3, Link(4, Link(5)))
+    """</span><span class="fragment" data-fragment-index="0">
+    <span class="hljs-keyword">if</span> start &gt;= end:
+        <span class="hljs-keyword">return</span> Link.empty
+    <span class="hljs-keyword">return</span> Link(start, range_link(start + <span class="hljs-number">1</span>, end))</span></code></pre>
+
+                    <p class="python-tutor-link">
+                        <a target="_blank" href="http://pythontutor.com/composingprograms.html#code=class%20Link%3A%0A%20%20%20%20%22%22%22A%20linked%20list.%22%22%22%0A%20%20%20%20empty%20%3D%20%28%29%0A%0A%20%20%20%20def%20__init__%28self,%20first,%20rest%3Dempty%29%3A%0A%20%20%20%20%20%20%20%20assert%20rest%20is%20Link.empty%20or%20isinstance%28rest,%20Link%29%0A%20%20%20%20%20%20%20%20self.first%20%3D%20first%0A%20%20%20%20%20%20%20%20self.rest%20%3D%20rest%0A%0A%20%20%20%20def%20__repr__%28self%29%3A%0A%20%20%20%20%20%20%20%20if%20self.rest%3A%0A%20%20%20%20%20%20%20%20%20%20%20%20rest_repr%20%3D%20&#39;,%20&#39;%20%2B%20repr%28self.rest%29%0A%20%20%20%20%20%20%20%20else%3A%0A%20%20%20%20%20%20%20%20%20%20%20%20rest_repr%20%3D%20&#39;&#39;%0A%20%20%20%20%20%20%20%20return%20&#39;Link%28&#39;%20%2B%20repr%28self.first%29%20%2B%20rest_repr%20%2B%20&#39;%29&#39;%0A%0A%20%20%20%20def%20__str__%28self%29%3A%0A%20%20%20%20%20%20%20%20string%20%3D%20&#39;%3C&#39;%0A%20%20%20%20%20%20%20%20while%20self.rest%20is%20not%20Link.empty%3A%0A%20%20%20%20%20%20%20%20%20%20%20%20string%20%2B%3D%20str%28self.first%29%20%2B%20&#39;%20&#39;%0A%20%20%20%20%20%20%20%20%20%20%20%20self%20%3D%20self.rest%0A%20%20%20%20%20%20%20%20return%20string%20%2B%20str%28self.first%29%20%2B%20&#39;%3E&#39;%0A%20%20%20%20%20%20%20%20%0Adef%20range_link%28start,%20end%29%3A%0A%20%20%20%20%22%22%22Return%20a%20Link%20containing%20consecutive%20integers%0A%20%20%20%20from%20START%20to%20END,%20not%20including%20END.%0A%20%20%20%20%3E%3E%3E%20range_link%283,%206%29%0A%20%20%20%20Link%283,%20Link%284,%20Link%285%29%29%29%0A%20%20%20%20%22%22%22%0A%20%20%20%20if%20start%20%3E%3D%20end%3A%0A%20%20%20%20%20%20%20%20return%20Link.empty%0A%20%20%20%20return%20Link%28start,%20range_link%28start%20%2B%201,%20end%29%29%0A%20%20%20%20%0All%20%3D%20range_link%283,%206%29&amp;cumulative=false&amp;curInstr=34&amp;mode=display&amp;origin=composingprograms.js&amp;py=3&amp;rawInputLstJSON=%5B%5D">
+                            Try in PythonTutor
+                        </a>
+                    </p>
+                </section>
+
+                <section hidden="" aria-hidden="true" class="future" style="display: none;">
+                    <h3>Mapping a linked list</h3>
+
+                    <p>Similar to <code>[f(x) for x in lst]</code></p>
+
+                    <pre style="font-size:0.7em" class="code-badge-pre"><div class="code-badge">
+        <div class="code-badge-language">python</div>
+        <div title="Copy to clipboard">
+            <i class="fa fa-copy code-badge-copy-icon">📄</i>
+        </div>
+     </div><code data-trim="" data-noescape="" class="python hljs"><span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">map_link</span>(<span class="hljs-params">f, ll</span>):</span>
+    <span class="hljs-string">"""Return a Link that contains f(x) for each x in Link LL.
+    &gt;&gt;&gt; square = lambda x: x * x
+    &gt;&gt;&gt; map_link(square, range_link(3, 6))
+    Link(9, Link(16, Link(25)))
+    """</span><span class="fragment" data-fragment-index="0">
+    <span class="hljs-keyword">if</span> ll <span class="hljs-keyword">is</span> Link.empty:
+        <span class="hljs-keyword">return</span> Link.empty
+    <span class="hljs-keyword">return</span> Link(f(ll.first), map_link(f, ll.rest))</span></code></pre>
+
+                    <p class="python-tutor-link">
+                        <a target="_blank" href="http://pythontutor.com/composingprograms.html#code=class%20Link%3A%0A%20%20%20%20%22%22%22A%20linked%20list.%22%22%22%0A%20%20%20%20empty%20%3D%20%28%29%0A%0A%20%20%20%20def%20__init__%28self,%20first,%20rest%3Dempty%29%3A%0A%20%20%20%20%20%20%20%20assert%20rest%20is%20Link.empty%20or%20isinstance%28rest,%20Link%29%0A%20%20%20%20%20%20%20%20self.first%20%3D%20first%0A%20%20%20%20%20%20%20%20self.rest%20%3D%20rest%0A%0A%20%20%20%20def%20__repr__%28self%29%3A%0A%20%20%20%20%20%20%20%20if%20self.rest%3A%0A%20%20%20%20%20%20%20%20%20%20%20%20rest_repr%20%3D%20&#39;,%20&#39;%20%2B%20repr%28self.rest%29%0A%20%20%20%20%20%20%20%20else%3A%0A%20%20%20%20%20%20%20%20%20%20%20%20rest_repr%20%3D%20&#39;&#39;%0A%20%20%20%20%20%20%20%20return%20&#39;Link%28&#39;%20%2B%20repr%28self.first%29%20%2B%20rest_repr%20%2B%20&#39;%29&#39;%0A%0A%20%20%20%20def%20__str__%28self%29%3A%0A%20%20%20%20%20%20%20%20string%20%3D%20&#39;%3C&#39;%0A%20%20%20%20%20%20%20%20while%20self.rest%20is%20not%20Link.empty%3A%0A%20%20%20%20%20%20%20%20%20%20%20%20string%20%2B%3D%20str%28self.first%29%20%2B%20&#39;%20&#39;%0A%20%20%20%20%20%20%20%20%20%20%20%20self%20%3D%20self.rest%0A%20%20%20%20%20%20%20%20return%20string%20%2B%20str%28self.first%29%20%2B%20&#39;%3E&#39;%0A%0Adef%20range_link%28start,%20end%29%3A%0A%20%20%20%20%22%22%22Return%20a%20Link%20containing%20consecutive%20integers%0A%20%20%20%20from%20START%20to%20END,%20not%20including%20END.%0A%20%20%20%20%3E%3E%3E%20range_link%283,%206%29%0A%20%20%20%20Link%283,%20Link%284,%20Link%285%29%29%29%0A%20%20%20%20%22%22%22%0A%20%20%20%20if%20start%20%3E%3D%20end%3A%0A%20%20%20%20%20%20%20%20return%20Link.empty%0A%20%20%20%20return%20Link%28start,%20range_link%28start%20%2B%201,%20end%29%29%0A%20%20%20%20%0Adef%20map_link%28f,%20ll%29%3A%0A%20%20%20%20%22%22%22Return%20a%20Link%20that%20contains%20f%28x%29%20for%20each%20x%20in%20Link%20LL.%0A%20%20%20%20%3E%3E%3E%20square%20%3Dlambda%20x%3A%20x%20*%20x%0A%20%20%20%20%3E%3E%3E%20map_link%28square,%20range_link%283,%206%29%29%0A%20%20%20%20Link%289,%20Link%2816,%20Link%2825%29%29%29%0A%20%20%20%20%22%22%22%0A%20%20%20%20if%20ll%20is%20Link.empty%3A%0A%20%20%20%20%20%20%20%20return%20Link.empty%0A%20%20%20%20return%20Link%28f%28ll.first%29,%20map_link%28f,%20ll.rest%29%29%0A%0Asquare%20%3D%20lambda%20x%3A%20x%20*%20x%0All%20%3D%20map_link%28square,%20range_link%283,%206%29%29&amp;cumulative=false&amp;curInstr=76&amp;mode=display&amp;origin=composingprograms.js&amp;py=3&amp;rawInputLstJSON=%5B%5D">
+                            Try in PythonTutor
+                        </a>
+                    </p>
+
+                </section>
+
+                <section hidden="" aria-hidden="true" class="future" style="display: none;">
+                    <h3>Filtering a linked list</h3>
+
+                    <p>Similar to <code>[x for x in lst if f(x)]</code></p>
+
+                    <pre style="font-size:0.7em" class="code-badge-pre"><div class="code-badge">
+        <div class="code-badge-language">python</div>
+        <div title="Copy to clipboard">
+            <i class="fa fa-copy code-badge-copy-icon">📄</i>
+        </div>
+     </div><code data-trim="" data-noescape="" class="python hljs"><span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">filter_link</span>(<span class="hljs-params">f, ll</span>):</span>
+    <span class="hljs-string">"""Return a Link that contains only the elements x of Link LL
+    for which f(x) is a true value.
+    &gt;&gt;&gt; is_odd = lambda x: x % 2 == 1
+    &gt;&gt;&gt; filter_link(is_odd, range_link(3, 6))
+    Link(3, Link(5))
+    """</span><span class="fragment" data-fragment-index="0">
+    <span class="hljs-keyword">if</span> ll <span class="hljs-keyword">is</span> Link.empty:
+        <span class="hljs-keyword">return</span> Link.empty
+    <span class="hljs-keyword">elif</span> f(ll.first):
+        <span class="hljs-keyword">return</span> Link(ll.first, filter_link(f, ll.rest))
+    <span class="hljs-keyword">return</span> filter_link(f, ll.rest)</span></code></pre>
+
+                    <p class="python-tutor-link">
+                        <a target="_blank" href="http://pythontutor.com/composingprograms.html#code=class%20Link%3A%0A%20%20%20%20%22%22%22A%20linked%20list.%22%22%22%0A%20%20%20%20empty%20%3D%20%28%29%0A%0A%20%20%20%20def%20__init__%28self,%20first,%20rest%3Dempty%29%3A%0A%20%20%20%20%20%20%20%20assert%20rest%20is%20Link.empty%20or%20isinstance%28rest,%20Link%29%0A%20%20%20%20%20%20%20%20self.first%20%3D%20first%0A%20%20%20%20%20%20%20%20self.rest%20%3D%20rest%0A%0A%20%20%20%20def%20__repr__%28self%29%3A%0A%20%20%20%20%20%20%20%20if%20self.rest%3A%0A%20%20%20%20%20%20%20%20%20%20%20%20rest_repr%20%3D%20&#39;,%20&#39;%20%2B%20repr%28self.rest%29%0A%20%20%20%20%20%20%20%20else%3A%0A%20%20%20%20%20%20%20%20%20%20%20%20rest_repr%20%3D%20&#39;&#39;%0A%20%20%20%20%20%20%20%20return%20&#39;Link%28&#39;%20%2B%20repr%28self.first%29%20%2B%20rest_repr%20%2B%20&#39;%29&#39;%0A%0A%20%20%20%20def%20__str__%28self%29%3A%0A%20%20%20%20%20%20%20%20string%20%3D%20&#39;%3C&#39;%0A%20%20%20%20%20%20%20%20while%20self.rest%20is%20not%20Link.empty%3A%0A%20%20%20%20%20%20%20%20%20%20%20%20string%20%2B%3D%20str%28self.first%29%20%2B%20&#39;%20&#39;%0A%20%20%20%20%20%20%20%20%20%20%20%20self%20%3D%20self.rest%0A%20%20%20%20%20%20%20%20return%20string%20%2B%20str%28self.first%29%20%2B%20&#39;%3E&#39;%0A%0Adef%20range_link%28start,%20end%29%3A%0A%20%20%20%20%22%22%22Return%20a%20Link%20containing%20consecutive%20integers%0A%20%20%20%20from%20START%20to%20END,%20not%20including%20END.%0A%20%20%20%20%3E%3E%3E%20range_link%283,%206%29%0A%20%20%20%20Link%283,%20Link%284,%20Link%285%29%29%29%0A%20%20%20%20%22%22%22%0A%20%20%20%20if%20start%20%3E%3D%20end%3A%0A%20%20%20%20%20%20%20%20return%20Link.empty%0A%20%20%20%20return%20Link%28start,%20range_link%28start%20%2B%201,%20end%29%29%0A%20%20%20%20%0Adef%20filter_link%28f,%20ll%29%3A%0A%20%20%20%20%22%22%22Return%20a%20Link%20that%20contains%20only%20the%20elements%20x%20of%20Link%20LL%0A%20%20%20%20for%20which%20f%28x%29%20is%20a%20true%20value.%0A%20%20%20%20%3E%3E%3E%20is_odd%20%3D%20lambda%20x%3A%20x%20%25%202%20%3D%3D%201%0A%20%20%20%20%3E%3E%3E%20filter_link%28odd,%20range_link%283,%206%29%29%0A%20%20%20%20Link%283,%20Link%285%29%29%0A%20%20%20%20%22%22%22%0A%20%20%20%20if%20ll%20is%20Link.empty%3A%0A%20%20%20%20%20%20%20%20return%20Link.empty%0A%20%20%20%20elif%20f%28ll.first%29%3A%0A%20%20%20%20%20%20%20%20return%20Link%28ll.first,%20filter_link%28f,%20ll.rest%29%29%0A%20%20%20%20return%20filter_link%28f,%20ll.rest%29%0A%0Ais_odd%20%3D%20lambda%20x%3A%20x%20%25%202%20%3D%3D%201%0All%20%3D%20filter_link%28is_odd,%20range_link%283,%206%29%29&amp;cumulative=false&amp;curInstr=74&amp;mode=display&amp;origin=composingprograms.js&amp;py=3&amp;rawInputLstJSON=%5B%5D">
+                            Try in PythonTutor
+                        </a>
+                    </p>
+
+                </section>
+
+                <section class="heading-only future" hidden="" aria-hidden="true" style="display: none;">
+                    <h2>Mutating linked lists</h2>
+                </section>
+
+                <section hidden="" aria-hidden="true" class="future" style="display: none;">
+                    <h3>Linked lists can change</h3>
+
+                    <p>Attribute assignments can change <code>first</code> and <code>rest</code> attributes of a <code>Link</code>.</p>
+
+                    <pre style="font-size:1em" class="code-badge-pre"><div class="code-badge">
+        <div class="code-badge-language">python</div>
+        <div title="Copy to clipboard">
+            <i class="fa fa-copy code-badge-copy-icon">📄</i>
+        </div>
+     </div><code data-trim="" data-noescape="" class="python hljs">s = Link(<span class="hljs-string">"A"</span>, Link(<span class="hljs-string">"B"</span>, Link(<span class="hljs-string">"C"</span>)))
+s.first = <span class="hljs-string">"Hi"</span>
+s.rest.first = <span class="hljs-string">"Hola"</span>
+s.rest.rest.first = <span class="hljs-string">"Oi"</span></code></pre>
+
+                    <p class="python-tutor-link">
+                        <a target="_blank" href="http://pythontutor.com/composingprograms.html#code=class%20Link%3A%0A%20%20%20%20%22%22%22A%20linked%20list.%22%22%22%0A%20%20%20%20empty%20%3D%20%28%29%0A%0A%20%20%20%20def%20__init__%28self,%20first,%20rest%3Dempty%29%3A%0A%20%20%20%20%20%20%20%20assert%20rest%20is%20Link.empty%20or%20isinstance%28rest,%20Link%29%0A%20%20%20%20%20%20%20%20self.first%20%3D%20first%0A%20%20%20%20%20%20%20%20self.rest%20%3D%20rest%0A%0A%20%20%20%20def%20__repr__%28self%29%3A%0A%20%20%20%20%20%20%20%20if%20self.rest%3A%0A%20%20%20%20%20%20%20%20%20%20%20%20rest_repr%20%3D%20&#39;,%20&#39;%20%2B%20repr%28self.rest%29%0A%20%20%20%20%20%20%20%20else%3A%0A%20%20%20%20%20%20%20%20%20%20%20%20rest_repr%20%3D%20&#39;&#39;%0A%20%20%20%20%20%20%20%20return%20&#39;Link%28&#39;%20%2B%20repr%28self.first%29%20%2B%20rest_repr%20%2B%20&#39;%29&#39;%0A%0A%20%20%20%20def%20__str__%28self%29%3A%0A%20%20%20%20%20%20%20%20string%20%3D%20&#39;%3C&#39;%0A%20%20%20%20%20%20%20%20while%20self.rest%20is%20not%20Link.empty%3A%0A%20%20%20%20%20%20%20%20%20%20%20%20string%20%2B%3D%20str%28self.first%29%20%2B%20&#39;%20&#39;%0A%20%20%20%20%20%20%20%20%20%20%20%20self%20%3D%20self.rest%0A%20%20%20%20%20%20%20%20return%20string%20%2B%20str%28self.first%29%20%2B%20&#39;%3E&#39;%0A%0As%20%3D%20Link%28%22A%22,%20Link%28%22B%22,%20Link%28%22C%22%29%29%29%0As.first%20%3D%20%22Hi%22%0As.rest.first%20%3D%20%22Hola%22%0As.rest.rest.first%20%3D%20%22Oi%22&amp;cumulative=false&amp;curInstr=17&amp;mode=display&amp;origin=composingprograms.js&amp;py=3&amp;rawInputLstJSON=%5B%5D">
+                            Try in PythonTutor
+                        </a>
+                    </p>
+
+                </section>
+
+                <section hidden="" aria-hidden="true" class="future" style="display: none;">
+                    <h3>Beware infinite lists</h3>
+
+                    <p>The rest of a linked list can contain the linked list as a sub-list.</p>
+
+                    <pre style="font-size:1em" class="code-badge-pre"><div class="code-badge">
+        <div class="code-badge-language">python</div>
+        <div title="Copy to clipboard">
+            <i class="fa fa-copy code-badge-copy-icon">📄</i>
+        </div>
+     </div><code data-trim="" data-noescape="" class="python hljs">s = Link(<span class="hljs-string">"A"</span>, Link(<span class="hljs-string">"B"</span>, Link(<span class="hljs-string">"C"</span>)))
+t = s.rest
+t.rest = s
+
+s.first
+s.rest.rest.rest.rest.rest.first</code></pre>
+                </section>
+
+                <section hidden="" aria-hidden="true" class="future" style="display: none;">
+                    <h3>Adding to front of linked list</h3>
+
+                    <div id="linkedlist-demo2">
+                        <div class="linkedlist-visualization">
+                        <div class="linkedlist-link" data-index="0" style="left: 100px;"><div class="linkedlist-parts"><div class="linkedlist-value">"A"</div><div class="linkedlist-pointer jtk-managed jtk-endpoint-anchor jtk-connected" data-pointing-at="310" id="jsPlumb_3_1">310</div></div><div class="linkedlist-address" data-address="300">300</div></div><div class="linkedlist-link" data-index="1" style="left: 280px;"><div class="linkedlist-parts"><div class="linkedlist-value">"B"</div><div class="linkedlist-pointer jtk-managed jtk-endpoint-anchor jtk-connected" data-pointing-at="320" id="jsPlumb_3_12">320</div></div><div class="linkedlist-address jtk-managed jtk-endpoint-anchor jtk-connected" data-address="310" id="jsPlumb_3_2">310</div></div><div class="linkedlist-link" data-index="2" style="left: 460px;"><div class="linkedlist-parts"><div class="linkedlist-value">"C"</div><div class="linkedlist-pointer jtk-managed jtk-endpoint-anchor jtk-connected" data-pointing-at="330" id="jsPlumb_3_23">330</div></div><div class="linkedlist-address jtk-managed jtk-endpoint-anchor jtk-connected" data-address="320" id="jsPlumb_3_13">320</div></div><div class="linkedlist-link" data-index="3" style="left: 640px;"><div class="linkedlist-parts"><div class="linkedlist-value">"D"</div><div class="linkedlist-pointer jtk-managed jtk-endpoint-anchor jtk-connected" data-pointing-at="340" id="jsPlumb_3_34">340</div></div><div class="linkedlist-address jtk-managed jtk-endpoint-anchor jtk-connected" data-address="330" id="jsPlumb_3_24">330</div></div><div class="linkedlist-link" data-index="4" style="left: 820px;"><div class="linkedlist-parts"><div class="linkedlist-value">"E"</div><div class="linkedlist-pointer jtk-managed jtk-endpoint-anchor jtk-connected" data-pointing-at="350" id="jsPlumb_3_45">350</div></div><div class="linkedlist-address jtk-managed jtk-endpoint-anchor jtk-connected" data-address="340" id="jsPlumb_3_35">340</div></div><div class="linkedlist-link" data-index="5" style="left: 1000px;"><div class="linkedlist-parts"><div class="linkedlist-value">"F"</div><div class="linkedlist-pointer" data-pointing-at=""></div></div><div class="linkedlist-address jtk-managed jtk-endpoint-anchor jtk-connected" data-address="350" id="jsPlumb_3_46">350</div></div><div class="jtk-endpoint jtk-endpoint-anchor jtk-draggable jtk-droppable" style="display: block; width: 10px; height: 0px; background: transparent; position: absolute; left: 0px; top: 0px;"></div><div class="jtk-endpoint jtk-endpoint-anchor jtk-draggable jtk-droppable" style="display: block; width: 10px; height: 0px; background: transparent; position: absolute; left: 0px; top: 0px;"></div><svg style="position:absolute;left:0px;top:0px" width="1" height="1" pointer-events="none" position="absolute" version="1.1" xmlns="http://www.w3.org/2000/svg" class="jtk-connector"><path pointer-events="all" version="1.1" xmlns="http://www.w3.org/2000/svg" d="" class="" stroke="#456" fill="#456" transform="translate(0,0)"></path></svg><div class="jtk-endpoint jtk-endpoint-anchor jtk-draggable jtk-droppable" style="display: block; width: 10px; height: 0px; background: transparent; position: absolute; left: 0px; top: 0px;"></div><div class="jtk-endpoint jtk-endpoint-anchor jtk-draggable jtk-droppable" style="display: block; width: 10px; height: 0px; background: transparent; position: absolute; left: 0px; top: 0px;"></div><svg style="position:absolute;left:0px;top:0px" width="1" height="1" pointer-events="none" position="absolute" version="1.1" xmlns="http://www.w3.org/2000/svg" class="jtk-connector"><path pointer-events="all" version="1.1" xmlns="http://www.w3.org/2000/svg" d="" class="" stroke="#456" fill="#456" transform="translate(0,0)"></path></svg><div class="jtk-endpoint jtk-endpoint-anchor jtk-draggable jtk-droppable" style="display: block; width: 10px; height: 0px; background: transparent; position: absolute; left: 0px; top: 0px;"></div><div class="jtk-endpoint jtk-endpoint-anchor jtk-draggable jtk-droppable" style="display: block; width: 10px; height: 0px; background: transparent; position: absolute; left: 0px; top: 0px;"></div><svg style="position:absolute;left:0px;top:0px" width="1" height="1" pointer-events="none" position="absolute" version="1.1" xmlns="http://www.w3.org/2000/svg" class="jtk-connector"><path pointer-events="all" version="1.1" xmlns="http://www.w3.org/2000/svg" d="" class="" stroke="#456" fill="#456" transform="translate(0,0)"></path></svg><div class="jtk-endpoint jtk-endpoint-anchor jtk-draggable jtk-droppable" style="display: block; width: 10px; height: 0px; background: transparent; position: absolute; left: 0px; top: 0px;"></div><div class="jtk-endpoint jtk-endpoint-anchor jtk-draggable jtk-droppable" style="display: block; width: 10px; height: 0px; background: transparent; position: absolute; left: 0px; top: 0px;"></div><svg style="position:absolute;left:0px;top:0px" width="1" height="1" pointer-events="none" position="absolute" version="1.1" xmlns="http://www.w3.org/2000/svg" class="jtk-connector"><path pointer-events="all" version="1.1" xmlns="http://www.w3.org/2000/svg" d="" class="" stroke="#456" fill="#456" transform="translate(0,0)"></path></svg><div class="jtk-endpoint jtk-endpoint-anchor jtk-draggable jtk-droppable" style="display: block; width: 10px; height: 0px; background: transparent; position: absolute; left: 0px; top: 0px;"></div><div class="jtk-endpoint jtk-endpoint-anchor jtk-draggable jtk-droppable" style="display: block; width: 10px; height: 0px; background: transparent; position: absolute; left: 0px; top: 0px;"></div><svg style="position:absolute;left:0px;top:0px" width="1" height="1" pointer-events="none" position="absolute" version="1.1" xmlns="http://www.w3.org/2000/svg" class="jtk-connector"><path pointer-events="all" version="1.1" xmlns="http://www.w3.org/2000/svg" d="" class="" stroke="#456" fill="#456" transform="translate(0,0)"></path></svg></div>
+
+                        <form class="linkedlist-insert-form smaller">
+                            <button class="btn" type="button">Insert</button>
+                        </form>
+                    </div>
+
+                    <pre style="font-size:0.8em" class="code-badge-pre"><div class="code-badge">
+        <div class="code-badge-language">python</div>
+        <div title="Copy to clipboard">
+            <i class="fa fa-copy code-badge-copy-icon">📄</i>
+        </div>
+     </div><code data-trim="" data-noescape="" class="python hljs"><span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">insert_front</span>(<span class="hljs-params">linked_list, new_val</span>):</span>
+    <span class="hljs-string">"""Inserts NEW_VAL in front of LINKED_LIST,
+    returning new linked list.
+
+    &gt;&gt;&gt; ll = Link(1, Link(3, Link(5)))
+    &gt;&gt;&gt; insert_front(ll, 0)
+    Link(0, Link(1, Link(3, Link(5))))
+    """</span>
+    <span class="fragment" data-fragment-index="0"><span class="hljs-keyword">return</span> Link(new_val, linked_list)</span></code></pre>
+
+                </section>
+
+                <section hidden="" aria-hidden="true" class="future" style="display: none;">
+                    <h3>Adding to an ordered linked list</h3>
+
+                    <div id="linkedlist-demo3">
+                        <div class="linkedlist-visualization">
+                        <div class="linkedlist-link" data-index="0" style="left: 100px;"><div class="linkedlist-parts"><div class="linkedlist-value">1</div><div class="linkedlist-pointer jtk-managed jtk-endpoint-anchor jtk-connected" data-pointing-at="310" id="jsPlumb_4_1">310</div></div><div class="linkedlist-address" data-address="300">300</div></div><div class="linkedlist-link" data-index="1" style="left: 280px;"><div class="linkedlist-parts"><div class="linkedlist-value">3</div><div class="linkedlist-pointer jtk-managed jtk-endpoint-anchor jtk-connected" data-pointing-at="320" id="jsPlumb_4_12">320</div></div><div class="linkedlist-address jtk-managed jtk-endpoint-anchor jtk-connected" data-address="310" id="jsPlumb_4_2">310</div></div><div class="linkedlist-link" data-index="2" style="left: 460px;"><div class="linkedlist-parts"><div class="linkedlist-value">5</div><div class="linkedlist-pointer" data-pointing-at=""></div></div><div class="linkedlist-address jtk-managed jtk-endpoint-anchor jtk-connected" data-address="320" id="jsPlumb_4_13">320</div></div><div class="jtk-endpoint jtk-endpoint-anchor jtk-draggable jtk-droppable" style="display: block; width: 10px; height: 0px; background: transparent; position: absolute; left: 0px; top: 0px;"></div><div class="jtk-endpoint jtk-endpoint-anchor jtk-draggable jtk-droppable" style="display: block; width: 10px; height: 0px; background: transparent; position: absolute; left: 0px; top: 0px;"></div><svg style="position:absolute;left:0px;top:0px" width="1" height="1" pointer-events="none" position="absolute" version="1.1" xmlns="http://www.w3.org/2000/svg" class="jtk-connector"><path pointer-events="all" version="1.1" xmlns="http://www.w3.org/2000/svg" d="" class="" stroke="#456" fill="#456" transform="translate(0,0)"></path></svg><div class="jtk-endpoint jtk-endpoint-anchor jtk-draggable jtk-droppable" style="display: block; width: 10px; height: 0px; background: transparent; position: absolute; left: 0px; top: 0px;"></div><div class="jtk-endpoint jtk-endpoint-anchor jtk-draggable jtk-droppable" style="display: block; width: 10px; height: 0px; background: transparent; position: absolute; left: 0px; top: 0px;"></div><svg style="position:absolute;left:0px;top:0px" width="1" height="1" pointer-events="none" position="absolute" version="1.1" xmlns="http://www.w3.org/2000/svg" class="jtk-connector"><path pointer-events="all" version="1.1" xmlns="http://www.w3.org/2000/svg" d="" class="" stroke="#456" fill="#456" transform="translate(0,0)"></path></svg></div>
+                        <form class="linkedlist-insert-form smaller">
+                            Insert <label>value:</label> <input name="newValue" type="text" value="0">
+                            <label>@ index:</label> <input name="newIndex" type="number" min="0" value="0">
+                            <button class="btn" type="button">Insert</button>
+                        </form>
+                    </div>
+
+                    <pre style="font-size:0.45em" class="code-badge-pre"><div class="code-badge">
+        <div class="code-badge-language">python</div>
+        <div title="Copy to clipboard">
+            <i class="fa fa-copy code-badge-copy-icon">📄</i>
+        </div>
+     </div><code data-trim="" data-noescape="" class="python hljs"><span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">add</span>(<span class="hljs-params">ordered_list, new_val</span>):</span>
+    <span class="hljs-string">"""Add NEW_VAL to ORDERED_LIST, returning modified ORDERED_LIST.
+    &gt;&gt;&gt; s = Link(1, Link(3, Link(5)))
+    &gt;&gt;&gt; add(s, 0)
+    Link(0, Link(1, Link(3, Link(5))))
+    &gt;&gt;&gt; add(s, 3)
+    Link(0, Link(1, Link(3, Link(5))))
+    &gt;&gt;&gt; add(s, 4)
+    Link(0, Link(1, Link(3, Link(4, Link(5)))))
+    &gt;&gt;&gt; add(s, 6)
+    Link(0, Link(1, Link(3, Link(4, Link(5, Link(6))))))
+    """</span>
+    <span class="hljs-keyword">if</span> new_val &lt; ordered_list.first:
+        <span class="fragment" data-fragment-index="0">original_first = ordered_list.first</span>
+        <span class="fragment" data-fragment-index="0">ordered_list.first = new_val</span>
+        <span class="fragment" data-fragment-index="0">ordered_list.rest = Link(original_first, ordered_list.rest)</span>
+    <span class="hljs-keyword">elif</span> new_val &gt; ordered_list.first <span class="hljs-keyword">and</span> ordered_list.rest <span class="hljs-keyword">is</span> Link.empty:
+        <span class="fragment" data-fragment-index="1">ordered_list.rest = Link(new_val)</span>
+    <span class="hljs-keyword">elif</span> new_val &gt; ordered_list.first:
+        <span class="fragment" data-fragment-index="2">add(ordered_list.rest, new_val)</span>
+    <span class="hljs-keyword">return</span> ordered_list</code></pre>
+
+                </section>
+
+                <section hidden="" aria-hidden="true" class="future" style="display: none;">
+                    <h3>Showdown: Python list vs. Link</h3>
+
+                    <p>The challenge:</p>
+                    <ul>
+                        <li>Store all the half-a-million words
+                        in "War and Peace"</li>
+                        <li>Insert a word
+                        at the beginning.</li>
+                    </ul>
+
+                    <br><br>
+
+                    <table>
+                        <thead>
+                            <tr><th>Version</th>
+                            <th>10,000 runs</th>
+                            <th>100,000 runs</th>
+                        </tr></thead>
+                        <tbody>
+                            <tr>
+                                <td>Python list</td>
+                                <td><span class="fragment" data-fragment-index="0">2.6 seconds</span></td>
+                                <td><span class="fragment" data-fragment-index="0">37 seconds</span></td>
+                            </tr>
+                            <tr>
+                                <td>Link</td>
+                                <td><span class="fragment" data-fragment-index="1">0.01 seconds</span></td>
+                                <td><span class="fragment" data-fragment-index="1">0.1</span></td>
+                            </tr>
+                        </tbody>
+                    </table>
+
+                    <p>Try it yourself on your local machine (Legit Python!): <a target="_blank" href="https://gist.github.com/pamelafox/2f884f2e2b7b3dd44a6212476180c87b">warandpeace.py</a></p>
+
+                </section>
+
+                <section hidden="" aria-hidden="true" class="future" style="display: none;">
+                    <h3>Recursive objects</h3>
+
+                    <p>Why are <code>Tree</code> and <code>Link</code> considered recursive objects?</p>
+
+                    <div class="fragment smaller" data-fragment-index="0">
+                    <p>
+                    Each type of object contains references to the same type of object.
+                    </p>
+                    <ul>
+                    <li>An instance of <code>Tree</code> can contain additional instances of <code>Tree</code>, in the <code>branches</code> variable.
+                    </li><li>An instance of <code>Link</code> can contain an additional instance of <code>Link</code>, in the <code>rest</code> variable.
+                    </li></ul>
+
+
+                    <p>
+                    Both classes lend themselves to recursive algorithms. Generally:
+                    </p>
+                    <ul>
+                    <li>For <code>Tree</code>: The base case is when <code>is_leaf()</code> is true;<br> the recursive call is on the <code>branches</code>.
+                    </li><li>For <code>Link</code>: The base case is when the rest is <code>empty</code>;<br> the recursive call is on the <code>rest</code>.
+                    </li></ul>
+			</div>
+		</section></div>
+
+		<script src="./Recursive Objects_ Tree + LinkedList_files/reveal.js.下载"></script>
+        <script src="./Recursive Objects_ Tree + LinkedList_files/highlight.js.下载"></script>
+        <script src="./Recursive Objects_ Tree + LinkedList_files/highlightjs-badge.min.js.下载"></script>
+        <script src="./Recursive Objects_ Tree + LinkedList_files/jsplumb.min.js.下载"></script>
+		<script>
+			const srcUrlPrefix = "https://cdn.jsdelivr.net/npm/reveal.js@4.1.0/";
+			Reveal.initialize({
+				hash: true,
+				center: false,
+				slideNumber: true,
+				showNotes: false,
+				margin: 0.1,
+				preloadIframes: true,
+				plugins: [ RevealHighlight ],
+				pdfSeparateFragments: true
+			});
+
+            // add HighlightJS-badge (options are optional)
+            var options = {
+                copyIconContent: "📄",
+                checkIconContent: "✅"
+            };
+            window.highlightJsBadge(options);
+
+            if (window.location.search == "?print-pdf") {
+                var uncounted = document.querySelectorAll("[data-visibility='uncounted']");
+                uncounted.forEach(node => {
+                    node.parentNode.classList.add("no-print")
+                })
+            }
+
+
+
+            var demoDiv = document.getElementById("insertion-demo");
+
+            var divHeight = 50;
+            var newDiv = document.createElement("div");
+            newDiv.style.top = 0;
+            newDiv.style.left = 0;
+            newDiv.style.position = "absolute";
+            demoDiv.appendChild(newDiv);
+            var arrowDiv = document.createElement("div");
+            arrowDiv.style.top = "0px";
+            arrowDiv.style.position = "absolute";
+            newDiv.appendChild(arrowDiv);
+
+            var valuesDiv = document.createElement("div");
+            valuesDiv.style.top = (divHeight * 1) + "px";
+            valuesDiv.style.left = 0;
+            valuesDiv.style.position = "absolute";
+            valuesDiv.className = "array-values";
+            demoDiv.appendChild(valuesDiv);
+
+            var indicesDiv = document.createElement("div");
+            indicesDiv.style.top = (divHeight * 2) + "px";
+            indicesDiv.style.left = 0;
+            indicesDiv.style.position = "absolute";
+            demoDiv.appendChild(indicesDiv);
+
+            var addressesDiv = document.createElement("div");
+            addressesDiv.style.top = (divHeight * 3) + "px";
+            addressesDiv.style.left = 0;
+            addressesDiv.style.position = "absolute";
+            demoDiv.appendChild(addressesDiv);
+
+            var arrayValues = ["A", "B", "C", "D", "E", "F"];
+            var leftPos = 0;
+            var divWidth = 100;
+            var lastAddress, lastIndex;
+
+            var createValue = function(value, index, left) {
+                var valueDiv = document.createElement("div");
+                if (Number.isInteger(value)) {
+                    valueDiv.innerHTML = value;
+                } else {
+                    valueDiv.innerHTML = "&quot;" + value + "&quot;";
+                }
+
+                valueDiv.className = "array-value";
+                valueDiv.style.left = left + "px";
+                valueDiv.setAttribute("data-index", index);
+                valuesDiv.appendChild(valueDiv);
+                return value;
+            };
+
+            var createIndex = function(index, left) {
+                var indexDiv = document.createElement("div");
+                indexDiv.innerText = index;
+                indexDiv.className = "array-index";
+                indexDiv.style.left = leftPos + "px";
+                indicesDiv.appendChild(indexDiv);
+                return index;
+            };
+
+            var createAddress = function(address, left) {
+                var addressDiv = document.createElement("div");
+                addressDiv.innerText = address;
+                addressDiv.className = "array-address";
+                addressDiv.style.left = leftPos + "px";
+                addressesDiv.appendChild(addressDiv);
+                return address;
+            }
+
+            arrayValues.forEach(function(arrayVal, index) {
+                createValue(arrayVal, index, leftPos);
+                lastIndex = createIndex(index, leftPos);
+                lastAddress = createAddress(3300 + index, leftPos)
+                leftPos += divWidth;
+            });
+
+            var moveDiv = function(div, newIndex, leftAmount) {
+                var oldLeft = parseInt(div.style.left, 10);
+                div.style.left = (oldLeft + leftAmount) + "px";
+                div.setAttribute("data-index", newIndex);
+            };
+
+            document.getElementById("insert-button").addEventListener("click", function(evt) {
+                evt.preventDefault();
+                var form = evt.target.form;
+
+                var newValue = form[0].value;
+                var newIndex = parseInt(form[1].value, 10);
+                lastAddress += 1;
+                lastIndex += 1;
+
+                // Point at new target location
+                arrowDiv.innerText = "⬇";
+                arrowDiv.style.visibility = "visible";
+                arrowDiv.style.left = ((newIndex * divWidth) + divWidth/3) + "px";
+
+
+                // Make the new memory location
+                createAddress(lastAddress, leftPos);
+                createIndex(lastIndex, leftPos);
+
+                leftPos += divWidth;
+
+                // Move over each and then add new value
+
+                var addNewValue = () => {
+                    createValue(newValue, newIndex, (newIndex * divWidth));
+                };
+
+                var moveNextDiv = function(index) {
+                    return function() {
+                        if (index < newIndex) {
+                            window.setTimeout(addNewValue, 1000);
+                            return;
+                        }
+                        var valueDiv = document.querySelector("[data-index='" + index + "']");
+
+                        moveDiv(valueDiv, index + 1, divWidth);
+                        window.setTimeout(moveNextDiv(index - 1), 600);
+                    };
+                }
+
+                window.setTimeout(moveNextDiv(document.querySelectorAll(".array-value").length - 1), 300);
+            });
+
+
+            var linkedListViz = (function(demoDivId, values) {
+                var createLink = function(index, value, address, nextAddress, leftPos, topPos) {
+                    var linkDiv = document.createElement("div");
+                    linkDiv.className = "linkedlist-link";
+                    linkDiv.setAttribute("data-index", index);
+                    linkDiv.style.left = leftPos + "px";
+                    if (topPos) {
+                        linkDiv.style.top = topPos + "px";
+                    }
+
+                    var partsDiv = document.createElement("div");
+                    partsDiv.className = "linkedlist-parts";
+                    var valueDiv = document.createElement("div");
+                    valueDiv.className = "linkedlist-value";
+                    if (parseInt(value, 10) >= 0) {
+                        valueDiv.innerHTML = value;
+                    } else {
+                        valueDiv.innerHTML = "&quot;" + value + "&quot;";
+                    }
+
+                    var pointerDiv = document.createElement("div");
+                    pointerDiv.innerText = nextAddress;
+                    pointerDiv.className = "linkedlist-pointer";
+                    pointerDiv.setAttribute("data-pointing-at", nextAddress);
+                    partsDiv.appendChild(valueDiv);
+                    partsDiv.appendChild(pointerDiv);
+
+                    var addressDiv = document.createElement("div");
+                    addressDiv.className = "linkedlist-address";
+                    addressDiv.innerText = address;
+                    addressDiv.setAttribute("data-address", address);
+
+                    linkDiv.appendChild(partsDiv);
+                    linkDiv.appendChild(addressDiv);
+                    vizDiv.appendChild(linkDiv);
+
+                };
+
+                var demoDiv = document.getElementById(demoDivId);
+                var vizDiv = demoDiv.querySelector(".linkedlist-visualization");
+                var leftPos = 100;
+                var offset = 180;
+                var arrayValues = values || ["A", "B", "C", "D", "E", "F"];
+                var plumber = jsPlumb.getInstance();
+                plumber.setContainer(vizDiv);
+                arrayValues.forEach(function(arrayVal, index) {
+                    var nextAddress = 300 + ((index + 1) * (10));
+                    if (index == arrayValues.length - 1) {
+                        nextAddress = "";
+                    }
+                    createLink(index, arrayVal, 300 + (index * (10)), nextAddress, leftPos);
+                    leftPos += offset;
+                });
+
+                var redoConnections = function() {
+                    var connections = plumber.getConnections();
+                    connections.forEach(plumber.deleteConnection);
+
+                    var pointers = vizDiv.querySelectorAll(".linkedlist-pointer");
+                    pointers.forEach(function(node) {
+                        var address = node.getAttribute("data-pointing-at");
+                        var addressNode = vizDiv.querySelector("[data-address='" + address + "']");
+                        if (!addressNode) return;
+
+                        plumber.connect({
+                            source: node, target: addressNode,
+                            anchor: ["Right", "Left"], endpoint: "Blank", connector: "Straight",
+                            overlays: [ ["Arrow", {location: 1.0, width: 10, length: 10}] ]
+                        });
+                    });
+                };
+
+                jsPlumb.ready(() => redoConnections());
+
+                var newAddress = 400;
+
+                demoDiv.querySelector("button").addEventListener("click", function(evt) {
+                    evt.preventDefault();
+                    var form = evt.target.form;
+
+                    var newValue = (form[0] && form[0].value) || "Z";
+                    var newIndex = (form[1] && parseInt(form[1].value, 10)) || 0;
+
+                    newAddress += 10;
+
+                    var nextLink = vizDiv.querySelector(".linkedlist-link[data-index='" + newIndex + "']");
+                    var nextAddress = parseInt(nextLink.querySelector(".linkedlist-address").getAttribute("data-address"), 10)
+                    var newLeft = parseInt(nextLink.style.left) - 90;
+
+                    // Update index attributes, backwards
+                    var currIndex = (vizDiv.querySelectorAll(".linkedlist-link").length - 1);
+                    var currLink = vizDiv.querySelector(".linkedlist-link[data-index='" + currIndex + "']");
+                    while (currIndex >= newIndex) {
+                        currLink.setAttribute("data-index", currIndex + 1);
+                        currIndex--;
+                        currLink = vizDiv.querySelector(".linkedlist-link[data-index='" + currIndex + "']");
+                    }
+
+                    createLink(newIndex, newValue, newAddress, nextAddress, newLeft, 60);
+
+                    // Update previous link
+                    var prevLink = vizDiv.querySelector(".linkedlist-link[data-index='" + (newIndex - 1) + "']");
+                    if (prevLink) {
+                        var prevPointer = prevLink.querySelector(".linkedlist-pointer");
+                        prevPointer.setAttribute("data-pointing-at", newAddress);
+                        prevPointer.innerText = newAddress;
+                    }
+
+                    // Update indices
+
+
+                    redoConnections();
+
+                    if (!form[0].value) {
+                        evt.target.setAttribute("disabled", "disabled")
+                    }
+                });
+
+            });
+            linkedListViz("linkedlist-demo1");
+            linkedListViz("linkedlist-demo2");
+            linkedListViz("linkedlist-demo3", [1, 3, 5]);
+		</script><div class="backgrounds"><div class="slide-background heading-only present" data-loaded="true" style="display: block;"><div class="slide-background-content"></div></div><div class="slide-background heading-only future" data-loaded="true" style="display: block;"><div class="slide-background-content"></div></div><div class="slide-background future" data-loaded="true" style="display: block;"><div class="slide-background-content"></div></div><div class="slide-background future" style="display: none;"><div class="slide-background-content"></div></div><div class="slide-background heading-only future" style="display: none;"><div class="slide-background-content"></div></div><div class="slide-background future" style="display: none;"><div class="slide-background-content"></div></div><div class="slide-background future" style="display: none;"><div class="slide-background-content"></div></div><div class="slide-background future" style="display: none;"><div class="slide-background-content"></div></div><div class="slide-background future" style="display: none;"><div class="slide-background-content"></div></div><div class="slide-background future" style="display: none;"><div class="slide-background-content"></div></div><div class="slide-background future" style="display: none;"><div class="slide-background-content"></div></div><div class="slide-background future" style="display: none;"><div class="slide-background-content"></div></div><div class="slide-background heading-only future" style="display: none;"><div class="slide-background-content"></div></div><div class="slide-background future" style="display: none;"><div class="slide-background-content"></div></div><div class="slide-background future" style="display: none;"><div class="slide-background-content"></div></div><div class="slide-background future" style="display: none;"><div class="slide-background-content"></div></div><div class="slide-background future" style="display: none;"><div class="slide-background-content"></div></div><div class="slide-background heading-only future" style="display: none;"><div class="slide-background-content"></div></div><div class="slide-background future" style="display: none;"><div class="slide-background-content"></div></div><div class="slide-background future" style="display: none;"><div class="slide-background-content"></div></div><div class="slide-background future" style="display: none;"><div class="slide-background-content"></div></div><div class="slide-background heading-only future" style="display: none;"><div class="slide-background-content"></div></div><div class="slide-background future" style="display: none;"><div class="slide-background-content"></div></div><div class="slide-background future" style="display: none;"><div class="slide-background-content"></div></div><div class="slide-background future" style="display: none;"><div class="slide-background-content"></div></div><div class="slide-background future" style="display: none;"><div class="slide-background-content"></div></div><div class="slide-background future" style="display: none;"><div class="slide-background-content"></div></div><div class="slide-background future" style="display: none;"><div class="slide-background-content"></div></div></div><div class="slide-number" style="display: block;"><a href="https://inst.eecs.berkeley.edu/~cs61a/sp21/assets/slides/19-Recursive_Objects.html#/">
+					<span class="slide-number-a">1</span>
+					</a></div><aside class="controls" data-controls-layout="bottom-right" data-controls-back-arrows="faded" style="display: block;"><button class="navigate-left" aria-label="previous slide" disabled="disabled"><div class="controls-arrow"></div></button>
+			<button class="navigate-right enabled highlight" aria-label="next slide"><div class="controls-arrow"></div></button>
+			<button class="navigate-up" aria-label="above slide" disabled="disabled"><div class="controls-arrow"></div></button>
+			<button class="navigate-down" aria-label="below slide" disabled="disabled"><div class="controls-arrow"></div></button></aside><div class="progress" style="display: block;"><span style="transform: scaleX(0);"></span></div><div class="speaker-notes" data-prevent-swipe="" tabindex="0"></div><div class="pause-overlay"><button class="resume-button">Resume presentation</button></div><div class="aria-status" aria-live="polite" aria-atomic="true" style="position: absolute; height: 1px; width: 1px; overflow: hidden; clip: rect(1px, 1px, 1px, 1px);">Recursive Objects Tips for navigating the slides: Press O or Escape for overview mode. Visit this link for a nice printable version Press the copy icon on the upper right of code blocks to copy the code </div>
+	
+
+</div><style>
+@media print {
+   .code-badge { display: none; }
+}
+    .code-badge-pre {
+        position: relative;
+    }
+    .code-badge {
+        display: flex;
+        flex-direction: row;
+        white-space: normal;
+        background: transparent;
+        background: #333;
+        color: white;
+        font-size: 0.875em;
+        opacity: 0.5;
+        transition: opacity linear 0.5s;
+        border-radius: 0 0 0 7px;
+        padding: 5px 8px 5px 8px;
+        position: absolute;
+        right: 0;
+        top: 0;
+    }
+    .code-badge.active {
+        opacity: 0.8;
+    }
+
+    .code-badge:hover {
+        opacity: .95;
+    }
+
+    .code-badge a,
+    .code-badge a:hover {
+        text-decoration: none;
+    }
+
+    .code-badge-language {
+        margin-right: 10px;
+        font-weight: 600;
+        color: goldenrod;
+    }
+    .code-badge-copy-icon {
+        font-size: 1.2em;
+        cursor: pointer;
+        padding: 0 7px;
+        margin-top:2;
+    }
+    .fa.text-success:{ color: limegreen !important }
+</style><div id="CodeBadgeTemplate" style="display:none">
+    <div class="code-badge">
+        <div class="code-badge-language">{{language}}</div>
+        <div title="Copy to clipboard">
+            <i class="{{copyIconClass}} code-badge-copy-icon"></i>
+        </div>
+     </div>
+</div></body></html>

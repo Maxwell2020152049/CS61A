@@ -1,0 +1,567 @@
+<!DOCTYPE html>
+<!-- saved from url=(0075)https://inst.eecs.berkeley.edu/~cs61a/sp21/assets/slides/38-Conclusion.html -->
+<html class="reveal-full-page"><head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+		
+		<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+		<title>Conclusion</title>
+		<link rel="stylesheet" href="./Conclusion_files/reset.css">
+		<link rel="stylesheet" href="./Conclusion_files/reveal.css">
+		<link rel="stylesheet" href="./Conclusion_files/simple.css" id="theme">
+		<link rel="stylesheet" href="./Conclusion_files/mono-blue.css">
+		<link rel="stylesheet" href="./Conclusion_files/css">
+		<style>
+			.reveal {
+				font-family: "Work Sans", sans-serif;
+			}
+
+			.reveal .slides section {
+				text-align: left;
+				font-size: smaller;
+			}
+
+			.reveal pre {
+				background-color: #f5f5f5;
+				width: 100%;
+				border: 1px solid #ccc;
+				border-radius: 4px;
+				box-shadow: none;
+			}
+
+			.reveal h1, .reveal h2, .reveal h3, .reveal h4, .reveal h5, .reveal h6 {
+				font-family: "Roboto", sans-serif;
+				color: #0072c1;
+			}
+
+			.reveal section.heading-only {
+				text-align:center;
+				padding-top:20%;
+			}
+
+            .reveal section > ul > li {
+                margin-bottom: 0.45em;
+            }
+
+            .column .no-code-badge .code-badge {
+                display: none;
+            }
+
+            .code-badge-language {
+                display: none;
+            }
+
+			.python-tutor-link {
+				font-size: smaller;
+			}
+
+			.python-tutor-link:before {
+				content: "";
+				display: block;
+				background: url("http://pythontutor.com/favicon.ico") no-repeat;
+				width: 48px;
+				height: 48px;
+				float: left;
+				margin: 0 6px 0 0;
+			}
+
+			.reveal h3 {
+				margin-bottom: 40px;
+			}
+
+            .smaller {
+                font-size: smaller;
+            }
+
+            code {
+                padding: 2px 4px;
+                font-size: 90%;
+                color: #0072c1;
+                background-color: #f9f2f4;
+                border-radius: 4px;
+            }
+
+            p.padded {
+                margin-top: 32px;
+            }
+
+            section .row {
+                display: flex;
+            }
+
+            section .column {
+                flex: 48%;
+                margin: 10px;
+            }
+
+			@media print
+			{
+				.no-print, .no-print *
+				{
+					display: none !important;
+				}
+			}
+
+
+            .regex-input {
+                border:1px solid rgb(204, 204, 204);
+                background: rgb(245, 245, 245);
+                padding: 8px;
+            }
+
+            .regex-input input {
+                font-size: inherit;
+            }
+
+            .regex-input input[type=text]:invalid {
+                background-color: pink;
+            }
+
+		</style>
+	<style type="text/css">.hljs-ln{border-collapse:collapse}.hljs-ln td{padding:0}.hljs-ln-n:before{content:attr(data-line-number)}</style></head>
+	<body class="reveal-viewport" style="--slide-width: 960px; --slide-height: 700px;">
+		<div class="reveal slide focused has-horizontal-slides ready" role="application" data-transition-speed="default" data-background-transition="fade">
+			<div class="slides" style="width: 960px; height: 700px; inset: 50% auto auto 50%; transform: translate(-50%, -50%) scale(0.919286);">
+
+				<section class="heading-only present" style="display: block;">
+                    <h1>Conclusion</h1>
+
+					<div class="no-print" style="text-align: left; margin-top: 100px; font-size: 70%;">
+						Tips for navigating the slides:
+						<ul>
+							<li>Press O or Escape for overview mode.</li>
+							<li>Visit <a href="https://inst.eecs.berkeley.edu/~cs61a/sp21/assets/slides/38-Conclusion.html?print-pdf" target="_blank">this link</a> for a nice printable version</li>
+							<li>Press the copy icon on the upper right of code blocks to copy the code</li>
+						</ul>
+					</div>
+				</section>
+
+
+                <section class="heading-only future" hidden="" aria-hidden="true" style="display: block;">
+                    <h2>Recap</h2>
+                </section>
+
+                <section hidden="" aria-hidden="true" class="future" style="display: block;">
+                    <h3>A summary of topics</h3>
+
+                    <ul>
+                        <li>Programming primitives</li>
+                        <li>Derived programming structures</li>
+                        <li>Programming-language concepts, design, and implementation</li>
+                        <li>Programming “Paradigms”</li>
+                        <li>Software engineering</li>
+                        <li>Analysis</li>
+                        <li>Side excursions</li>
+                    </ul>
+
+                </section>
+
+
+                <section hidden="" aria-hidden="true" class="future" style="display: none;">
+                    <h3>Programming Primitives</h3>
+                    <ul>
+                        <li>Recursion: the all-encompassing repetitive construct; recursive think-
+                        ing</li>
+                        <li>Pairs: A universal data-structuring tool.</li>
+                        <li>Functions as data values, functions on functions</li>
+                        <li>Exceptions: Dealing with errors.</li>
+                        <li>Classes</li>
+                    </ul>
+                </section>
+
+                <section hidden="" aria-hidden="true" class="future" style="display: none;">
+                    <h3>Derived Programming Structures</h3>
+
+                    <ul>
+                        <li>Can build almost anything from primitives.</li>
+                        <li>Although Python also has specialized implementations of some important data structures.</li>
+                        <li>Sequences:<ul>
+                            <li>Lists: traversals, searching, inserting, deleting (destructive and
+                            non-destructive)
+                            </li><li>Trees: traversals, binary search trees, constructing, inserting,
+                            deleting</li></ul>
+                        </li><li>Maps.</li>
+                        <li>Iterators, generators</li>
+                        <li>Trees: uses, traversing, and searching.</li>
+                    </ul>
+                </section>
+
+                <section hidden="" aria-hidden="true" class="future" style="display: none;">
+                    <h3 style="font-size:1.1em;">Programming Language Concepts, Design, Implementation</h3>
+
+                    <ul class="smaller">
+                        <li>Python was developed largely as a teaching language, and is simpler
+                    in many ways than other “production” languages...</li>
+                        <li>And yet, it is a good deal more powerful (as measured by work done
+                    per line of code) than these same languages.</li>
+                        <li>Still, as you’ve seen, there are problems, too: dynamic vs. static
+                    discovery of errors.</li>
+                        <li>Big item: scope (what instance of what definition applies to evalu-
+                    ation of an identifier). This is what environment diagrams are in-
+                    tended to model.
+                            <ul><li>– Alternative: dynamic scoping.</li></ul>
+                        </li>
+                        <li>Implementing a language [CS164]:
+                            <ul>
+                                <li>Interpreters</li>
+                                <li>Trees as an intermediate language</li>
+                                <li>Relationship of run-time environment representation to scope rules.</li>
+                                <li>“Little” languages as a programming tool</li>
+                            </ul>
+                        </li>
+                    </ul>
+                </section>
+
+                <section hidden="" aria-hidden="true" class="future" style="display: none;">
+                    <h3>Paradigms</h3>
+                    <ul class="smaller">
+                        <li>Functional programming: expressions, not statements; no side-effects;
+                            use of higher-order functions.</li>
+                        <li>Data-directed and object-oriented programming:
+                            <ul>
+                                <li>Organize program around types of data, not functions</li>
+                                <li>Inheritance</li>
+                                <li>Interface vs. implementation</li>
+                            </ul>
+                        </li>
+                        <li>Declarative programming:
+                            <ul>
+                                <li>State goals or properties of the solution rather than procedures.</li>
+                                <li>Regular Expressions: Describe text with patterns; system figures out how to match them.</li>
+                                <li>BNF: Describe languages with simple rules; system figures out how to parse them.</li>
+                                <li>Syntax-Driven Translation: Hook BNF with rules that produce
+                                    results. We saw calculators, language translators.</li>
+                            </ul>
+                        </li>
+                    </ul>
+                </section>
+
+                <section hidden="" aria-hidden="true" class="future" style="display: none;">
+                    <h3>Software Engineering</h3>
+
+                    <ul>
+                        <li>Biggest ideas: Abstraction, separation of concerns</li>
+                        <li>Specification of a program vs. its implementation
+                            <ul>
+                                <li>Syntactic spec (header) vs. semantic spec (comment).</li>
+                                <li>Example of multiple implementations for the same abstract behavior</li>
+                            </ul>
+                        </li>
+                        <li>Testing: for every program, there is a test.
+                            <ul>
+                                <li>In “Extreme Programming” there is a test for every module.</li>
+                            </ul>
+                        </li>
+                        <li>Software engineering implicit in all our software courses, explicit in
+                            CS169.</li>
+                    </ul>
+                </section>
+
+                <section hidden="" aria-hidden="true" class="future" style="display: none;">
+                    <h3>Analysis</h3>
+                    <p>What we can measure when we measure speed:
+                        </p><ul>
+                            <li>Raw time.</li>
+                            <li>Counts of selected representative operations.</li>
+                            <li>Symbolic expressions of running time.</li>
+                            <li>Looking at worst cases simplifies the problem (and is useful).</li>
+                        </ul>
+                    <p></p>
+
+                    <p>Application of asymptotic notation (Θ(·), etc.) to summarizing symbolic time measurements concisely.</p>
+                </section>
+
+                <section hidden="" aria-hidden="true" class="future" style="display: none;">
+                    <h3>Side excursions</h3>
+
+                    <ul>
+                        <li>Computability [CS172]: Some functions cannot be computed. Problems that are “near” such functions often cannot be computed quickly.</li>
+                        <li>SQL [CS186]: A widely used language for accessing and updating databases.</li>
+                        <li>Prolog: A somewhat extreme example of a declarative programming language involving logical inference.</li>
+                    </ul>
+                </section>
+
+                <section class="heading-only future" hidden="" aria-hidden="true" style="display: none;">
+                    <h2>What's next?</h2>
+                </section>
+
+                <section hidden="" aria-hidden="true" class="future" style="display: none;">
+                    <h3>What’s Next (Course-Wise)?</h3>
+
+                    <ul style="font-size:0.8em;">
+                        <li>CS61B: (conventional) data structures, statically typed production languages.</li>
+                        <li>CS61C: computing architecture and hardware as programmers see it.</li>
+                        <li>CS70: Discrete Math and Probablilty Theory.</li>
+                        <li>CSC100: Data Science</li>
+                        <li>CS170, CS171, CS172, CS174: “Theory”—analysis and construction
+                        of algorithms, cryptography, computability, complexity, combinatorics,
+                        use of probabilistic algorithms and analysis.</li>
+                        <li>CS161: Security</li>
+                        <li>CS162: Operating systems.</li>
+                        <li>CS164: Implementation of programming languages</li>
+                        <li>CS168: Introduction to the Internet</li>
+                        <li>CS160, CS169: User interfaces, software engineering</li>
+                        <li>CS176: Computational Biology</li>
+                    </ul>
+
+                </section>
+
+                <section hidden="" aria-hidden="true" class="future" style="display: none;">
+                    <h3>What’s Next (Course-Wise)?</h3>
+
+                    <ul style="font-size:0.8em;">
+                        <li>CS182, CS188, CS189: Neural networks, Artificial intelligence, Machine Learning</li>
+                        <li>CS184: Graphics</li>
+                        <li>CS186: Databases</li>
+                        <li>CS191: Quantum Computing</li>
+                        <li>CS195: Social Implications of Computing</li>
+                        <li>EECS 16A, 16B: Designing Information Systems and Devices</li>
+                        <li>EECS 126: Probabilty and Random Processes</li>
+                        <li>EECS149: Embedded Systems</li>
+                        <li>EECS 151: Digital Design</li>
+                        <li>CS194: Special topics. (E.g.) computational photography and image
+                            manipulation, cryptography, cyberwar.</li>
+                        <li>Plus graduate courses on these subjects and more.</li>
+                        <li>And please don’t forget CS199 and research projects.</li>
+                    </ul>
+
+                </section>
+
+
+                <section hidden="" aria-hidden="true" class="future" style="display: none;">
+                    <h3>There’s Also Electrical Engineering</h3>
+
+                    <ul style="font-size:0.8em;">
+                        <li>EE105: Microelectronic Devices and Circuits.</li>
+                        <li>EE106: Robotics</li>
+                        <li>EE118, EE134: Optical Engineering, Photovotalaic Devices.</li>
+                        <li>EE120: Signals and Systems.</li>
+                        <li>EE123: Digital Signal Processing.</li>
+                        <li>EE126: Probability and Random Processes.</li>
+                        <li>EE130: Integrated Circuit Devices.</li>
+                        <li>EE137A: Power Circuits.</li>
+                        <li>EE140: Linear Integrated Circuits (analog circuits, amplifiers).</li>
+                        <li>EE142: Integrated Circuits for Communication.</li>
+                        <li>EE143: Microfabrication Technology.</li>
+                        <li>EE147: Micromechanical Systems (MEMS).</li>
+                        <li>EE192: Mechatronic Design.</li>
+                    </ul>
+
+                </section>
+
+                <section hidden="" aria-hidden="true" class="future" style="display: none;">
+                    <h3>What's next? (Otherwise)</h3>
+
+                    <ul>
+                        <li>Programming contests</li>
+                        <li>Hackathons</li>
+                        <li>More paradigms and languages: the web</li>
+                        <li>The open-source world: Go out and build something!</li>
+                        <li>Above all: Have fun!</li>
+                    </ul>
+
+                </section>
+
+                <section class="heading-only future" hidden="" aria-hidden="true" style="display: none;">
+                    <h2>Fun with Python 🎉 🐍</h2>
+                </section>
+
+                <section hidden="" aria-hidden="true" class="future" style="display: none;">
+                    <h3>What can you do with Python?</h3>
+                    <p>Almost anything! <span class="fragment" data-fragment-index="0">Thanks to libraries! </span></p>
+                    <ul>
+                        <li>Webapp backends <span class="fragment" data-fragment-index="0">(Flask, Django)</span></li>
+                        <li>Web scraping <span class="fragment" data-fragment-index="0">(BeautifulSoup)</span></li>
+                        <li>Natural Language Processing <span class="fragment" data-fragment-index="0">(NLTK)</span></li>
+                        <li>Data analysis <span class="fragment" data-fragment-index="0">(Numpy, Pandas, Matplotlib)</span></li>
+                        <li>Machine Learning <span class="fragment" data-fragment-index="0">(FastAi, PyTorch, Keras)</span></li>
+                        <li>Scientific computing <span class="fragment" data-fragment-index="0">(SciPy)</span></li>
+                        <li>Games <span class="fragment" data-fragment-index="0">(Pygame)</span></li>
+                        <li>Procedural generation - L Systems, Noise, Markov</li>
+                    </ul>
+                    <p class="smaller">*Except you should be careful when you use recursion...</p>
+
+                </section>
+
+                <section hidden="" aria-hidden="true" class="future" style="display: none;">
+                    <h3>Web scraping &amp; Markov chains</h3>
+
+                    <a href="https://replit.com/@PamelaFox2/BeautifulSoupDemo" target="_blank">👉🏽 Demo: Composing Gobbledygooks</a>
+
+                    <p><strong>Web scraping</strong>: Getting data from webpages by traversing the HTML.</p>
+
+                    <p><strong>Markov chain</strong>: A way to generate a sequence based on the probabalistic next token.</p>
+                    <img src="./Conclusion_files/following-transitions-from-I.png" alt="Markov diagram">
+
+                    <br>
+
+                    <p class="smaller">Further learning:
+                        <a href="https://docs.python.org/3/howto/urllib2.html" target="_blank">urllib2 module</a>,
+                        <a href="https://www.crummy.com/software/BeautifulSoup/bs4/doc/" target="_blank">BeautifulSoup docs</a>,
+                        <a href="https://sookocheff.com/post/nlp/ngram-modeling-with-markov-chains/" target="_blank">N-Gram modeling with Markov chains</a>,
+                        CS70/EECS126 for Markov chains
+                    </p>
+                </section>
+
+
+                <section hidden="" aria-hidden="true" class="future" style="display: none;">
+                    <h3>Turtle &amp; L-systems</h3>
+
+                    <p><a href="https://replit.com/@PamelaFox2/LTreeDemo" target="_blank">👉🏽 Demo: L Trees!</a></p>
+
+                    <p><strong>Turtle</strong>: A library for drawing graphics (as if a pen is controlled by a turtle).</p>
+
+                    <p><strong>L-system</strong>: A parallel rewriting system and a type of formal grammar,
+                        developed originally by a biologist to model the growth of plants.
+                    </p>
+
+                    <p class="smaller">Example: Axiom: <code>A</code>, Rules: <code>A → AB</code>, <code>B → A</code></p>
+
+                    <pre class="code-badge-pre"><div class="code-badge">
+        <div class="code-badge-language">python</div>
+        <div title="Copy to clipboard">
+            <i class="fa fa-copy code-badge-copy-icon">📄</i>
+        </div>
+     </div><code data-trim="" data-noescape="" class="python hljs">n = <span class="hljs-number">0</span> : A
+n = <span class="hljs-number">1</span> : AB
+n = <span class="hljs-number">2</span> : ABA
+n = <span class="hljs-number">3</span> : ABAAB</code></pre>
+
+                    <p class="smaller">Further learning: <a href="https://docs.python.org/3/library/turtle.html" target="_blank">turtle module</a>,
+                            <a href="https://runestone.academy/runestone/books/published/thinkcspy/Strings/TurtlesandStringsandLSystems.html" target="_blank">Tutorial: Turtles and Strings and L-Systems</a>,
+                            <a href="http://paulbourke.net/fractals/lsys/" target="_blank">Algorithmic Botany: Graphical Modeling using L-systems</a>,
+                            <a href="http://paulbourke.net/fractals/lsys/" target="_blank">L-system examples</a>
+                    </p>
+                </section>
+
+                <section hidden="" aria-hidden="true" class="future" style="display: none;">
+                    <h3>Natural Language Processing</h3>
+
+                    <p><a href="https://replit.com/@PamelaFox2/NLPDemo#main.py">👉🏽 Demo: Sentence trees!</a></p>
+
+                    <p>NLP includes language modeling, spelling correction, text classification, sentiment analysis,
+                        information retrieval, relation extraction, recommendation systems, translation question answering, word vectors,
+                        and more.
+                    </p>
+                    <br>
+                    <p class="smaller">Further learning:
+                        <a href="http://www.nltk.org/book/ch08.html" target="_blank">NLTK Book</a>,
+                        <a href="https://realpython.com/python-nltk-sentiment-analysis/" target="_blank">NLTK Sentiment Analysis</a>,
+                        <a href="https://web.stanford.edu/~jurafsky/" target="_blank">Dan Jurafsky's lectures and books</a>,
+                        Berkeley classes: INFO 159, CS 288
+                    </p>
+
+                </section>
+
+                <section hidden="" aria-hidden="true" class="future" style="display: none;">
+                    <h3>Demo: Supervised Machine Learning</h3>
+
+                    <p><a href="https://www.kaggle.com/vyombhatia/96-accuracy-with-7-lines-of-code" target="_blank">👉🏽 Demo: Bee vs. Wasp?</a></p>
+
+                    <img src="./Conclusion_files/Supervised_machine_learning_in_a_nutshell.svg" alt="Diagram of supervised ML process">
+
+                    <br>
+                    <p class="smaller">Further learning:
+                        <a href="https://docs.fast.ai/" target="_blank">FastAI Documentation</a>,
+                        <a href="https://www.kaggle.com/learn/intro-to-machine-learning" target="_blank">Kaggle ML tutorial</a>,
+                        <a href="https://www.khanacademy.org/computing/ap-computer-science-principles/data-analysis-101#x2d2f703b37b450a3:machine-learning-and-bias" target="_blank">Bias in ML</a>,
+                        Berkeley classes: CS182, CS188, CS189
+                    </p>
+
+                </section>
+
+			</div>
+		<div class="backgrounds"><div class="slide-background heading-only present" data-loaded="true" style="display: block;"><div class="slide-background-content"></div></div><div class="slide-background heading-only future" data-loaded="true" style="display: block;"><div class="slide-background-content"></div></div><div class="slide-background future" data-loaded="true" style="display: block;"><div class="slide-background-content"></div></div><div class="slide-background future" style="display: none;"><div class="slide-background-content"></div></div><div class="slide-background future" style="display: none;"><div class="slide-background-content"></div></div><div class="slide-background future" style="display: none;"><div class="slide-background-content"></div></div><div class="slide-background future" style="display: none;"><div class="slide-background-content"></div></div><div class="slide-background future" style="display: none;"><div class="slide-background-content"></div></div><div class="slide-background future" style="display: none;"><div class="slide-background-content"></div></div><div class="slide-background future" style="display: none;"><div class="slide-background-content"></div></div><div class="slide-background heading-only future" style="display: none;"><div class="slide-background-content"></div></div><div class="slide-background future" style="display: none;"><div class="slide-background-content"></div></div><div class="slide-background future" style="display: none;"><div class="slide-background-content"></div></div><div class="slide-background future" style="display: none;"><div class="slide-background-content"></div></div><div class="slide-background future" style="display: none;"><div class="slide-background-content"></div></div><div class="slide-background heading-only future" style="display: none;"><div class="slide-background-content"></div></div><div class="slide-background future" style="display: none;"><div class="slide-background-content"></div></div><div class="slide-background future" style="display: none;"><div class="slide-background-content"></div></div><div class="slide-background future" style="display: none;"><div class="slide-background-content"></div></div><div class="slide-background future" style="display: none;"><div class="slide-background-content"></div></div><div class="slide-background future" style="display: none;"><div class="slide-background-content"></div></div></div><div class="slide-number" style="display: block;"><a href="https://inst.eecs.berkeley.edu/~cs61a/sp21/assets/slides/38-Conclusion.html#/">
+					<span class="slide-number-a">1</span>
+					</a></div><aside class="controls" data-controls-layout="bottom-right" data-controls-back-arrows="faded" style="display: block;"><button class="navigate-left" aria-label="previous slide" disabled="disabled"><div class="controls-arrow"></div></button>
+			<button class="navigate-right enabled highlight" aria-label="next slide"><div class="controls-arrow"></div></button>
+			<button class="navigate-up" aria-label="above slide" disabled="disabled"><div class="controls-arrow"></div></button>
+			<button class="navigate-down" aria-label="below slide" disabled="disabled"><div class="controls-arrow"></div></button></aside><div class="progress" style="display: block;"><span style="transform: scaleX(0);"></span></div><div class="speaker-notes" data-prevent-swipe="" tabindex="0"></div><div class="pause-overlay"><button class="resume-button">Resume presentation</button></div><div class="aria-status" aria-live="polite" aria-atomic="true" style="position: absolute; height: 1px; width: 1px; overflow: hidden; clip: rect(1px, 1px, 1px, 1px);">Conclusion Tips for navigating the slides: Press O or Escape for overview mode. Visit this link for a nice printable version Press the copy icon on the upper right of code blocks to copy the code </div></div>
+
+		<script src="./Conclusion_files/reveal.js.下载"></script>
+        <script src="./Conclusion_files/highlight.js.下载"></script>
+        <script src="./Conclusion_files/highlightjs-badge.min.js.下载"></script>
+        <script src="./Conclusion_files/jsplumb.min.js.下载"></script>
+		<script>
+			const srcUrlPrefix = "https://cdn.jsdelivr.net/npm/reveal.js@4.1.0/";
+			Reveal.initialize({
+				hash: true,
+				center: false,
+				slideNumber: true,
+				showNotes: false,
+				margin: 0.1,
+				preloadIframes: true,
+				plugins: [ RevealHighlight ],
+				pdfSeparateFragments: true
+			});
+
+            // add HighlightJS-badge (options are optional)
+            var options = {
+                copyIconContent: "📄",
+                checkIconContent: "✅"
+            };
+            window.highlightJsBadge(options);
+
+            if (window.location.search == "?print-pdf") {
+                var uncounted = document.querySelectorAll("[data-visibility='uncounted']");
+                uncounted.forEach(node => {
+                    node.parentNode.classList.add("no-print")
+                })
+            }
+		</script>
+	
+
+<style>
+@media print {
+   .code-badge { display: none; }
+}
+    .code-badge-pre {
+        position: relative;
+    }
+    .code-badge {
+        display: flex;
+        flex-direction: row;
+        white-space: normal;
+        background: transparent;
+        background: #333;
+        color: white;
+        font-size: 0.875em;
+        opacity: 0.5;
+        transition: opacity linear 0.5s;
+        border-radius: 0 0 0 7px;
+        padding: 5px 8px 5px 8px;
+        position: absolute;
+        right: 0;
+        top: 0;
+    }
+    .code-badge.active {
+        opacity: 0.8;
+    }
+
+    .code-badge:hover {
+        opacity: .95;
+    }
+
+    .code-badge a,
+    .code-badge a:hover {
+        text-decoration: none;
+    }
+
+    .code-badge-language {
+        margin-right: 10px;
+        font-weight: 600;
+        color: goldenrod;
+    }
+    .code-badge-copy-icon {
+        font-size: 1.2em;
+        cursor: pointer;
+        padding: 0 7px;
+        margin-top:2;
+    }
+    .fa.text-success:{ color: limegreen !important }
+</style><div id="CodeBadgeTemplate" style="display:none">
+    <div class="code-badge">
+        <div class="code-badge-language">{{language}}</div>
+        <div title="Copy to clipboard">
+            <i class="{{copyIconClass}} code-badge-copy-icon"></i>
+        </div>
+     </div>
+</div></body></html>

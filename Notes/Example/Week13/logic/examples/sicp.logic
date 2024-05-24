@@ -1,0 +1,70 @@
+;; An example of using a Schemish Prolog program to repesent a database.
+
+; Facts
+
+(fact (address (bitdiddle ben) (slumerville (ridge road) 10)))
+(fact (job (bitdiddle ben) (computer wizard)))
+(fact (salary (bitdiddle ben) 60000))
+
+(fact (address (hacker alyssa p) (cambridge (mass ave) 78)))
+(fact (job (hacker alyssa p) (computer programmer)))
+(fact (salary (hacker alyssa p) 40000))
+(fact (supervisor (hacker alyssa p) (bitdiddle ben)))
+(fact (address (fect cy d) (cambridge (ames street) 3)))
+(fact (job (fect cy d) (computer programmer)))
+(fact (salary (fect cy d) 35000))
+(fact (supervisor (fect cy d) (bitdiddle ben)))
+(fact (address (tweakit lem e) (boston (bay state road) 22)))
+(fact (job (tweakit lem e) (computer technician)))
+(fact (salary (tweakit lem e) 25000))
+(fact (supervisor (tweakit lem e) (bitdiddle ben)))
+
+(fact (address (reasoner louis) (slumerville (pine tree road) 80)))
+(fact (job (reasoner louis) (computer programmer trainee)))
+(fact (salary (reasoner louis) 30000))
+(fact (supervisor (reasoner louis) (hacker alyssa p)))
+
+(fact (supervisor (bitdiddle ben) (warbucks oliver)))
+(fact (address (warbucks oliver) (swellesley (top heap road))))
+(fact (job (warbucks oliver) (administration big wheel)))
+(fact (salary (warbucks oliver) 150000))
+
+(fact (address (scrooge eben) (weston (shady lane) 10)))
+(fact (job (scrooge eben) (accounting chief accountant)))
+(fact (salary (scrooge eben) 75000))
+(fact (supervisor (scrooge eben) (warbucks oliver)))
+(fact (address (cratchet robert) (allston (n harvard street) 16)))
+(fact (job (cratchet robert) (accounting scrivener)))
+(fact (salary (cratchet robert) 18000))
+(fact (supervisor (cratchet robert) (scrooge eben)))
+
+(fact (address (aull dewitt) (slumerville (onion square) 5)))
+(fact (job (aull dewitt) (administration secretary)))
+(fact (salary (aull dewitt) 25000))
+(fact (supervisor (aull dewitt) (warbucks oliver)))
+
+(fact (can-do-job (computer wizard) (computer programmer)))
+(fact (can-do-job (computer wizard) (computer technician)))
+
+(fact (can-do-job (computer programmer)
+            (computer programmer trainee)))
+
+(fact (can-do-job (administration secretary)
+            (administration big wheel)))
+
+(fact (can-do-job (computer . ?r) (computer . ?r)))
+
+(fact (lives-near ?person-1 ?person-2)
+      (address ?person-1 (?town . ?rest-1))
+      (address ?person-2 (?town . ?rest-2)))
+
+(fact (wheel ?person)
+      (supervisor ?middle-manager ?person)
+      (supervisor ?x ?middle-manager))
+
+; Queries
+
+;(query (job ?x (computer . ?y)))
+;(query (job ?x ?y) (can-do-job ?y (computer programmer)))
+;(query (lives-near ?x (bitdiddle ben)))
+;(query (wheel ?x))

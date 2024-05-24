@@ -1,0 +1,45 @@
+;; Various routine list operations.
+
+;; (append-to-form ?x ?y ?z) if ?z results from concatenating ?x and ?y.
+(fact (append-to-form () ?x ?x))
+(fact (append-to-form (?a . ?r) ?y (?a . ?z)) (append-to-form ?r ?y ?z))
+
+;(query (append-to-form (a b c) (d e) ?result))
+;(query (append-to-form ?left ?right (a b c d e)))
+
+; (reverse ?x ?y) means that ?y is the reverse of list ?x.
+(fact (reverse () ()))
+(fact (reverse (?a . ?r) ?b) (reverse ?r ?s) (append-to-form ?s (?a) ?b))
+
+;(query (reverse ?x (a b c d)))
+
+
+; (swap ?x ?y) if the list ?y is ?x with each adjacent pair of items swapped.
+; A single trailing item or empty list is left unchanged.
+
+(fact (swap () ()))
+(fact (swap (?x) (?x)))
+(fact (swap (?x ?y . ?z) (?y ?x . ?e)) (swap ?z ?e))
+
+;(query (swap (1 2 3 4 5 6) ?x))
+
+; (zip ?x ?y ?z) if ?z is the result of zipping the lists ?x and ?y together as
+; for the zip function in Python.
+        
+(fact (zip () () ()))
+(fact (zip (?a . ?r) (?b . ?s) (?a ?b . ?t)) (zip ?r ?s ?t))
+
+;(query (zip (1 3 5) (2 4 6) ?x))
+;(query (zip ?x ?y (1 2 3 4 5 6)) (reverse ?y ?z))
+
+; (nest ?x ?y) if ?y is the list ?x represented with pairs, as for a linked
+; list.
+
+(fact (nest () ()))
+(fact (nest (?a . ?rest) (?a ?nested)) (nest ?rest ?nested))
+
+;(query (nest (1 2 3 4 5) ?nested))
+
+;(query (reverse ?z (6 5 4 3 2 1))
+;       (append-to-form ?x ?y ?z)
+;       (zip ?x ?y ?w))

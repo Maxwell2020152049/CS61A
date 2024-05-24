@@ -1,0 +1,42 @@
+;; Some simple facts about integers (1-6 anyway) and addition.
+
+;; (num ?x) is means that ?x is an integer 1<=?x<=6
+
+(fact (num 1))
+(fact (num 2))
+(fact (num 3))
+(fact (num 4))
+(fact (num 5))
+(fact (num 6))
+
+;; (increment ?x ?y) means that ?y = ?x + 1
+
+(fact (increment 1 2))
+(fact (increment 2 3))
+(fact (increment 3 4))
+(fact (increment 4 5))
+(fact (increment 5 6))
+
+;; (add ?x ?y ?z) means that ?z = ?x + ?y
+
+(fact (add       1 ?x ?x+1)
+      (increment ?x ?x+1))
+(fact (add       ?x+1 ?y ?z+1)
+      (increment ?x ?x+1)
+      (increment ?z ?z+1)
+      (add       ?x ?y ?z))
+
+;(query (add 2 3 ?z))
+;(query (add ?x ?y 5))
+
+; (eval E V) if the value of E as a Scheme expression is V.  E may
+; consist only of integers 1-6 and expressions (+ E1 E2).
+
+(fact (eval ?x ?x) (num ?x))
+(fact (eval (+ ?operand0 ?operand1) ?val)
+      (add ?arg0 ?arg1 ?val)
+      (eval ?operand0 ?arg0)
+      (eval ?operand1 ?arg1))
+
+;(query (eval (+ 2 (+ 1 1)) ?value))
+;(query (eval ?exp 4))

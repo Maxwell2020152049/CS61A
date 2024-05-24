@@ -1,0 +1,65 @@
+(fact (parent abraham barack))
+(fact (parent abraham clinton))
+(fact (parent delano herbert))
+(fact (parent fillmore abraham))
+(fact (parent fillmore delano))
+(fact (parent fillmore grover))
+(fact (parent eisenhower fillmore))
+
+(query (parent abraham ?child))
+; expect Success! ; child: barack ; child: clinton
+
+(fact (child ?c ?p) (parent ?p ?c))
+
+(query (child ?child fillmore))
+; expect Success! ; child: abraham ; child: delano ; child: grover
+
+(query (child herbert delano))
+; expect Success!
+
+(query (child eisenhower ?parent))
+; expect Failed.
+
+(fact (ancestor ?a ?y) (parent ?a ?y))
+(fact (ancestor ?a ?y) (parent ?a ?z) (ancestor ?z ?y))
+
+(query (ancestor ?a herbert))
+; expect Success! ; a: delano ; a: fillmore ; a: eisenhower
+
+(query (ancestor ?a barack) (ancestor ?a herbert))
+; expect Success! ; a: fillmore ; a: eisenhower
+
+(fact (dog (name abraham) (color white)))
+(fact (dog (name barack) (color tan)))
+(fact (dog (name clinton) (color white)))
+(fact (dog (name delano) (color white)))
+(fact (dog (name eisenhower) (color tan)))
+(fact (dog (name fillmore) (color brown)))
+(fact (dog (name grover) (color tan)))
+(fact (dog (name herbert) (color brown)))
+
+(query (dog (name clinton) (color ?color)))
+; expect Success! ; color: white
+
+(query (dog (name clinton) ?info))
+; expect Success! ; info: (color white)
+
+(query (dog (name ?name) (color ?color))
+       (ancestor ?ancestor ?name)
+       (dog (name ?ancestor) (color ?color)))
+; expect Success! ; name: barack	color: tan	ancestor: eisenhower ; name: clinton	color: white	ancestor: abraham ; name: grover	color: tan	ancestor: eisenhower ; name: herbert	color: brown	ancestor: fillmore
+
+(fact (ancestry ?name) (dog (name ?name) . ?details))
+(fact (ancestry ?child ?parent . ?rest)
+      (parent ?parent ?child)
+      (ancestry ?parent . ?rest))
+
+(query (ancestry barack . ?lineage))
+; expect Success! ; lineage: () ; lineage: (abraham) ; lineage: (abraham fillmore) ; lineage: (abraham fillmore eisenhower)
+
+
+(query (ancestor ?a clinton)
+       (ancestor ?a ?brown-dog)
+       (dog (name ?brown-dog) (color brown)))
+; expect Success! ; a: fillmore	brown-dog: herbert ; a: eisenhower	brown-dog: fillmore ; a: eisenhower	brown-dog: herbert
+

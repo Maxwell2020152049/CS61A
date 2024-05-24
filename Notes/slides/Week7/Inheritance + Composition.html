@@ -1,0 +1,989 @@
+<!DOCTYPE html>
+<!-- saved from url=(0090)https://inst.eecs.berkeley.edu/~cs61a/sp21/assets/slides/17-Inheritance_+_Composition.html -->
+<html class="reveal-full-page"><head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+		
+		<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+		<title>Inheritance + Composition</title>
+		<link rel="stylesheet" href="./Inheritance + Composition_files/reset.css">
+		<link rel="stylesheet" href="./Inheritance + Composition_files/reveal.css">
+		<link rel="stylesheet" href="./Inheritance + Composition_files/simple.css" id="theme">
+		<link rel="stylesheet" href="./Inheritance + Composition_files/mono-blue.css">
+		<link rel="stylesheet" href="./Inheritance + Composition_files/css">
+		<style>
+			.reveal {
+				font-family: "Work Sans", sans-serif;
+			}
+
+			.reveal .slides section {
+				text-align: left;
+				font-size: smaller;
+			}
+
+			.reveal pre {
+				background-color: #f5f5f5;
+				width: 100%;
+				border: 1px solid #ccc;
+				border-radius: 4px;
+				box-shadow: none;
+			}
+
+			.reveal h1, .reveal h2, .reveal h3, .reveal h4, .reveal h5, .reveal h6 {
+				font-family: "Roboto", sans-serif;
+				color: #0072c1;
+			}
+
+			.reveal section.heading-only {
+				text-align:center;
+				padding-top:20%;
+			}
+
+            .column .code-badge, .no-code-badge .code-badge {
+                display: none;
+            }
+
+            .code-badge-language {
+                display: none;
+            }
+
+			.python-tutor-link {
+				font-size: smaller;
+			}
+
+			.python-tutor-link:before {
+				content: "";
+				display: block;
+				background: url("http://pythontutor.com/favicon.ico") no-repeat;
+				width: 48px;
+				height: 48px;
+				float: left;
+				margin: 0 6px 0 0;
+			}
+
+			.reveal h3 {
+				margin-bottom: 40px;
+			}
+
+            .smaller {
+                font-size: smaller;
+            }
+
+            code {
+                padding: 2px 4px;
+                font-size: 90%;
+                color: #0072c1;
+                background-color: #f9f2f4;
+                border-radius: 4px;
+            }
+
+            p.padded {
+                margin-top: 32px;
+            }
+
+            section .row {
+                display: flex;
+            }
+
+            section .column {
+                flex: 48%;
+                margin: 10px;
+            }
+
+			@media print
+			{
+				.no-print, .no-print *
+				{
+					display: none !important;
+				}
+			}
+		</style>
+	<style type="text/css">.hljs-ln{border-collapse:collapse}.hljs-ln td{padding:0}.hljs-ln-n:before{content:attr(data-line-number)}</style></head>
+	<body class="reveal-viewport" style="--slide-width: 960px; --slide-height: 700px;">
+		<div class="reveal slide focused has-horizontal-slides ready" role="application" data-transition-speed="default" data-background-transition="fade">
+			<div class="slides" style="width: 960px; height: 700px; inset: 50% auto auto 50%; transform: translate(-50%, -50%) scale(0.957857);">
+				<section class="heading-only present" style="display: block;">
+					<h1>Inheritance + Composition</h1>
+
+					<div class="no-print" style="text-align: left; margin-top: 100px; font-size: 70%;">
+						Tips for navigating the slides:
+						<ul>
+							<li>Press O or Escape for overview mode.</li>
+							<li>Visit <a href="https://inst.eecs.berkeley.edu/~cs61a/sp21/assets/slides/17-Inheritance_+_Composition.html?print-pdf" target="_blank">this link</a> for a nice printable version</li>
+							<li>Press the copy icon on the upper right of code blocks to copy the code</li>
+						</ul>
+					</div>
+				</section>
+
+                <section class="heading-only future" hidden="" aria-hidden="true" style="display: block;">
+                    <h2>Motivation</h2>
+                </section>
+
+                <section style="display: block;" hidden="" aria-hidden="true" class="future">
+                    <h3>Building "Animal Conserving"</h3>
+
+                    <p class="smaller">A game where we take care of cute furry/ferocious animals:</p>
+
+                    <img class="r-stretch" src="./Inheritance + Composition_files/2mkDuTf.png" alt="A bunch of pairs of animals" style="height: 491px; width: 835.264px;">
+                </section>
+
+                <section style="display: none;" hidden="" aria-hidden="true" class="future">
+                    <h3>What should be the classes?</h3>
+
+                    <img class="r-stretch" src="./Inheritance + Composition_files/2mkDuTf.png" alt="A bunch of pairs of animals" style="height: 564.324px; width: 960px;">
+
+                    <pre style="font-size:0.65em" class="fragment code-badge-pre" data-fragment-index="0"><div class="code-badge">
+        <div class="code-badge-language">python</div>
+        <div title="Copy to clipboard">
+            <i class="fa fa-copy code-badge-copy-icon">📄</i>
+        </div>
+     </div><code data-trim="" data-noescape="" class="python hljs">Panda()
+Lion()
+Rabbit()
+Vulture()
+Elephant()
+Food()</code></pre>
+
+                </section>
+
+                <section hidden="" aria-hidden="true" class="future" style="display: none;">
+
+                    <h3>A Food class</h3>
+
+                    <p>Let's start simple:</p>
+
+                    <pre style="font-size:0.8em" class="code-badge-pre"><div class="code-badge">
+        <div class="code-badge-language">python</div>
+        <div title="Copy to clipboard">
+            <i class="fa fa-copy code-badge-copy-icon">📄</i>
+        </div>
+     </div><code data-trim="" data-noescape="" class="python hljs"><span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">Food</span>:</span>
+
+    <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">__init__</span>(<span class="hljs-params">self, name, type, calories</span>):</span>
+        self.name = name
+        self.type = type
+        self.calories = calories</code></pre>
+
+                    <p class="smaller">How would we use that class?</p>
+                    <pre style="font-size:0.8em" class="fragment code-badge-pre" data-fragment-index="0"><div class="code-badge">
+        <div class="code-badge-language">python</div>
+        <div title="Copy to clipboard">
+            <i class="fa fa-copy code-badge-copy-icon">📄</i>
+        </div>
+     </div><code data-trim="" data-noescape="" class="python hljs">broccoli = Food(<span class="hljs-string">"Broccoli Rabe"</span>, <span class="hljs-string">"veggies"</span>, <span class="hljs-number">20</span>)
+bone_marrow = Food(<span class="hljs-string">"Bone Marrow"</span>, <span class="hljs-string">"meat"</span>, <span class="hljs-number">100</span>)</code></pre>
+
+                </section>
+
+                <section hidden="" aria-hidden="true" class="future" style="display: none;">
+                    <h3>An Elephant class</h3>
+
+                    <pre style="font-size:0.4em" class="code-badge-pre"><div class="code-badge">
+        <div class="code-badge-language">python</div>
+        <div title="Copy to clipboard">
+            <i class="fa fa-copy code-badge-copy-icon">📄</i>
+        </div>
+     </div><code data-trim="" data-noescape="" class="python hljs"><span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">Elephant</span>:</span>
+    species_name = <span class="hljs-string">"African Savanna Elephant"</span>
+    scientific_name = <span class="hljs-string">"Loxodonta africana"</span>
+    calories_needed = <span class="hljs-number">8000</span>
+
+    <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">__init__</span>(<span class="hljs-params">self, name, age=<span class="hljs-number">0</span></span>):</span>
+        self.name = name
+        self.age = age
+        self.calories_eaten  = <span class="hljs-number">0</span>
+        self.happiness = <span class="hljs-number">0</span>
+
+    <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">play</span>(<span class="hljs-params">self, num_hours</span>):</span>
+        self.happiness += (num_hours * <span class="hljs-number">4</span>)
+        print(<span class="hljs-string">"WHEEE PLAY TIME!"</span>)
+
+    <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">eat</span>(<span class="hljs-params">self, food</span>):</span>
+        self.calories_eaten += food.calories
+        print(<span class="hljs-string">f"Om nom nom yummy <span class="hljs-subst">{food.name}</span>"</span>)
+        <span class="hljs-keyword">if</span> self.calories_eaten &gt; self.calories_needed:
+            self.happiness -= <span class="hljs-number">1</span>
+            print(<span class="hljs-string">"Ugh so full"</span>)
+
+    <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">interact_with</span>(<span class="hljs-params">self, animal2</span>):</span>
+        self.happiness += <span class="hljs-number">1</span>
+        print(<span class="hljs-string">f"Yay happy fun time with <span class="hljs-subst">{animal2.name}</span>"</span>)</code></pre>
+
+                    <p class="smaller">How would we use that class?</p>
+                    <pre style="font-size:0.6em" class="fragment code-badge-pre" data-fragment-index="0"><div class="code-badge">
+        <div class="code-badge-language">python</div>
+        <div title="Copy to clipboard">
+            <i class="fa fa-copy code-badge-copy-icon">📄</i>
+        </div>
+     </div><code data-trim="" data-noescape="" class="python hljs">el1 = Elephant(<span class="hljs-string">"Willaby"</span>, <span class="hljs-number">5</span>)
+el2 = Elephant(<span class="hljs-string">"Wallaby"</span>, <span class="hljs-number">3</span>)
+el1.play(<span class="hljs-number">2</span>)
+el1.interact_with(el2)</code></pre>
+                </section>
+
+                <section hidden="" aria-hidden="true" class="future" style="display: none;">
+                    <h3>A Rabbit class</h3>
+
+                    <pre style="font-size:0.4em" class="code-badge-pre"><div class="code-badge">
+        <div class="code-badge-language">python</div>
+        <div title="Copy to clipboard">
+            <i class="fa fa-copy code-badge-copy-icon">📄</i>
+        </div>
+     </div><code data-trim="" data-noescape="" class="python hljs"><span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">Rabbit</span>:</span>
+    species_name = <span class="hljs-string">"European rabbit"</span>
+    scientific_name = <span class="hljs-string">"Oryctolagus cuniculus"</span>
+    calories_needed = <span class="hljs-number">200</span>
+
+    <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">__init__</span>(<span class="hljs-params">self, name, age=<span class="hljs-number">0</span></span>):</span>
+        self.name = name
+        self.age = age
+        self.calories_eaten = <span class="hljs-number">0</span>
+        self.happiness = <span class="hljs-number">0</span>
+
+    <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">play</span>(<span class="hljs-params">self, num_hours</span>):</span>
+        self.happiness += (num_hours * <span class="hljs-number">10</span>)
+        print(<span class="hljs-string">"WHEEE PLAY TIME!"</span>)
+
+    <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">eat</span>(<span class="hljs-params">self, food</span>):</span>
+        self.calories_eaten += food.calories
+        print(<span class="hljs-string">f"Om nom nom yummy <span class="hljs-subst">{food.name}</span>"</span>)
+        <span class="hljs-keyword">if</span> self.calories_eaten &gt; self.calories_needed:
+            self.happiness -= <span class="hljs-number">1</span>
+            print(<span class="hljs-string">"Ugh so full"</span>)
+
+    <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">interact_with</span>(<span class="hljs-params">self, animal2</span>):</span>
+        self.happiness += <span class="hljs-number">4</span>
+        print(<span class="hljs-string">f"Yay happy fun time with <span class="hljs-subst">{animal2.name}</span>"</span>)</code></pre>
+
+                    <p class="smaller">How would we use that class?</p>
+                    <pre style="font-size:0.6em" class="fragment code-badge-pre" data-fragment-index="0"><div class="code-badge">
+        <div class="code-badge-language">python</div>
+        <div title="Copy to clipboard">
+            <i class="fa fa-copy code-badge-copy-icon">📄</i>
+        </div>
+     </div><code data-trim="" data-noescape="" class="python hljs">rabbit1 = Rabbit(<span class="hljs-string">"Mister Wabbit"</span>, <span class="hljs-number">3</span>)
+rabbit2 = Rabbit(<span class="hljs-string">"Bugs Bunny"</span>, <span class="hljs-number">2</span>)
+rabbit1.eat(broccoli)
+rabbit2.interact_with(rabbit1)</code></pre>
+                </section>
+
+                <section hidden="" aria-hidden="true" class="future" style="display: none;">
+                    <h3>Notice similarities?</h3>
+
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>Elephant</th>
+                                <th>Rabbit</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td>
+                            <pre style="font-size:0.65em" class="no-code-badge code-badge-pre"><div class="code-badge">
+        <div class="code-badge-language">python</div>
+        <div title="Copy to clipboard">
+            <i class="fa fa-copy code-badge-copy-icon">📄</i>
+        </div>
+     </div><code data-trim="" data-noescape="" class="python hljs"><span class="hljs-comment"># Class variables</span>
+species_name
+scientific_name
+calories_needed
+
+<span class="hljs-comment"># Instance variables</span>
+name
+age
+happiness
+
+<span class="hljs-comment"># Methods</span>
+eat(food)
+play()
+interact_with(other)</code></pre>
+                                </td>
+                                <td>
+                            <pre style="font-size:0.65em" class="no-code-badge code-badge-pre"><div class="code-badge">
+        <div class="code-badge-language">python</div>
+        <div title="Copy to clipboard">
+            <i class="fa fa-copy code-badge-copy-icon">📄</i>
+        </div>
+     </div><code data-trim="" data-noescape="" class="python hljs"><span class="hljs-comment"># Class variables</span>
+species_name
+scientific_name
+calories_needed
+
+<span class="hljs-comment"># Instance variables</span>
+name
+age
+happiness
+
+<span class="hljs-comment"># Methods</span>
+eat(food)
+play()
+interact_with(other)</code></pre>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+
+                    <p class="smaller"><code>Elephant</code> and <code>Rabbit</code> are both animals,
+                        so they have similar attributes.
+                        Instead of repeating code, we can <em>inherit</em> the code.
+                    </p>
+                </section>
+
+                <section class="heading-only future" hidden="" aria-hidden="true" style="display: none;">
+                    <h3>Inheritance</h3>
+                </section>
+
+
+                <section style="display: none;" hidden="" aria-hidden="true" class="future">
+                    <h3>Base classes and subclasses</h3>
+
+                    <p>When multiple classes share similar attributes,
+                        you can reduce redundant code by defining a base class
+                        and then subclasses can inherit from the base class.</p>
+
+                    <img class="r-stretch" src="./Inheritance + Composition_files/Sab6KOd.png" alt="Diagram of animal classes extending from Animal" style="height: 354.869px; width: 960px;">
+
+                    <p class="smaller">Tip: The base class is also known as the <strong>superclass</strong>.</p>
+                </section>
+
+
+                <section hidden="" aria-hidden="true" class="future" style="display: none;">
+                    <h3>The base class</h3>
+
+                    <p>The base class
+                        contains method headers common to the subclasses,
+                        and code that is used by multiple subclasses.
+                    </p>
+
+                    <pre style="font-size:0.35em" class="code-badge-pre"><div class="code-badge">
+        <div class="code-badge-language">python</div>
+        <div title="Copy to clipboard">
+            <i class="fa fa-copy code-badge-copy-icon">📄</i>
+        </div>
+     </div><code data-trim="" data-noescape="" class="python hljs"><span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">Animal</span>:</span>
+    species_name = <span class="hljs-string">"Animal"</span>
+    scientific_name = <span class="hljs-string">"Animalia"</span>
+    play_multiplier = <span class="hljs-number">2</span>
+    interact_increment = <span class="hljs-number">1</span>
+
+    <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">__init__</span>(<span class="hljs-params">self, name, age=<span class="hljs-number">0</span></span>):</span>
+        self.name = name
+        self.age = age
+        self.calories_eaten  = <span class="hljs-number">0</span>
+        self.happiness = <span class="hljs-number">0</span>
+
+    <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">play</span>(<span class="hljs-params">self, num_hours</span>):</span>
+        self.happiness += (num_hours * self.play_multiplier)
+        print(<span class="hljs-string">"WHEEE PLAY TIME!"</span>)
+
+    <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">eat</span>(<span class="hljs-params">self, food</span>):</span>
+        self.calories_eaten += food.calories
+        print(<span class="hljs-string">f"Om nom nom yummy <span class="hljs-subst">{food.name}</span>"</span>)
+        <span class="hljs-keyword">if</span> self.calories_eaten &gt; self.calories_needed:
+            self.happiness -= <span class="hljs-number">1</span>
+            print(<span class="hljs-string">"Ugh so full"</span>)
+
+    <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">interact_with</span>(<span class="hljs-params">self, animal2</span>):</span>
+        self.happiness += self.interact_increment
+        print(<span class="hljs-string">f"Yay happy fun time with <span class="hljs-subst">{animal2.name}</span>"</span>)</code></pre>
+
+                    <aside class="notes">What DON'T you see?</aside>
+
+                </section>
+
+                <section hidden="" aria-hidden="true" class="future" style="display: none;">
+                    <h3>The subclasses</h3>
+
+                    <p>To declare a subclass, put parentheses after the class name and specify the base class in the parentheses:</p>
+                    <pre style="font-size:0.85em" class="code-badge-pre"><div class="code-badge">
+        <div class="code-badge-language">python</div>
+        <div title="Copy to clipboard">
+            <i class="fa fa-copy code-badge-copy-icon">📄</i>
+        </div>
+     </div><code data-trim="" data-noescape="" class="python hljs"><span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">Panda</span>(<span class="hljs-params">Animal</span>):</span></code></pre>
+
+                    <p class="smaller">Then the subclasses only need the code that's unique to them. They can redefine any aspect: class variables, method definitions, or constructor.
+                    A redefinition is called <strong>overriding</strong>.
+                    </p>
+
+                    <p class="smaller">The simplest subclass overrides nothing:</p>
+
+                    <pre style="font-size:0.85em" class="code-badge-pre"><div class="code-badge">
+        <div class="code-badge-language">python</div>
+        <div title="Copy to clipboard">
+            <i class="fa fa-copy code-badge-copy-icon">📄</i>
+        </div>
+     </div><code data-trim="" data-noescape="" class="python hljs"><span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">AmorphousBlob</span>(<span class="hljs-params">Animal</span>):</span>
+    <span class="hljs-keyword">pass</span></code></pre>
+
+                </section>
+
+                <section hidden="" aria-hidden="true" class="future" style="display: none;">
+                    <h3>Overriding class variables</h3>
+
+                    <p>Subclasses can override existing class variables and assign new class variables:</p>
+
+                    <pre style="font-size:0.65em" class="code-badge-pre"><div class="code-badge">
+        <div class="code-badge-language">python</div>
+        <div title="Copy to clipboard">
+            <i class="fa fa-copy code-badge-copy-icon">📄</i>
+        </div>
+     </div><code data-trim="" data-noescape="" class="python hljs"><span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">Rabbit</span>(<span class="hljs-params">Animal</span>):</span>
+    species_name = <span class="hljs-string">"European rabbit"</span>
+    scientific_name = <span class="hljs-string">"Oryctolagus cuniculus"</span>
+    calories_needed = <span class="hljs-number">200</span>
+    play_multiplier = <span class="hljs-number">8</span>
+    interact_increment = <span class="hljs-number">4</span>
+    num_in_litter = <span class="hljs-number">12</span>
+
+<span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">Elephant</span>(<span class="hljs-params">Animal</span>):</span>
+    species_name = <span class="hljs-string">"African Savanna Elephant"</span>
+    scientific_name = <span class="hljs-string">"Loxodonta africana"</span>
+    calories_needed = <span class="hljs-number">8000</span>
+    play_multiplier = <span class="hljs-number">4</span>
+    interact_increment = <span class="hljs-number">2</span>
+    num_tusks = <span class="hljs-number">2</span></code></pre>
+
+                </section>
+
+                <section hidden="" aria-hidden="true" class="future" style="display: none;">
+                    <h3>Overriding methods</h3>
+
+                    <p>If a subclass overrides a method, Python will use that
+                        definition instead of the superclass definition.
+                    </p>
+
+                    <pre style="font-size:0.8em" class="code-badge-pre"><div class="code-badge">
+        <div class="code-badge-language">python</div>
+        <div title="Copy to clipboard">
+            <i class="fa fa-copy code-badge-copy-icon">📄</i>
+        </div>
+     </div><code data-trim="" data-noescape="" class="python hljs"><span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">Panda</span>(<span class="hljs-params">Animal</span>):</span>
+    species_name = <span class="hljs-string">"Giant Panda"</span>
+    scientific_name = <span class="hljs-string">"Ailuropoda melanoleuca"</span>
+    calories_needed = <span class="hljs-number">6000</span>
+
+    <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">interact_with</span>(<span class="hljs-params">self, other</span>):</span>
+        print(<span class="hljs-string">f"I'm a Panda, I'm solitary, go away <span class="hljs-subst">{other.name}</span>!"</span>)</code></pre>
+
+                    <p class="smaller">How would we call that method?</p>
+                    <pre style="font-size:0.8em" class="fragment code-badge-pre" data-fragment-index="0"><div class="code-badge">
+        <div class="code-badge-language">python</div>
+        <div title="Copy to clipboard">
+            <i class="fa fa-copy code-badge-copy-icon">📄</i>
+        </div>
+     </div><code data-trim="" data-noescape="" class="python hljs">panda1 = Panda(<span class="hljs-string">"Pandeybear"</span>, <span class="hljs-number">6</span>)
+panda2 = Panda(<span class="hljs-string">"Spot"</span>, <span class="hljs-number">3</span>)
+panda1.interact_with(panda2)</code></pre>
+
+                </section>
+
+                <section hidden="" aria-hidden="true" class="future" style="display: none;">
+                    <h3>Using methods from the base class</h3>
+
+                    <p>To refer to a superclass method, we can use <code>super()</code>:</p>
+
+                    <pre style="font-size:0.8em" class="code-badge-pre"><div class="code-badge">
+        <div class="code-badge-language">python</div>
+        <div title="Copy to clipboard">
+            <i class="fa fa-copy code-badge-copy-icon">📄</i>
+        </div>
+     </div><code data-trim="" data-noescape="" class="python hljs"><span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">Lion</span>(<span class="hljs-params">Animal</span>):</span>
+    species_name = <span class="hljs-string">"Lion"</span>
+    scientific_name = <span class="hljs-string">"Panthera"</span>
+    calories_needed = <span class="hljs-number">3000</span>
+
+    <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">eat</span>(<span class="hljs-params">self, food</span>):</span>
+        <span class="hljs-keyword">if</span> food.type == <span class="hljs-string">"meat"</span>:
+            super().eat(food)</code></pre>
+
+                    <p class="smaller">How would we call that method?</p>
+                    <pre style="font-size:0.8em" class="fragment code-badge-pre" data-fragment-index="0"><div class="code-badge">
+        <div class="code-badge-language">python</div>
+        <div title="Copy to clipboard">
+            <i class="fa fa-copy code-badge-copy-icon">📄</i>
+        </div>
+     </div><code data-trim="" data-noescape="" class="python hljs">bones = Food(<span class="hljs-string">"Bones"</span>, <span class="hljs-string">"meat"</span>)
+mufasa = Lion(<span class="hljs-string">"Mufasa"</span>, <span class="hljs-number">10</span>)
+mufasa.eat(bones)</code></pre>
+
+                    <aside class="notes">
+                        Why can't we write self.eat(food)? !
+                    </aside>
+                </section>
+
+                <section hidden="" aria-hidden="true" class="future" style="display: none;">
+                    <h3>More on super()</h3>
+
+                    <p><code>super().attribute</code>
+                    refers to the definition of <code>attribute</code> in
+                    the superclass of the first parameter to the method.
+                    </p>
+
+                    <pre style="font-size:0.8em" class="code-badge-pre"><div class="code-badge">
+        <div class="code-badge-language">python</div>
+        <div title="Copy to clipboard">
+            <i class="fa fa-copy code-badge-copy-icon">📄</i>
+        </div>
+     </div><code data-trim="" data-noescape="" class="python hljs"><span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">eat</span>(<span class="hljs-params">self, food</span>):</span>
+    <span class="hljs-keyword">if</span> food.type == <span class="hljs-string">"meat"</span>:
+        super().eat(food)</code></pre>
+
+                    <p class="smaller">...is the same as:</p>
+                    <pre style="font-size:0.8em" class="code-badge-pre"><div class="code-badge">
+        <div class="code-badge-language">python</div>
+        <div title="Copy to clipboard">
+            <i class="fa fa-copy code-badge-copy-icon">📄</i>
+        </div>
+     </div><code data-trim="" data-noescape="" class="python hljs"><span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">eat</span>(<span class="hljs-params">self, food</span>):</span>
+    <span class="hljs-keyword">if</span> food.type == <span class="hljs-string">"meat"</span>:
+        Animal.eat(self, food)</code></pre>
+
+                    <p class="smaller"><code>super()</code> is better style than <code>BaseClassName</code>, though slightly slower.</p>
+
+                </section>
+
+                <section hidden="" aria-hidden="true" class="future" style="display: none;">
+                    <h3>Overriding __init__</h3>
+
+                    <p class="smaller">Similarly, we need to explicitly call <code>super().__init__()</code>
+                    if we want to call the <code>__init__</code> functionality
+                    of the base class.
+                    </p>
+
+                    <pre style="font-size:0.7em" class="code-badge-pre"><div class="code-badge">
+        <div class="code-badge-language">python</div>
+        <div title="Copy to clipboard">
+            <i class="fa fa-copy code-badge-copy-icon">📄</i>
+        </div>
+     </div><code data-trim="" data-noescape="" class="python hljs"><span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">Elephant</span>(<span class="hljs-params">Animal</span>):</span>
+    species_name = <span class="hljs-string">"Elephant"</span>
+    scientific_name = <span class="hljs-string">"Loxodonta"</span>
+    calories_needed = <span class="hljs-number">8000</span>
+
+    <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">__init__</span>(<span class="hljs-params">self, name, age=<span class="hljs-number">0</span></span>):</span>
+        super().__init__(name, age)
+        <span class="hljs-keyword">if</span> age &lt; <span class="hljs-number">1</span>:
+            self.calories_needed = <span class="hljs-number">1000</span>
+        <span class="hljs-keyword">elif</span> age &lt; <span class="hljs-number">5</span>:
+            self.calories_needed = <span class="hljs-number">3000</span></code></pre>
+
+                    <p>What would this display?</p>
+                    <pre style="font-size:0.7em" class="code-badge-pre"><div class="code-badge">
+        <div class="code-badge-language">python</div>
+        <div title="Copy to clipboard">
+            <i class="fa fa-copy code-badge-copy-icon">📄</i>
+        </div>
+     </div><code data-trim="" data-noescape="" class="python hljs">elly = Elephant(<span class="hljs-string">"Ellie"</span>, <span class="hljs-number">3</span>)
+elly.calories_needed        <span class="fragment" data-fragment-index="0"><span class="hljs-comment"># 3000</span></span></code></pre>
+
+                </section>
+
+                <section class="heading-only future" hidden="" aria-hidden="true" style="display: none;">
+                    <h3>Layers of inheritance</h3>
+                </section>
+
+                <section style="display: none;" hidden="" aria-hidden="true" class="future">
+                    <h3>Object base class</h3>
+
+                    <p>Every Python 3 class implicitly extends the <code>object</code> class.</p>
+
+                    <img class="r-stretch" src="./Inheritance + Composition_files/CC7MjSJ.png" alt="Diagram of Animal extending from object" style="height: 574.144px; width: 960px;">
+
+                    <aside class="notes">Could also show how list/bool/etc extend. Also could show explicitly extending it!</aside>
+                </section>
+
+                <section style="display: none;" hidden="" aria-hidden="true" class="future">
+                    <h3>Adding layers of inheritance</h3>
+
+                    <p>But we can also add in more levels ourselves.</p>
+
+                    <img class="r-stretch" src="./Inheritance + Composition_files/Oy9hwoq.png" alt="Diagram of animals extending from Herbivore and Carnivore which extend from Animal which extends from object" style="height: 564.324px; width: 960px;">
+                </section>
+
+                <section hidden="" aria-hidden="true" class="future" style="display: none;">
+                    <h3>Adding layers of inheritance</h3>
+
+                    <p>First we define the new classes:</p>
+
+                    <pre style="font-size:0.55em" class="code-badge-pre"><div class="code-badge">
+        <div class="code-badge-language">python</div>
+        <div title="Copy to clipboard">
+            <i class="fa fa-copy code-badge-copy-icon">📄</i>
+        </div>
+     </div><code data-trim="" data-noescape="" class="python hljs"><span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">Herbivore</span>(<span class="hljs-params">Animal</span>):</span>
+
+    <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">eat</span>(<span class="hljs-params">self, food</span>):</span>
+        <span class="hljs-keyword">if</span> food.type == <span class="hljs-string">"meat"</span>:
+            self.happiness -= <span class="hljs-number">5</span>
+        <span class="hljs-keyword">else</span>:
+            super().eat(food)
+
+<span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">Carnivore</span>(<span class="hljs-params">Animal</span>):</span>
+
+    <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">eat</span>(<span class="hljs-params">self, food</span>):</span>
+        <span class="hljs-keyword">if</span> food.type == <span class="hljs-string">"meat"</span>:
+            super().eat(food)</code></pre>
+
+                    <p>Then we change the base classes for the subclasses:</p>
+                    <pre style="font-size:0.55em" class="code-badge-pre"><div class="code-badge">
+        <div class="code-badge-language">python</div>
+        <div title="Copy to clipboard">
+            <i class="fa fa-copy code-badge-copy-icon">📄</i>
+        </div>
+     </div><code data-trim="" data-noescape="" class="python hljs"><span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">Rabbit</span>(<span class="hljs-params">Herbivore</span>):</span>
+<span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">Panda</span>(<span class="hljs-params">Herbivore</span>):</span>
+<span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">Elephant</span>(<span class="hljs-params">Herbivore</span>):</span>
+
+<span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">Vulture</span>(<span class="hljs-params">Carnivore</span>):</span>
+<span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">Lion</span>(<span class="hljs-params">Carnivore</span>):</span></code></pre>
+
+                </section>
+
+                <section class="heading-only future" hidden="" aria-hidden="true" style="display: none;">
+                    <h2>Multiple inheritance</h2>
+                </section>
+
+                <section style="display: none;" hidden="" aria-hidden="true" class="future">
+                    <h3>Multiple inhteritance</h3>
+
+                    <p>A class may inherit from multiple base classes in Python.</p>
+
+                    <img class="r-stretch" src="./Inheritance + Composition_files/z1XrW69.png" alt="Diagram of some animals extending from both Carnivore/Predator and Herbivore/Prey" style="height: 564.324px; width: 960px;">
+
+                </section>
+
+                <section hidden="" aria-hidden="true" class="future" style="display: none;">
+                    <h3>The new base classes</h3>
+
+                    <p>First we define the new base classes:</p>
+
+                    <pre style="font-size:0.7em" class="code-badge-pre"><div class="code-badge">
+        <div class="code-badge-language">python</div>
+        <div title="Copy to clipboard">
+            <i class="fa fa-copy code-badge-copy-icon">📄</i>
+        </div>
+     </div><code data-trim="" data-noescape="" class="python hljs"><span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">Predator</span>(<span class="hljs-params">Animal</span>):</span>
+
+    <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">interact_with</span>(<span class="hljs-params">self, other</span>):</span>
+        <span class="hljs-keyword">if</span> other.type == <span class="hljs-string">"meat"</span>:
+            self.eat(other)
+            print(<span class="hljs-string">"om nom nom, I'm a predator"</span>)
+        <span class="hljs-keyword">else</span>:
+            super().interact_with(other)
+
+<span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">Prey</span>(<span class="hljs-params">Animal</span>):</span>
+    type = <span class="hljs-string">"meat"</span>
+    calories = <span class="hljs-number">200</span></code></pre>
+                </section>
+
+                <section hidden="" aria-hidden="true" class="future" style="display: none;">
+                    <h3>Inheriting from multiple base classes</h3>
+
+                    <p>Then we inherit from them by putting both names in the parentheses:</p>
+
+                    <pre style="font-size:0.7em" class="code-badge-pre"><div class="code-badge">
+        <div class="code-badge-language">python</div>
+        <div title="Copy to clipboard">
+            <i class="fa fa-copy code-badge-copy-icon">📄</i>
+        </div>
+     </div><code data-trim="" data-noescape="" class="python hljs"><span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">Rabbit</span>(<span class="hljs-params">Prey, Herbivore</span>):</span>
+<span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">Lion</span>(<span class="hljs-params">Predator, Carnivore</span>):</span></code></pre>
+
+                    <p>Python can find the attributes in any of the base classes:</p>
+
+                    <pre style="font-size:0.7em" class="code-badge-pre"><div class="code-badge">
+        <div class="code-badge-language">python</div>
+        <div title="Copy to clipboard">
+            <i class="fa fa-copy code-badge-copy-icon">📄</i>
+        </div>
+     </div><code data-trim="" data-noescape="" class="python hljs"><span class="hljs-meta">&gt;&gt;&gt; </span>r = Rabbit(<span class="hljs-string">"Peter"</span>, <span class="hljs-number">4</span>)           <span class="fragment" data-fragment-index="0"><span class="hljs-comment"># Animal __init__</span></span>
+<span class="hljs-meta">&gt;&gt;&gt; </span>r.play()                         <span class="fragment" data-fragment-index="0"><span class="hljs-comment"># Animal method</span></span>
+<span class="hljs-meta">&gt;&gt;&gt; </span>r.type                           <span class="fragment" data-fragment-index="0"><span class="hljs-comment"># Prey class variable</span></span>
+<span class="hljs-meta">&gt;&gt;&gt; </span>r.eat(Food(<span class="hljs-string">"carrot"</span>, <span class="hljs-string">"veggies"</span>)) <span class="fragment" data-fragment-index="0"><span class="hljs-comment"># Herbivore method</span></span>
+<span class="hljs-meta">&gt;&gt;&gt; </span>l = Lion(<span class="hljs-string">"Scar"</span>, <span class="hljs-number">12</span>)             <span class="fragment" data-fragment-index="0"><span class="hljs-comment"># Animal __init__</span></span>
+<span class="hljs-meta">&gt;&gt;&gt; </span>l.eat(Food(<span class="hljs-string">"zazu"</span>, <span class="hljs-string">"meat"</span>))      <span class="fragment" data-fragment-index="0"><span class="hljs-comment"># Carnivore method</span></span>
+<span class="hljs-meta">&gt;&gt;&gt; </span>l.encounter(r)                   <span class="fragment" data-fragment-index="0"><span class="hljs-comment"># Predator method</span></span></code></pre>
+                </section>
+
+                <section class="heading-only future" hidden="" aria-hidden="true" style="display: none;">
+                    <h2>Refresher: Identity</h2>
+                </section>
+
+                <section hidden="" aria-hidden="true" class="future" style="display: none;">
+                    <h3>Checking identity</h3>
+
+                    <p><strong><code>exp0 is exp1</code></strong><br>
+						<span style="font-size:smaller;">evaluates to <code>True</code>
+                        if both <code>exp0</code> and <code>exp1</code> evaluate to the same object</span>
+                    </p>
+
+                    <pre style="font-size:0.7em" class="code-badge-pre"><div class="code-badge">
+        <div class="code-badge-language">python</div>
+        <div title="Copy to clipboard">
+            <i class="fa fa-copy code-badge-copy-icon">📄</i>
+        </div>
+     </div><code data-trim="" data-noescape="" class="python hljs">mufasa = Lion(<span class="hljs-string">"Mufasa"</span>, <span class="hljs-number">15</span>)
+nala = Lion(<span class="hljs-string">"Nala"</span>, <span class="hljs-number">16</span>)
+
+mufasa <span class="hljs-keyword">is</span> mufasa     <span class="fragment" data-fragment-index="0"><span class="hljs-comment"># True</span></span>
+mufasa <span class="hljs-keyword">is</span> Nala       <span class="fragment" data-fragment-index="0"><span class="hljs-comment"># False</span></span>
+mufasa <span class="hljs-keyword">is</span> <span class="hljs-keyword">not</span> Nala   <span class="fragment" data-fragment-index="0"><span class="hljs-comment"># True</span></span>
+nala <span class="hljs-keyword">is</span> <span class="hljs-keyword">not</span> <span class="hljs-literal">None</span>     <span class="fragment" data-fragment-index="0"><span class="hljs-comment"># True</span></span></code></pre>
+                </section>
+
+                <section class="heading-only future" hidden="" aria-hidden="true" style="display: none;">
+                    <h2>Composition</h2>
+                </section>
+
+                <section hidden="" aria-hidden="true" class="future" style="display: none;">
+                    <h3>Composition</h3>
+
+                    <p>An object can contain references to objects of other classes.</p>
+
+                    <p>What examples of composition are in an animal conservatory?</p>
+                    <ul>
+                        <li>An animal has a mate.</li>
+                        <li>An animal has a mother.</li>
+                        <li>An animal has children.</li>
+                        <li>A conservatory has animals.</li>
+                    </ul>
+                </section>
+
+                <section hidden="" aria-hidden="true" class="future" style="display: none;">
+                    <h3>Referencing other instances</h3>
+
+                    <p>An instance variable can refer to another instance:</p>
+
+                    <pre style="font-size:0.7em" class="code-badge-pre"><div class="code-badge">
+        <div class="code-badge-language">python</div>
+        <div title="Copy to clipboard">
+            <i class="fa fa-copy code-badge-copy-icon">📄</i>
+        </div>
+     </div><code data-trim="" data-noescape="" class="python hljs"><span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">Animal</span>:</span>
+
+    <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">mate_with</span>(<span class="hljs-params">self, other</span>):</span>
+        <span class="hljs-keyword">if</span> other <span class="hljs-keyword">is</span> <span class="hljs-keyword">not</span> self <span class="hljs-keyword">and</span> other.species_name == self.species_name:
+            self.mate = other
+            other.mate = self</code></pre>
+
+                    <p class="smaller">How would we call that method?</p>
+                    <pre style="font-size:0.8em" class="fragment code-badge-pre" data-fragment-index="0"><div class="code-badge">
+        <div class="code-badge-language">python</div>
+        <div title="Copy to clipboard">
+            <i class="fa fa-copy code-badge-copy-icon">📄</i>
+        </div>
+     </div><code data-trim="" data-noescape="" class="python hljs">mr_wabbit = Rabbit(<span class="hljs-string">"Mister Wabbit"</span>, <span class="hljs-number">3</span>)
+jane_doe = Rabbit(<span class="hljs-string">"Jane Doe"</span>, <span class="hljs-number">2</span>)
+mr_wabbit.mate_with(jane_doe)</code></pre>
+                </section>
+
+
+                <section hidden="" aria-hidden="true" class="future" style="display: none;">
+                    <h3>Referencing a list of instances</h3>
+
+                    <p>An instance variable can also refer to a list of instances:</p>
+
+                    <pre style="font-size:0.8em" class="code-badge-pre"><div class="code-badge">
+        <div class="code-badge-language">python</div>
+        <div title="Copy to clipboard">
+            <i class="fa fa-copy code-badge-copy-icon">📄</i>
+        </div>
+     </div><code data-trim="" data-noescape="" class="python hljs"><span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">Rabbit</span>(<span class="hljs-params">Animal</span>):</span>
+
+    <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">reproduce_like_rabbits</span>(<span class="hljs-params">self</span>):</span>
+        <span class="hljs-keyword">if</span> self.mate <span class="hljs-keyword">is</span> <span class="hljs-literal">None</span>:
+            print(<span class="hljs-string">"oh no! better go on ZoOkCupid"</span>)
+            <span class="hljs-keyword">return</span>
+        self.babies = []
+        <span class="hljs-keyword">for</span> _ <span class="hljs-keyword">in</span> range(<span class="hljs-number">0</span>, self.num_in_litter):
+            self.babies.append(Rabbit(<span class="hljs-string">"bunny"</span>, <span class="hljs-number">0</span>))</code></pre>
+
+                    <p class="smaller">How would we call that function?</p>
+                    <pre style="font-size:0.8em" class="fragment code-badge-pre" data-fragment-index="0"><div class="code-badge">
+        <div class="code-badge-language">python</div>
+        <div title="Copy to clipboard">
+            <i class="fa fa-copy code-badge-copy-icon">📄</i>
+        </div>
+     </div><code data-trim="" data-noescape="" class="python hljs">mr_wabbit = Rabbit(<span class="hljs-string">"Mister Wabbit"</span>, <span class="hljs-number">3</span>)
+jane_doe = Rabbit(<span class="hljs-string">"Jane Doe"</span>, <span class="hljs-number">2</span>)
+mr_wabbit.mate_with(jane_doe)
+jane_doe.reproduce_like_rabbits()</code></pre>
+                </section>
+
+                <section hidden="" aria-hidden="true" class="future" style="display: none;">
+                    <h3>Relying on a common interface</h3>
+
+                    <p class="smaller">If all instances implement a method with the same function signature,
+                    a program can rely on that method across instances of different subclasses.
+                    </p>
+
+                    <pre style="font-size:0.7em" class="code-badge-pre"><div class="code-badge">
+        <div class="code-badge-language">python</div>
+        <div title="Copy to clipboard">
+            <i class="fa fa-copy code-badge-copy-icon">📄</i>
+        </div>
+     </div><code data-trim="" data-noescape="" class="python hljs"><span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">partytime</span>(<span class="hljs-params">animals</span>):</span>
+    <span class="hljs-string">"""Assuming ANIMALS is a list of Animals, cause each
+    to interact with all the others exactly once."""</span>
+    <span class="hljs-keyword">for</span> i <span class="hljs-keyword">in</span> range(len(animals)):
+        <span class="hljs-keyword">for</span> j <span class="hljs-keyword">in</span> range(i + <span class="hljs-number">1</span>, len(animals)):
+            animals[i].interact_with(animals[j])</code></pre>
+
+                    <p class="smaller">How would we call that function?</p>
+                    <pre style="font-size:0.7em" class="fragment code-badge-pre" data-fragment-index="0"><div class="code-badge">
+        <div class="code-badge-language">python</div>
+        <div title="Copy to clipboard">
+            <i class="fa fa-copy code-badge-copy-icon">📄</i>
+        </div>
+     </div><code data-trim="" data-noescape="" class="python hljs">jane_doe = Rabbit(<span class="hljs-string">"Jane Doe"</span>, <span class="hljs-number">2</span>)
+scar = Lion(<span class="hljs-string">"Scar"</span>, <span class="hljs-number">12</span>)
+elly = Elephant(<span class="hljs-string">"Elly"</span>, <span class="hljs-number">5</span>)
+pandy = Panda(<span class="hljs-string">"PandeyBear"</span>, <span class="hljs-number">4</span>)
+partytime([jane_doe, scar, elly, pandy])</code></pre>
+                </section>
+
+                <section hidden="" aria-hidden="true" class="future" style="display: none;">
+                    <h3>Composition vs. Inheritance</h3>
+
+                    <p>Inheritance is best for representing "is-a" relationships</p>
+                    <ul class="smaller">
+                        <li>Rabbit is a specific type of Animal</li>
+                        <li>So, Rabbit inherits from Animal</li>
+                    </ul>
+                    <p>Composition is best for representing "has-a" relationships</p>
+                    <ul class="smaller">
+                        <li>A conservatory has a collection of animals it cares for</li>
+                        <li>So, a conservatory has a list of animals as an instance variable</li>
+                    </ul>
+                </section>
+
+                <section class="heading-only future" hidden="" aria-hidden="true" style="display: none;">
+                    <h3>Quiz</h3>
+                </section>
+
+                <section hidden="" aria-hidden="true" class="future" style="display: none;">
+                    <h3>What would Python print?</h3>
+
+                    <pre style="font-size:0.7em" class="code-badge-pre"><div class="code-badge">
+        <div class="code-badge-language">python</div>
+        <div title="Copy to clipboard">
+            <i class="fa fa-copy code-badge-copy-icon">📄</i>
+        </div>
+     </div><code data-trim="" data-noescape="" class="python hljs"><span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">Parent</span>:</span>
+    <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">f</span>(<span class="hljs-params">s</span>):</span>
+        print(<span class="hljs-string">"Parent.f"</span>)
+
+    <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">g</span>(<span class="hljs-params">s</span>):</span>
+        s.f()
+
+<span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">Child</span>(<span class="hljs-params">Parent</span>):</span>
+    <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">f</span>(<span class="hljs-params">me</span>):</span>
+        print(<span class="hljs-string">"Child.f"</span>)
+
+a_child = Child()
+a_child.g()</code></pre>
+
+                    <p class="python-tutor-link">
+                        <a target="_blank" href="http://pythontutor.com/composingprograms.html#code=class%20Parent%3A%0A%20%20%20%20def%20f%28s%29%3A%0A%20%20%20%20%20%20%20%20print%28%22Parent.f%22%29%0A%20%20%20%20%0A%20%20%20%20def%20g%28s%29%3A%0A%20%20%20%20%20%20%20%20s.f%28%29%0A%20%20%20%20%20%20%20%20%0Aclass%20Child%28Parent%29%3A%0A%20%20%20%20def%20f%28me%29%3A%0A%20%20%20%20%20%20%20%20print%28%22Child.f%22%29%0A%20%20%20%20%20%20%20%20%0Aa_child%20%3D%20Child%28%29%0Aa_child.g%28%29&amp;cumulative=true&amp;curInstr=0&amp;mode=display&amp;origin=composingprograms.js&amp;py=3&amp;rawInputLstJSON=%5B%5D">
+                        Find out in PythonTutor
+                        </a>
+                    </p>
+                </section>
+
+			</div>
+		<div class="backgrounds"><div class="slide-background heading-only present" data-loaded="true" style="display: block;"><div class="slide-background-content"></div></div><div class="slide-background heading-only future" data-loaded="true" style="display: block;"><div class="slide-background-content"></div></div><div class="slide-background future" data-loaded="true" style="display: block;"><div class="slide-background-content"></div></div><div class="slide-background future" style="display: none;"><div class="slide-background-content"></div></div><div class="slide-background future" style="display: none;"><div class="slide-background-content"></div></div><div class="slide-background future" style="display: none;"><div class="slide-background-content"></div></div><div class="slide-background future" style="display: none;"><div class="slide-background-content"></div></div><div class="slide-background future" style="display: none;"><div class="slide-background-content"></div></div><div class="slide-background heading-only future" style="display: none;"><div class="slide-background-content"></div></div><div class="slide-background future" style="display: none;"><div class="slide-background-content"></div></div><div class="slide-background future" style="display: none;"><div class="slide-background-content"></div></div><div class="slide-background future" style="display: none;"><div class="slide-background-content"></div></div><div class="slide-background future" style="display: none;"><div class="slide-background-content"></div></div><div class="slide-background future" style="display: none;"><div class="slide-background-content"></div></div><div class="slide-background future" style="display: none;"><div class="slide-background-content"></div></div><div class="slide-background future" style="display: none;"><div class="slide-background-content"></div></div><div class="slide-background future" style="display: none;"><div class="slide-background-content"></div></div><div class="slide-background heading-only future" style="display: none;"><div class="slide-background-content"></div></div><div class="slide-background future" style="display: none;"><div class="slide-background-content"></div></div><div class="slide-background future" style="display: none;"><div class="slide-background-content"></div></div><div class="slide-background future" style="display: none;"><div class="slide-background-content"></div></div><div class="slide-background heading-only future" style="display: none;"><div class="slide-background-content"></div></div><div class="slide-background future" style="display: none;"><div class="slide-background-content"></div></div><div class="slide-background future" style="display: none;"><div class="slide-background-content"></div></div><div class="slide-background future" style="display: none;"><div class="slide-background-content"></div></div><div class="slide-background heading-only future" style="display: none;"><div class="slide-background-content"></div></div><div class="slide-background future" style="display: none;"><div class="slide-background-content"></div></div><div class="slide-background heading-only future" style="display: none;"><div class="slide-background-content"></div></div><div class="slide-background future" style="display: none;"><div class="slide-background-content"></div></div><div class="slide-background future" style="display: none;"><div class="slide-background-content"></div></div><div class="slide-background future" style="display: none;"><div class="slide-background-content"></div></div><div class="slide-background future" style="display: none;"><div class="slide-background-content"></div></div><div class="slide-background future" style="display: none;"><div class="slide-background-content"></div></div><div class="slide-background heading-only future" style="display: none;"><div class="slide-background-content"></div></div><div class="slide-background future" style="display: none;"><div class="slide-background-content"></div></div></div><div class="slide-number" style="display: block;"><a href="https://inst.eecs.berkeley.edu/~cs61a/sp21/assets/slides/17-Inheritance_+_Composition.html#/">
+					<span class="slide-number-a">1</span>
+					</a></div><aside class="controls" data-controls-layout="bottom-right" data-controls-back-arrows="faded" style="display: block;"><button class="navigate-left" aria-label="previous slide" disabled="disabled"><div class="controls-arrow"></div></button>
+			<button class="navigate-right enabled highlight" aria-label="next slide"><div class="controls-arrow"></div></button>
+			<button class="navigate-up" aria-label="above slide" disabled="disabled"><div class="controls-arrow"></div></button>
+			<button class="navigate-down" aria-label="below slide" disabled="disabled"><div class="controls-arrow"></div></button></aside><div class="progress" style="display: block;"><span style="transform: scaleX(0);"></span></div><div class="speaker-notes" data-prevent-swipe="" tabindex="0"></div><div class="pause-overlay"><button class="resume-button">Resume presentation</button></div><div class="aria-status" aria-live="polite" aria-atomic="true" style="position: absolute; height: 1px; width: 1px; overflow: hidden; clip: rect(1px, 1px, 1px, 1px);">Inheritance + Composition Tips for navigating the slides: Press O or Escape for overview mode. Visit this link for a nice printable version Press the copy icon on the upper right of code blocks to copy the code </div></div>
+
+		<script src="./Inheritance + Composition_files/reveal.js.下载"></script>
+        <script src="./Inheritance + Composition_files/highlight.js.下载"></script>
+        <script src="./Inheritance + Composition_files/highlightjs-badge.min.js.下载"></script>
+		<script>
+			const srcUrlPrefix = "https://cdn.jsdelivr.net/npm/reveal.js@4.1.0/";
+			Reveal.initialize({
+				hash: true,
+				center: false,
+				slideNumber: true,
+				showNotes: false,
+				margin: 0.1,
+				preloadIframes: true,
+				plugins: [ RevealHighlight ],
+				pdfSeparateFragments: true
+			});
+
+            // add HighlightJS-badge (options are optional)
+            var options = {
+                copyIconContent: "📄",
+                checkIconContent: "✅"
+            };
+            window.highlightJsBadge(options);
+
+            if (window.location.search == "?print-pdf") {
+                var uncounted = document.querySelectorAll("[data-visibility='uncounted']");
+                uncounted.forEach(node => {
+                    node.parentNode.classList.add("no-print")
+                })
+            }
+		</script>
+	
+
+<style>
+@media print {
+   .code-badge { display: none; }
+}
+    .code-badge-pre {
+        position: relative;
+    }
+    .code-badge {
+        display: flex;
+        flex-direction: row;
+        white-space: normal;
+        background: transparent;
+        background: #333;
+        color: white;
+        font-size: 0.875em;
+        opacity: 0.5;
+        transition: opacity linear 0.5s;
+        border-radius: 0 0 0 7px;
+        padding: 5px 8px 5px 8px;
+        position: absolute;
+        right: 0;
+        top: 0;
+    }
+    .code-badge.active {
+        opacity: 0.8;
+    }
+
+    .code-badge:hover {
+        opacity: .95;
+    }
+
+    .code-badge a,
+    .code-badge a:hover {
+        text-decoration: none;
+    }
+
+    .code-badge-language {
+        margin-right: 10px;
+        font-weight: 600;
+        color: goldenrod;
+    }
+    .code-badge-copy-icon {
+        font-size: 1.2em;
+        cursor: pointer;
+        padding: 0 7px;
+        margin-top:2;
+    }
+    .fa.text-success:{ color: limegreen !important }
+</style><div id="CodeBadgeTemplate" style="display:none">
+    <div class="code-badge">
+        <div class="code-badge-language">{{language}}</div>
+        <div title="Copy to clipboard">
+            <i class="{{copyIconClass}} code-badge-copy-icon"></i>
+        </div>
+     </div>
+</div></body></html>

@@ -1,0 +1,1097 @@
+<!DOCTYPE html>
+<!-- saved from url=(0084)https://inst.eecs.berkeley.edu/~cs61a/sp21/assets/slides/37-OOP_Review_+_Design.html -->
+<html class="reveal-full-page"><head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+		
+		<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+		<title>Object Oriented Design Principles</title>
+		<link rel="stylesheet" href="./Object Oriented Design Principles_files/reset.css">
+		<link rel="stylesheet" href="./Object Oriented Design Principles_files/reveal.css">
+		<link rel="stylesheet" href="./Object Oriented Design Principles_files/simple.css" id="theme">
+		<link rel="stylesheet" href="./Object Oriented Design Principles_files/mono-blue.css">
+		<link rel="stylesheet" href="./Object Oriented Design Principles_files/css">
+		<style>
+			.reveal {
+				font-family: "Work Sans", sans-serif;
+			}
+
+			.reveal .slides section {
+				text-align: left;
+				font-size: smaller;
+			}
+
+			.reveal pre {
+				background-color: #f5f5f5;
+				width: 100%;
+				border: 1px solid #ccc;
+				border-radius: 4px;
+				box-shadow: none;
+			}
+
+			.reveal h1, .reveal h2, .reveal h3, .reveal h4, .reveal h5, .reveal h6 {
+				font-family: "Roboto", sans-serif;
+				color: #0072c1;
+			}
+
+			.reveal section.heading-only {
+				text-align:center;
+				padding-top:20%;
+			}
+
+            .column .no-code-badge .code-badge {
+                display: none;
+            }
+
+            .code-badge-language {
+                display: none;
+            }
+
+			.python-tutor-link {
+				font-size: smaller;
+			}
+
+			.python-tutor-link:before {
+				content: "";
+				display: block;
+				background: url("http://pythontutor.com/favicon.ico") no-repeat;
+				width: 48px;
+				height: 48px;
+				float: left;
+				margin: 0 6px 0 0;
+			}
+
+			.reveal h3 {
+				margin-bottom: 40px;
+			}
+
+            .smaller {
+                font-size: smaller;
+            }
+
+            code {
+                padding: 2px 4px;
+                font-size: 90%;
+                color: #0072c1;
+                background-color: #f9f2f4;
+                border-radius: 4px;
+            }
+
+            p.padded {
+                margin-top: 32px;
+            }
+
+            section .row {
+                display: flex;
+            }
+
+            section .column {
+                flex: 48%;
+                margin: 10px;
+            }
+
+			@media print
+			{
+				.no-print, .no-print *
+				{
+					display: none !important;
+				}
+			}
+
+
+            .regex-input {
+                border:1px solid rgb(204, 204, 204);
+                background: rgb(245, 245, 245);
+                padding: 8px;
+            }
+
+            .regex-input input {
+                font-size: inherit;
+            }
+
+            .regex-input input[type=text]:invalid {
+                background-color: pink;
+            }
+
+		</style>
+	<style type="text/css">.hljs-ln{border-collapse:collapse}.hljs-ln td{padding:0}.hljs-ln-n:before{content:attr(data-line-number)}</style></head>
+	<body class="reveal-viewport" style="--slide-width: 960px; --slide-height: 700px;">
+		<div class="reveal slide focused has-horizontal-slides ready" role="application" data-transition-speed="default" data-background-transition="fade">
+			<div class="slides" style="width: 960px; height: 700px; inset: 50% auto auto 50%; transform: translate(-50%, -50%) scale(0.919286);">
+
+				<section class="heading-only present" style="padding-top: 5%; display: block;">
+                    <h1>Object-Oriented Programming</h1>
+                    <h2>Review and Design</h2>
+
+					<div class="no-print" style="text-align: left; margin-top: 100px; font-size: 70%;">
+						Tips for navigating the slides:
+						<ul>
+							<li>Press O or Escape for overview mode.</li>
+							<li>Visit <a href="https://inst.eecs.berkeley.edu/~cs61a/sp21/assets/slides/37-OOP_Review_+_Design.html?print-pdf" target="_blank">this link</a> for a nice printable version</li>
+							<li>Press the copy icon on the upper right of code blocks to copy the code</li>
+						</ul>
+					</div>
+				</section>
+
+
+
+
+                <section hidden="" aria-hidden="true" class="future" style="display: block;">
+                    <h3>Object-Oriented Programming</h3>
+
+                    <ul style="font-size:1.0em;">
+                        <li><strong>Encapsulation</strong>:<br> Classes bundle together related data and functions.
+                        </li><li><strong>Composition</strong>:<br> Objects may contain other objects.
+                        </li><li><strong>Inheritance</strong>:<br> Objects may inherit behavior from ancestor classes.
+                        </li><li><strong>Polymorphism</strong>:<br> A function can run on objects of different classes.
+                    </li></ul>
+
+                </section>
+
+                <section hidden="" aria-hidden="true" class="future" style="display: block;">
+                    <h3>Encapsulation</h3>
+
+                    <p>Bundling together related data and behavior:</p>
+
+                    <pre style="font-size:0.4em" class="code-badge-pre"><div class="code-badge">
+        <div class="code-badge-language">python</div>
+        <div title="Copy to clipboard">
+            <i class="fa fa-copy code-badge-copy-icon">📄</i>
+        </div>
+     </div><code data-trim="" data-noescape="" class="python hljs"><span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">Tree</span>:</span>
+    <span class="hljs-string">"""A tree."""</span>
+    <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">__init__</span>(<span class="hljs-params">self, label, branches=[]</span>):</span>
+        self.label = label
+        self.branches = list(branches)
+
+    <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">__repr__</span>(<span class="hljs-params">self</span>):</span>
+        <span class="hljs-keyword">if</span> self.branches:
+            branch_str = <span class="hljs-string">', '</span> + repr(self.branches)
+        <span class="hljs-keyword">else</span>:
+            branch_str = <span class="hljs-string">''</span>
+        <span class="hljs-keyword">return</span> <span class="hljs-string">'Tree({0}{1})'</span>.format(self.label, branch_str)
+
+    <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">__str__</span>(<span class="hljs-params">self</span>):</span>
+        <span class="hljs-keyword">return</span> <span class="hljs-string">'\n'</span>.join(self.indented())
+
+    <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">indented</span>(<span class="hljs-params">self</span>):</span>
+        lines = []
+        <span class="hljs-keyword">for</span> b <span class="hljs-keyword">in</span> self.branches:
+            <span class="hljs-keyword">for</span> line <span class="hljs-keyword">in</span> b.indented():
+                lines.append(<span class="hljs-string">'  '</span> + line)
+        <span class="hljs-keyword">return</span> [str(self.label)] + lines
+
+    <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">is_leaf</span>(<span class="hljs-params">self</span>):</span>
+        <span class="hljs-keyword">return</span> <span class="hljs-keyword">not</span> self.branches</code></pre>
+
+                    <pre style="font-size:0.5em" class="code-badge-pre"><div class="code-badge">
+        <div class="code-badge-language">python</div>
+        <div title="Copy to clipboard">
+            <i class="fa fa-copy code-badge-copy-icon">📄</i>
+        </div>
+     </div><code data-trim="" data-noescape="" class="python hljs">tree = Tree(<span class="hljs-number">1</span>, [Tree(<span class="hljs-number">1</span>), Tree(<span class="hljs-number">2</span>, [Tree(<span class="hljs-number">1</span>, [Tree(<span class="hljs-number">1</span>)])])])</code></pre>
+
+                </section>
+
+                <section hidden="" aria-hidden="true" class="future" style="display: none;">
+                    <h3>Composition</h3>
+
+                    <p>Objects may contain other objects.</p>
+
+                    <p class="smaller">Definitely true for recursive objects:</p>
+
+                    <pre style="font-size:0.6em" class="code-badge-pre"><div class="code-badge">
+        <div class="code-badge-language">python</div>
+        <div title="Copy to clipboard">
+            <i class="fa fa-copy code-badge-copy-icon">📄</i>
+        </div>
+     </div><code data-trim="" data-noescape="" class="python hljs">tree = Tree(<span class="hljs-number">1</span>, [Tree(<span class="hljs-number">1</span>), Tree(<span class="hljs-number">2</span>, [Tree(<span class="hljs-number">1</span>, [Tree(<span class="hljs-number">1</span>)])])])
+print(tree.label)
+<span class="hljs-keyword">for</span> subtree <span class="hljs-keyword">in</span> tree.branches:
+    print(subtree.label)</code></pre>
+
+                    <p class="smaller">But also true for other objects:</p>
+
+                    <pre style="font-size:0.6em" class="code-badge-pre"><div class="code-badge">
+        <div class="code-badge-language">python</div>
+        <div title="Copy to clipboard">
+            <i class="fa fa-copy code-badge-copy-icon">📄</i>
+        </div>
+     </div><code data-trim="" data-noescape="" class="python hljs"><span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">EmissionsTracker</span>:</span>
+    <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">__init__</span>(<span class="hljs-params">self, sources=None</span>):</span>
+        self.sources = sources <span class="hljs-keyword">or</span> []
+
+    <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">add_sources</span>(<span class="hljs-params">self, sources</span>):</span>
+        self.sources.extend(sources_to_add)
+
+tracker = EmissionsTracker()
+pp1 = EmissionSource(<span class="hljs-string">"Anthracite Coal"</span>, <span class="hljs-number">2602</span>, <span class="hljs-number">276</span>, <span class="hljs-number">40</span>)
+pp2 = EmissionSource(<span class="hljs-string">"Lignite Coal"</span>, <span class="hljs-number">1389</span>, <span class="hljs-number">156</span>, <span class="hljs-number">23</span>)
+tracker.add_sources([pp1, pp2])</code></pre>
+
+                </section>
+
+                <section hidden="" aria-hidden="true" class="future" style="display: none;">
+                    <h3>Inheritance</h3>
+
+                    <p>Objects inherit behavior from ancestor classes.</p>
+
+                    <pre style="font-size:0.6em" class="code-badge-pre"><div class="code-badge">
+        <div class="code-badge-language">python</div>
+        <div title="Copy to clipboard">
+            <i class="fa fa-copy code-badge-copy-icon">📄</i>
+        </div>
+     </div><code data-trim="" data-noescape="" class="python hljs"><span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">Assignment</span>:</span>
+    <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">__init__</span>(<span class="hljs-params">self, title, deadline</span>):</span>
+        self.title = title
+        self.deadline = deadline
+
+    <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">__str__</span>(<span class="hljs-params">self</span>):</span>
+        <span class="hljs-keyword">return</span> <span class="hljs-string">f"<span class="hljs-subst">{self.title}</span> due <span class="hljs-subst">{self.deadline}</span>"</span>
+
+<span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">Project</span>(<span class="hljs-params">Assignment</span>):</span>
+    <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">__init__</span>(<span class="hljs-params">self, title, deadline, checkpoints</span>):</span>
+        super().__init__(title, deadline)
+        self.checkpoints = checkpoints
+
+    <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">__str__</span>(<span class="hljs-params">self</span>):</span>
+        <span class="hljs-keyword">return</span> <span class="hljs-string">f"<span class="hljs-subst">{super().__str__()}</span> with checkpoints on <span class="hljs-subst">{<span class="hljs-string">', '</span>.join(self.checkpoints)}</span>"</span></code></pre>
+
+                    <pre style="font-size:0.7em" class="code-badge-pre"><div class="code-badge">
+        <div class="code-badge-language">python</div>
+        <div title="Copy to clipboard">
+            <i class="fa fa-copy code-badge-copy-icon">📄</i>
+        </div>
+     </div><code data-trim="" data-noescape="" class="python hljs">lab13 = Assignment(<span class="hljs-string">"Lab 13"</span>, <span class="hljs-string">"Apr 27"</span>)
+scheme = Project(<span class="hljs-string">"Scheme"</span>, <span class="hljs-string">"Apr 20"</span>, [<span class="hljs-string">"Apr 13"</span>, <span class="hljs-string">"Apr 16"</span>])
+print(lab13)
+print(scheme)</code></pre>
+
+                </section>
+
+                <section hidden="" aria-hidden="true" class="future" style="display: none;">
+                    <h3>Polymorphism #1</h3>
+
+                    <p>A function can run on objects of different classes.</p>
+
+                    <br>
+                    <p class="smaller">Easy way: the function runs on any objects that inherit from a particular base class.</p>
+                    <pre style="font-size:0.55em" class="code-badge-pre"><div class="code-badge">
+        <div class="code-badge-language">python</div>
+        <div title="Copy to clipboard">
+            <i class="fa fa-copy code-badge-copy-icon">📄</i>
+        </div>
+     </div><code data-trim="" data-noescape="" class="python hljs"><span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">Place</span>:</span>
+    <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">add_insect</span>(<span class="hljs-params">self, insect</span>):</span>
+        insect.add_to(self)
+
+<span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">Insect</span>:</span>
+    <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">add_to</span>(<span class="hljs-params">self, place</span>):</span>
+        self.place = place
+
+<span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">Bee</span>(<span class="hljs-params">Insect</span>):</span>
+    <span class="hljs-keyword">pass</span>
+
+<span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">ThrowerAnt</span>(<span class="hljs-params">Insect</span>):</span>
+    <span class="hljs-keyword">pass</span>
+
+place = Place()
+place.add_insect(Bee())
+place.add_insect(ThrowerAnt())</code></pre>
+                </section>
+
+                <section hidden="" aria-hidden="true" class="future" style="display: none;">
+                    <h3>Polymorphism #2 (🐤 Duck typing)</h3>
+
+                    <p>More flexible: a generic function runs on any object that
+                        behaves in a particular way.</p>
+
+                    <p class="smaller">e.g. functions that run on any iterable (objects with <code>__iter__</code>)</p>
+                    <pre style="font-size:0.5em" class="code-badge-pre"><div class="code-badge">
+        <div class="code-badge-language">python</div>
+        <div title="Copy to clipboard">
+            <i class="fa fa-copy code-badge-copy-icon">📄</i>
+        </div>
+     </div><code data-trim="" data-noescape="" class="python hljs"><span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">print_list</span>(<span class="hljs-params">iterable</span>):</span>
+    item_num = <span class="hljs-number">1</span>
+    <span class="hljs-keyword">for</span> value <span class="hljs-keyword">in</span> iterable:
+        print(<span class="hljs-string">f"<span class="hljs-subst">{item_num}</span>. <span class="hljs-subst">{value}</span>"</span>)
+        item_num += <span class="hljs-number">1</span>
+
+print_list([<span class="hljs-string">"A"</span>, <span class="hljs-string">"B"</span>, <span class="hljs-string">"C"</span>])
+print_list([x * <span class="hljs-number">3</span> <span class="hljs-keyword">for</span> x <span class="hljs-keyword">in</span> range(<span class="hljs-number">0</span>, <span class="hljs-number">5</span>)])</code></pre>
+
+                    <pre style="font-size:0.5em" class="code-badge-pre"><div class="code-badge">
+        <div class="code-badge-language">python</div>
+        <div title="Copy to clipboard">
+            <i class="fa fa-copy code-badge-copy-icon">📄</i>
+        </div>
+     </div><code data-trim="" data-noescape="" class="python hljs"><span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">ShoppingList</span>:</span>
+    <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">__init__</span>(<span class="hljs-params">self, store, items</span>):</span>
+        self.store = store
+        self.items = items
+
+    <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">__iter__</span>(<span class="hljs-params">self</span>):</span>
+        <span class="hljs-keyword">for</span> item <span class="hljs-keyword">in</span> self.items:
+            <span class="hljs-keyword">yield</span> item
+
+shopping_list = ShoppingList(<span class="hljs-string">"ZeroGrocery"</span>, [<span class="hljs-string">"Apples"</span>, <span class="hljs-string">"Tortillas"</span>])
+print_list(shopping_list)</code></pre>
+
+                </section>
+
+                <section hidden="" aria-hidden="true" class="future" style="display: none;">
+                    <h3>Polymorphism #3 (Type coercion)</h3>
+
+                    <p class="smaller">More work: a function converts arguments to the necessary type.</p>
+
+                    <pre style="font-size:0.5em" class="code-badge-pre"><div class="code-badge">
+        <div class="code-badge-language">python</div>
+        <div title="Copy to clipboard">
+            <i class="fa fa-copy code-badge-copy-icon">📄</i>
+        </div>
+     </div><code data-trim="" data-noescape="" class="python hljs"><span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">int_smash</span>(<span class="hljs-params">num1, num2</span>):</span>
+    <span class="hljs-string">"""Smashes together positive numbers NUM1 and NUM2, creating
+    a number with digits of NUM1 followed by digits of NUM2.
+    Non-integers will be converted to integers.
+    &gt;&gt;&gt; int_smash(51, 34)
+    5134
+    &gt;&gt;&gt; int_smash(51.56, 34.72)
+    5134
+    """</span>
+    int1 = int(num1)
+    int2 = int(num2)
+    num_digits = count_digits(int2)
+    <span class="hljs-keyword">while</span> int1 &gt; <span class="hljs-number">0</span>:
+        int2 += ( (int1 % <span class="hljs-number">10</span>) * pow(<span class="hljs-number">10</span>, num_digits) )
+        num_digits += <span class="hljs-number">1</span>
+        int1 = int1 // <span class="hljs-number">10</span>
+    <span class="hljs-keyword">return</span> int2</code></pre>
+
+                    <pre style="font-size:0.5em;" class="code-badge-pre"><div class="code-badge">
+        <div class="code-badge-language">python</div>
+        <div title="Copy to clipboard">
+            <i class="fa fa-copy code-badge-copy-icon">📄</i>
+        </div>
+     </div><code data-trim="" data-noescape="" class="python hljs"><span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">count_digits</span>(<span class="hljs-params">num</span>):</span>
+    num_digits = <span class="hljs-number">0</span>
+    <span class="hljs-keyword">while</span> num &gt; <span class="hljs-number">0</span>:
+        num_digits += <span class="hljs-number">1</span>
+        num = num // <span class="hljs-number">10</span>
+    <span class="hljs-keyword">return</span> num_digits</code></pre>
+                </section>
+
+                <section hidden="" aria-hidden="true" class="future" style="display: none;">
+                    <h3>Polymorphism #3 (Type coercion)</h3>
+
+                    <p class="smaller">Another approach to <code>int_smash</code>,
+                    with even more type coercion:</p>
+
+                    <pre style="font-size:0.6em" class="code-badge-pre"><div class="code-badge">
+        <div class="code-badge-language">python</div>
+        <div title="Copy to clipboard">
+            <i class="fa fa-copy code-badge-copy-icon">📄</i>
+        </div>
+     </div><code data-trim="" data-noescape="" class="python hljs"><span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">int_smash</span>(<span class="hljs-params">num1, num2</span>):</span>
+    <span class="hljs-string">"""Smashes together positive numbers NUM1 and NUM2, creating
+    a number with digits of NUM1 followed by digits of NUM2.
+    Non-integers will be converted to integers.
+    &gt;&gt;&gt; int_smash(51, 34)
+    5134
+    &gt;&gt;&gt; int_smash(51.56, 34.72)
+    5134
+    &gt;&gt;&gt; int_smash('51', '34')
+    5134
+    &gt;&gt;&gt; int_smash(0x33, 0x22)
+    5134
+    &gt;&gt;&gt; int_smash(0b110011, 0b100010)
+    5134
+    """</span>
+    <span class="hljs-keyword">return</span> int(num1) * <span class="hljs-number">10</span> ** len(str(int(num2))) + int(num2)</code></pre>
+                </section>
+
+
+                <section hidden="" aria-hidden="true" class="future" style="display: none;">
+                    <h3>Polymorphism #4 (Type dispatching)</h3>
+
+                    <p class="smaller">More complexity: the function inspects the argument type to select the appropriate behavior.</p>
+                    <pre style="font-size:0.6em;" class="code-badge-pre"><div class="code-badge">
+        <div class="code-badge-language">python</div>
+        <div title="Copy to clipboard">
+            <i class="fa fa-copy code-badge-copy-icon">📄</i>
+        </div>
+     </div><code data-trim="" data-noescape="" class="python hljs"><span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">print_obj</span>(<span class="hljs-params">obj</span>):</span>
+    <span class="hljs-keyword">if</span> hasattr(obj, <span class="hljs-string">"__iter__"</span>):
+        <span class="hljs-keyword">for</span> item <span class="hljs-keyword">in</span> obj:
+            print(item)
+    <span class="hljs-keyword">else</span>:
+        print(obj)
+
+print_obj([<span class="hljs-number">1</span>, <span class="hljs-number">2</span>, <span class="hljs-number">3</span>])
+print_obj(<span class="hljs-number">123</span>)</code></pre>
+
+                    <pre style="font-size:0.6em;" class="code-badge-pre"><div class="code-badge">
+        <div class="code-badge-language">python</div>
+        <div title="Copy to clipboard">
+            <i class="fa fa-copy code-badge-copy-icon">📄</i>
+        </div>
+     </div><code data-trim="" data-noescape="" class="python hljs"><span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">display_first</span>(<span class="hljs-params">data</span>):</span>
+    <span class="hljs-keyword">if</span> isinstance(data, Link):
+        print(data.first)
+    <span class="hljs-keyword">elif</span> isinstance(data, Tree):
+        print(data.label)
+    <span class="hljs-keyword">else</span>:
+        <span class="hljs-keyword">raise</span> Error(<span class="hljs-string">"Unsupported data type!"</span>)
+
+display_first(Link(<span class="hljs-number">1</span>, Link(<span class="hljs-number">2</span>, Link(<span class="hljs-number">3</span>))))
+display_first(Tree(<span class="hljs-string">"A"</span>, [Tree(<span class="hljs-string">"B"</span>), Tree(<span class="hljs-string">"C"</span>)]))</code></pre>
+
+                </section>
+
+                <section class="heading-only future" hidden="" aria-hidden="true" style="display: none;">
+                    <h2>Design Principles</h2>
+                </section>
+
+                <section hidden="" aria-hidden="true" class="future" style="display: none;">
+                    <h2>⚠️ Warning ⚠️</h2>
+
+                    <p>The following slides are not 100% objective!</p>
+
+                    <p>My own design choices may not be your design choices,
+                        or the design choices of your colleagues.</p>
+
+                    <img src="./Object Oriented Design Principles_files/5uqpTz1.png" alt="Twitter poll, Is programming more Art/Math/Science/Architecture? Architecture is top result, then Art, then Science, then Math.">
+
+                </section>
+
+                <section class="heading-only future" hidden="" aria-hidden="true" style="display: none;">
+                    <h2>Easy Construction</h2>
+                </section>
+
+                <section hidden="" aria-hidden="true" class="future" style="display: none;">
+                    <h2>Easy Construction</h2>
+
+                    <br>
+                    <pre style="font-size:1em" class="code-badge-pre"><div class="code-badge">
+        <div class="code-badge-language">python</div>
+        <div title="Copy to clipboard">
+            <i class="fa fa-copy code-badge-copy-icon">📄</i>
+        </div>
+     </div><code data-trim="" data-noescape="" class="python hljs">lnk = Link(<span class="hljs-number">1</span>, Link(<span class="hljs-number">2</span>, Link(<span class="hljs-number">3</span>, Link(<span class="hljs-number">4</span>))))</code></pre>
+
+                    vs.
+
+                    <pre style="font-size:1em" class="code-badge-pre"><div class="code-badge">
+        <div class="code-badge-language">python</div>
+        <div title="Copy to clipboard">
+            <i class="fa fa-copy code-badge-copy-icon">📄</i>
+        </div>
+     </div><code data-trim="" data-noescape="" class="python hljs">lnk = LinkedList([<span class="hljs-number">1</span>, <span class="hljs-number">2</span>, <span class="hljs-number">3</span>, <span class="hljs-number">4</span>])</code></pre>
+
+                    <br>
+                    <p>🤷🏽‍♀️  Which do you prefer? 1️⃣ or 2️⃣ ?</p>
+
+                </section>
+
+
+                <section hidden="" aria-hidden="true" class="future" style="display: none;">
+                    <h2>A LinkedList class</h2>
+
+                    <pre style="font-size:0.65em" class="code-badge-pre"><div class="code-badge">
+        <div class="code-badge-language">python</div>
+        <div title="Copy to clipboard">
+            <i class="fa fa-copy code-badge-copy-icon">📄</i>
+        </div>
+     </div><code data-trim="" data-noescape="" class="python hljs"><span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">LinkedList</span>:</span>
+
+    <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">__init__</span>(<span class="hljs-params">self, values</span>):</span>
+        self.head = link = Link(<span class="hljs-literal">None</span>)
+        <span class="hljs-keyword">for</span> value <span class="hljs-keyword">in</span> values:
+            link.rest = Link(value)
+            link = link.rest
+
+    <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">__iter__</span>(<span class="hljs-params">self</span>):</span>
+        link = self.head.rest
+        <span class="hljs-keyword">while</span> link <span class="hljs-keyword">is</span> <span class="hljs-keyword">not</span> Link.empty:
+            <span class="hljs-keyword">yield</span> link
+            link = link.rest</code></pre>
+
+                    <pre style="font-size:0.8em" class="code-badge-pre"><div class="code-badge">
+        <div class="code-badge-language">python</div>
+        <div title="Copy to clipboard">
+            <i class="fa fa-copy code-badge-copy-icon">📄</i>
+        </div>
+     </div><code data-trim="" data-noescape="" class="python hljs">linked_list = LinkedList([<span class="hljs-number">1</span>, <span class="hljs-number">2</span>, <span class="hljs-number">3</span>, <span class="hljs-number">4</span>])
+<span class="hljs-keyword">for</span> link <span class="hljs-keyword">in</span> linked_list:
+    print(link.first)</code></pre>
+
+                </section>
+
+                <section class="heading-only future" hidden="" aria-hidden="true" style="display: none;">
+                    <h2>Set boundaries</h2>
+                </section>
+
+                <section hidden="" aria-hidden="true" class="future" style="display: none;">
+                    <h3>Without boundaries 😿</h3>
+
+                    <pre style="font-size:0.55em" class="code-badge-pre"><div class="code-badge">
+        <div class="code-badge-language">python</div>
+        <div title="Copy to clipboard">
+            <i class="fa fa-copy code-badge-copy-icon">📄</i>
+        </div>
+     </div><code data-trim="" data-noescape="" class="python hljs"><span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">Insect</span>:</span>
+    <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">__init__</span>(<span class="hljs-params">self</span>):</span>
+        self.health = <span class="hljs-number">100</span>
+        self.perished = <span class="hljs-literal">False</span>
+
+    <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">reduce_health</span>(<span class="hljs-params">self, amount</span>):</span>
+        self.health -= amount
+        <span class="hljs-keyword">if</span> self.health &lt;= <span class="hljs-number">0</span>:
+            print(<span class="hljs-string">"Ohno! I have perished."</span>)
+            self.perished = <span class="hljs-literal">True</span>
+
+<span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">Ant</span>(<span class="hljs-params">Insect</span>):</span>
+    <span class="hljs-keyword">pass</span>
+
+<span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">BumbleBee</span>(<span class="hljs-params">Insect</span>):</span>
+    <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">avenge_bee_deaths</span>(<span class="hljs-params">self, ant</span>):</span>
+        ant.health -= <span class="hljs-number">1000</span></code></pre>
+
+                    <pre style="font-size:0.6em" class="code-badge-pre"><div class="code-badge">
+        <div class="code-badge-language">python</div>
+        <div title="Copy to clipboard">
+            <i class="fa fa-copy code-badge-copy-icon">📄</i>
+        </div>
+     </div><code data-trim="" data-noescape="" class="python hljs">bee = BumbleBee()
+ant = Ant()
+bee.avenge_bee_deaths(ant)</code></pre>
+
+                    <p class="smaller">🙊  Oops! Did we just break the game?!</p>
+
+                </section>
+
+
+                <section hidden="" aria-hidden="true" class="future" style="display: none;">
+                    <h3>With boundaries 😺</h3>
+
+                    <pre style="font-size:0.55em" class="code-badge-pre"><div class="code-badge">
+        <div class="code-badge-language">python</div>
+        <div title="Copy to clipboard">
+            <i class="fa fa-copy code-badge-copy-icon">📄</i>
+        </div>
+     </div><code data-trim="" data-noescape="" class="python hljs"><span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">Insect</span>:</span>
+    <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">__init__</span>(<span class="hljs-params">self</span>):</span>
+        self.__health = <span class="hljs-number">100</span>
+        self.__perished = <span class="hljs-literal">False</span>
+
+    <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">reduce_health</span>(<span class="hljs-params">self, amount</span>):</span>
+        self.__health -= amount
+        <span class="hljs-keyword">if</span> self.__health &lt;= <span class="hljs-number">0</span>:
+            print(<span class="hljs-string">"Ohno! I have perished."</span>)
+            self.__perished = <span class="hljs-literal">True</span>
+
+<span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">Ant</span>(<span class="hljs-params">Insect</span>):</span>
+    <span class="hljs-keyword">pass</span>
+
+<span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">BumbleBee</span>(<span class="hljs-params">Insect</span>):</span>
+    <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">avenge_bee_deaths</span>(<span class="hljs-params">self, ant</span>):</span>
+        <span class="hljs-comment"># ant.__health -= 1000 # 🚫 Error!</span>
+        ant.reduce_health(<span class="hljs-number">1000</span>)</code></pre>
+
+                    <p class="smaller">Double underscores prevent accidental access
+                        but they can't prevent any access at all,
+                        since the attribute is still available at
+                        <code>_classname__attrname</code>.
+                    </p>
+
+                </section>
+
+                <section class="heading-only future" hidden="" aria-hidden="true" style="display: none;">
+                    <h2>Check your assumptions</h2>
+                </section>
+
+                <section hidden="" aria-hidden="true" class="future" style="display: none;">
+                    <h3>A Person class</h3>
+
+                    <pre style="font-size:0.65em" class="code-badge-pre"><div class="code-badge">
+        <div class="code-badge-language">python</div>
+        <div title="Copy to clipboard">
+            <i class="fa fa-copy code-badge-copy-icon">📄</i>
+        </div>
+     </div><code data-trim="" data-noescape="" class="python hljs"><span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">Person</span>:</span>
+
+    <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">__init__</span>(<span class="hljs-params">self, first_name, middle_name, last_name</span>):</span>
+        self.first_name = first_name
+        self.middle_name = middle_name
+        self.last_name = last_name
+
+    <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">__str__</span>(<span class="hljs-params">self</span>):</span>
+        <span class="hljs-keyword">return</span> <span class="hljs-string">f"<span class="hljs-subst">{self.last_name}</span>, <span class="hljs-subst">{self.first_name}</span> <span class="hljs-subst">{self.middle_name[<span class="hljs-number">0</span>]}</span>."</span></code></pre>
+
+                    <p>🤔  What assumptions does this class make about names? What are examples of names that won't work?</p>
+
+                </section>
+
+
+                <section hidden="" aria-hidden="true" class="future" style="display: none;">
+                    <h3>Check assumptions about names</h3>
+
+                    <pre style="font-size:0.7em" class="code-badge-pre"><div class="code-badge">
+        <div class="code-badge-language">python</div>
+        <div title="Copy to clipboard">
+            <i class="fa fa-copy code-badge-copy-icon">📄</i>
+        </div>
+     </div><code data-trim="" data-noescape="" class="python hljs">p = Person(<span class="hljs-string">"Ugo"</span>, <span class="hljs-string">"Tiago Marcondes"</span>, <span class="hljs-string">"Leal Chaves"</span>)
+print(p) <span class="hljs-comment"># Leal Chaves, Ugo T.</span>
+p = Person(<span class="hljs-string">"Vincent"</span>, <span class="hljs-string">"van"</span>, <span class="hljs-string">"Gogh"</span>)
+print(p) <span class="hljs-comment"># Gogh, Vincent v.</span>
+p = Person(<span class="hljs-string">"Jerome"</span>, <span class="hljs-string">"K"</span>, <span class="hljs-string">"Jerome"</span>)
+print(p) <span class="hljs-comment"># Jerome, Jerome K.</span>
+p = Person(<span class="hljs-string">"Stephie"</span>, <span class="hljs-string">""</span>, <span class="hljs-string">"Cha"</span>)
+print(p) <span class="hljs-comment"># 🚫 Error!</span>
+p = Person(<span class="hljs-string">"Suharto"</span>, <span class="hljs-string">""</span>, <span class="hljs-string">""</span>)
+print(p) <span class="hljs-comment"># 🚫 Error!</span>
+p = Person(<span class="hljs-string">"鄭"</span>, <span class="hljs-string">""</span>, <span class="hljs-string">"根"</span>)
+print(p) <span class="hljs-comment"># 🚫 Error!</span></code></pre>
+
+                    <p class="smaller">Some names can't be written on a computer at all. Only a fraction of Chinese logograms
+                        are represented in the Unicode code points.</p>
+
+                    <p class="smaller"><a href="https://shinesolutions.com/2018/01/08/falsehoods-programmers-believe-about-names-with-examples/" target="_blank">
+                        Falsehoods Programmers Believe About Names</a></p>
+
+                </section>
+
+                <section hidden="" aria-hidden="true" class="future" style="display: none;">
+                    <h3>After: Person</h3>
+
+                    <p class="smaller">Here's just one way to refactor. However, this refactor
+                        needs to be compatible with how the system gets the data
+                        about each person, so a UI change may also be needed.</p>
+
+                    <pre style="font-size:0.6em" class="code-badge-pre"><div class="code-badge">
+        <div class="code-badge-language">python</div>
+        <div title="Copy to clipboard">
+            <i class="fa fa-copy code-badge-copy-icon">📄</i>
+        </div>
+     </div><code data-trim="" data-noescape="" class="python hljs"><span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">Person</span>:</span>
+
+    <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">__init__</span>(<span class="hljs-params">self, family_name, given_name, family_first=True</span>):</span>
+        self.family_name = family_name
+        self.given_name = given_name
+        self.family_first = family_first
+
+    <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">__str__</span>(<span class="hljs-params">self</span>):</span>
+        <span class="hljs-keyword">if</span> self.family_first:
+            <span class="hljs-keyword">return</span> <span class="hljs-string">f"<span class="hljs-subst">{self.family_name}</span>, <span class="hljs-subst">{self.given_name}</span>"</span>
+        <span class="hljs-keyword">else</span>:
+            <span class="hljs-keyword">return</span> <span class="hljs-string">f"<span class="hljs-subst">{self.given_name}</span> <span class="hljs-subst">{self.family_name}</span>"</span></code></pre>
+
+                    <ul class="smaller">
+                        <li><a href="https://shinesolutions.com/2018/01/08/falsehoods-programmers-believe-about-names-with-examples/" target="_blank">
+                        Falsehoods Programmers Believe About Names</a></li>
+                        <li>
+                            <a href="https://www.w3.org/International/questions/qa-personal-names">W3C: Personal Names Around the World</a>
+                        </li>
+                        <li><a href="https://papers.ssrn.com/sol3/papers.cfm?abstract_id=3833658">There is No Such Thing as a "Legal Name": A Strange, Shared Delusion</a></li>
+                    <p></p>
+
+                </ul></section>
+
+
+                <section hidden="" aria-hidden="true" class="future" style="display: none;">
+                    <h3>Student/Parent classes</h3>
+
+                    <pre style="font-size:0.6em" class="code-badge-pre"><div class="code-badge">
+        <div class="code-badge-language">python</div>
+        <div title="Copy to clipboard">
+            <i class="fa fa-copy code-badge-copy-icon">📄</i>
+        </div>
+     </div><code data-trim="" data-noescape="" class="python hljs"><span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">Student</span>(<span class="hljs-params">Person</span>):</span>
+
+    <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">__init__</span>(<span class="hljs-params">self, family_name, given_name, mother, father</span>):</span>
+        super().__init__(self)
+        self.mother = mother
+        self.father = father
+        self.address = mother.address <span class="hljs-keyword">or</span> father.address
+
+    <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">__str__</span>(<span class="hljs-params">self</span>):</span>
+        <span class="hljs-keyword">return</span> <span class="hljs-string">f"<span class="hljs-subst">{super()}</span> (child of <span class="hljs-subst">{self.mother}</span> and <span class="hljs-subst">{self.father}</span>"</span>
+
+<span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">Parent</span>(<span class="hljs-params">Person</span>):</span>
+
+    <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">__init__</span>(<span class="hljs-params">self, family_name, given_name, address</span>):</span>
+        self.address = address</code></pre>
+
+                    <p>🤔  What assumptions does this class make about parent/child relations? What are examples of IRL situations that won't work?</p>
+
+                </section>
+
+
+                <section hidden="" aria-hidden="true" class="future" style="display: none;">
+                    <h3>Check assumptions about families</h3>
+
+                    <ul>
+                        <li>What if they have two mums or two dads?
+                        </li><li>What if they have less than 2 parents or more than 2 parents?
+                        </li><li>What if the student lives with the other parent?
+                        </li><li>What if the student doesn't live with either parent?
+                        </li><li>What if the student has an additional guardian that isn't a parent?
+                    </li></ul>
+
+                    <p><a href="https://shkspr.mobi/blog/2017/03/falsehoods-programmers-believe-about-families/" target="_blank">
+                        Falsehoods Programmers Believe About Families</a></p>
+
+                </section>
+
+                <section hidden="" aria-hidden="true" class="future" style="display: none;">
+                    <h3>After: Student/Parent</h3>
+
+                    <p>Here's one refactor that is certainly not perfect.</p>
+
+                    <pre style="font-size:0.5em" class="code-badge-pre"><div class="code-badge">
+        <div class="code-badge-language">python</div>
+        <div title="Copy to clipboard">
+            <i class="fa fa-copy code-badge-copy-icon">📄</i>
+        </div>
+     </div><code data-trim="" data-noescape="" class="python hljs"><span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">Student</span>(<span class="hljs-params">Person</span>):</span>
+
+    <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">__init__</span>(<span class="hljs-params">self, family_name, given_name, guardians, address</span>):</span>
+        super().__init__(self)
+        self.guardians = guardians
+        self.address = address
+        <span class="hljs-comment"># What could go wrong below?</span>
+        self.lives_with_guardian = <span class="hljs-literal">False</span>
+        <span class="hljs-keyword">for</span> guardian <span class="hljs-keyword">in</span> guardians:
+            <span class="hljs-keyword">if</span> guardian.address == address:
+                self.lives_with_guardian = <span class="hljs-literal">True</span>
+
+    <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">__str__</span>(<span class="hljs-params">self</span>):</span>
+        <span class="hljs-keyword">return</span> <span class="hljs-string">f"<span class="hljs-subst">{super()}</span> (in care of <span class="hljs-subst">{<span class="hljs-string">""</span>.join(self.guardians)}</span>"</span>
+
+<span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">Guardian</span>(<span class="hljs-params">Person</span>):</span>
+
+    <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">__init__</span>(<span class="hljs-params">self, family_name, given_name, address</span>):</span>
+        self.address = address</code></pre>
+
+                </section>
+
+                <section hidden="" aria-hidden="true" class="future" style="display: none;">
+                    <h3>Address class</h3>
+
+                    <pre style="font-size:0.6em" class="code-badge-pre"><div class="code-badge">
+        <div class="code-badge-language">python</div>
+        <div title="Copy to clipboard">
+            <i class="fa fa-copy code-badge-copy-icon">📄</i>
+        </div>
+     </div><code data-trim="" data-noescape="" class="python hljs"><span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">Address</span>:</span>
+
+    <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">__init__</span>(<span class="hljs-params">self, street_num, street, apt_or_suite, city, state, zip, country</span>):</span>
+        <span class="hljs-keyword">assert</span> street_num &gt; <span class="hljs-number">0</span>
+        self.street_num = street_num
+        self.street = street
+        self.apt_or_suite = apt_or_suite
+        self.city = city
+        self.zip = zip
+        self.country = country
+
+    <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">__str__</span>(<span class="hljs-params">self</span>):</span>
+        <span class="hljs-keyword">return</span> <span class="hljs-string">f"<span class="hljs-subst">{self.street_num}</span> <span class="hljs-subst">{self.street}</span>, <span class="hljs-subst">{self.apt_or_suite}</span>, \
+            <span class="hljs-subst">{self.city}</span>, <span class="hljs-subst">{self.state}</span>, <span class="hljs-subst">{self.country}</span> <span class="hljs-subst">{self.zip}</span>"</span></code></pre>
+
+                    <pre style="font-size:0.6em" class="code-badge-pre"><div class="code-badge">
+        <div class="code-badge-language">python</div>
+        <div title="Copy to clipboard">
+            <i class="fa fa-copy code-badge-copy-icon">📄</i>
+        </div>
+     </div><code data-trim="" data-noescape="" class="python hljs">a = Address(<span class="hljs-number">1074</span>, <span class="hljs-string">"Live Oaks Blvd"</span>, <span class="hljs-string">"Apt 1"</span>, <span class="hljs-string">"Pasadena"</span>, <span class="hljs-string">"CA"</span>, <span class="hljs-string">"13078"</span>, <span class="hljs-string">"US"</span>)
+print(a)
+a = Address(<span class="hljs-number">98</span>, <span class="hljs-string">"Shirley Street"</span>, <span class="hljs-string">""</span>, <span class="hljs-string">"Pimpama"</span>, <span class="hljs-string">"QLD"</span>, <span class="hljs-string">"4209"</span>, <span class="hljs-string">"Australia"</span>)
+print(a)</code></pre>
+
+                    <p class="smaller">🤔  What assumptions does this class make about address formats? What are examples of addresses that won't work?</p>
+
+                </section>
+
+
+                <section hidden="" aria-hidden="true" class="future" style="display: none;">
+                    <h3>Check assumptions about addresses</h3>
+
+                    <pre style="font-size:0.65em" class="code-badge-pre"><div class="code-badge">
+        <div class="code-badge-language">python</div>
+        <div title="Copy to clipboard">
+            <i class="fa fa-copy code-badge-copy-icon">📄</i>
+        </div>
+     </div><code data-trim="" data-noescape="" class="python hljs"><span class="hljs-comment"># No state, city is same as country</span>
+a = Address(<span class="hljs-number">35</span>, <span class="hljs-string">"Mandalay Road"</span>, <span class="hljs-string">"# 13–37 Mandalay Towers"</span>,]
+    <span class="hljs-string">"Singapore"</span>, <span class="hljs-string">""</span>, <span class="hljs-string">"308215"</span>, <span class="hljs-string">"Singapore"</span>)
+print(a)
+
+<span class="hljs-comment"># No state or postcode</span>
+a = Address(<span class="hljs-number">150</span>, <span class="hljs-string">"Kennedy Road"</span>, <span class="hljs-string">"Flat 25, 12/F, Acacia Building"</span>,
+    <span class="hljs-string">"Wan Chai"</span>, <span class="hljs-string">""</span>, <span class="hljs-string">""</span>, <span class="hljs-string">"Hong Kong Island"</span>)
+print(a)
+
+<span class="hljs-comment"># Should actually be written as "101-3485, rue de la Montagne"</span>
+a = Address(<span class="hljs-number">3485</span>, <span class="hljs-string">"rue de la Montagne"</span>, <span class="hljs-string">"101"</span>,
+    <span class="hljs-string">"Montréal"</span>, <span class="hljs-string">"Québec"</span>, <span class="hljs-string">"H3G 2A6"</span>, <span class="hljs-string">"Canada"</span>)
+print(a)</code></pre>
+
+                    <p class="smaller">There are also some addresses we can't construct at all!</p>
+
+                    <p><a href="https://www.mjt.me.uk/posts/falsehoods-programmers-believe-about-addresses/" target="_blank">
+                        Falsehoods Programmers Believe About Addresses</a></p>
+
+                </section>
+
+
+                <section hidden="" aria-hidden="true" class="future" style="display: none;">
+                    <h3>After: Address</h3>
+
+                    <p>Still imperfect, but it's a start.</p>
+
+                    <pre style="font-size:0.55em" class="code-badge-pre"><div class="code-badge">
+        <div class="code-badge-language">python</div>
+        <div title="Copy to clipboard">
+            <i class="fa fa-copy code-badge-copy-icon">📄</i>
+        </div>
+     </div><code data-trim="" data-noescape="" class="python hljs"><span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">Address</span>:</span>
+
+<span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">__init__</span>(<span class="hljs-params">self, line1, line2, line3, city_or_town,
+             state_or_region, zip_or_postcode, country</span>):</span>
+    self.line1 = line1
+    self.line2 = line2
+    self.line3 = line3
+    self.country = country
+    self.state_or_region = state_or_region
+    self.city_or_town = city_or_town
+    self.zip_or_postcode = zip_or_postcode
+
+<span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">__str__</span>(<span class="hljs-params">self</span>):</span>
+    lines = [line <span class="hljs-keyword">for</span> line <span class="hljs-keyword">in</span> [self.line1, self.line2, self.line3] <span class="hljs-keyword">if</span> line]
+    newline = <span class="hljs-string">'\n'</span>
+    <span class="hljs-keyword">return</span> (<span class="hljs-string">f"<span class="hljs-subst">{newline.join(lines)}</span>\n"</span>
+        <span class="hljs-string">f"<span class="hljs-subst">{<span class="hljs-string">', '</span>.join([self.city_or_town, self.state_or_region])}</span>\n"</span>
+        <span class="hljs-string">f"<span class="hljs-subst">{<span class="hljs-string">', '</span>.join([self.country, self.zip_or_postcode])}</span>"</span>)</code></pre>
+
+                    <pre style="font-size:0.6em" class="code-badge-pre"><div class="code-badge">
+        <div class="code-badge-language">python</div>
+        <div title="Copy to clipboard">
+            <i class="fa fa-copy code-badge-copy-icon">📄</i>
+        </div>
+     </div><code data-trim="" data-noescape="" class="python hljs">a = Address(<span class="hljs-string">"101-3485, rue de la Montagne"</span>, <span class="hljs-literal">None</span>, <span class="hljs-literal">None</span>,
+    <span class="hljs-string">"Montréal"</span>, <span class="hljs-string">"Québec"</span>, <span class="hljs-string">"H3G 2A6"</span>, <span class="hljs-string">"Canada"</span>)
+print(a)</code></pre>
+                </section>
+
+                <section hidden="" aria-hidden="true" class="future" style="display: none;">
+                    <h3>More ways to check assumptions</h3>
+
+                    <p><a href="https://github.com/kdeldycke/awesome-falsehood" target="_blank">All the falsehoods programmers believe in!</a></p>
+
+                    <p>General rule: The less your program has to assume about the real world, the better!</p>
+
+                </section>
+
+                <section class="heading-only future" hidden="" aria-hidden="true" style="display: none;">
+                    <h2>Design for Reuse</h2>
+                </section>
+
+                <section hidden="" aria-hidden="true" class="future" style="display: none;">
+                    <h3>Before: UCBMFET</h3>
+
+                    <pre style="font-size:0.5em" class="code-badge-pre"><div class="code-badge">
+        <div class="code-badge-language">python</div>
+        <div title="Copy to clipboard">
+            <i class="fa fa-copy code-badge-copy-icon">📄</i>
+        </div>
+     </div><code data-trim="" data-noescape="" class="python hljs"><span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">UCBMFET</span>:</span>
+    num_members = <span class="hljs-number">0</span>
+
+    <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">__init__</span>(<span class="hljs-params">self, name</span>):</span>
+        self.name = name
+        self.posts = []
+        self.members = []
+
+    <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">add_member</span>(<span class="hljs-params">self, name</span>):</span>
+        self.members.append(name)
+        UCBMFET.num_members += <span class="hljs-number">1</span>
+
+    <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">post_in_UCBMFET</span>(<span class="hljs-params">self, title_of_post</span>):</span>
+        self.posts.append(title_of_post)</code></pre>
+                    <pre style="font-size:0.5em" class="code-badge-pre"><div class="code-badge">
+        <div class="code-badge-language">python</div>
+        <div title="Copy to clipboard">
+            <i class="fa fa-copy code-badge-copy-icon">📄</i>
+        </div>
+     </div><code data-trim="" data-noescape="" class="python hljs">page = UCBMFET(<span class="hljs-string">"UCB Memes For Edgy Teens"</span>)
+page.add_member(<span class="hljs-string">"Annie"</span>)
+page.add_member(<span class="hljs-string">"Grinnell"</span>)
+page.post_in_UCBMFET(<span class="hljs-string">"Prepping for 61A Final Be Like..."</span>)</code></pre>
+
+                    <p class="smaller">🤔  What would it mean to create another instance of this class? What would that represent?
+                        What feels amiss about this design?
+                    </p>
+
+                </section>
+
+                <section hidden="" aria-hidden="true" class="future" style="display: none;">
+                    <h3>After Refactor: MemePage</h3>
+
+                    <pre style="font-size:0.5em" class="code-badge-pre"><div class="code-badge">
+        <div class="code-badge-language">python</div>
+        <div title="Copy to clipboard">
+            <i class="fa fa-copy code-badge-copy-icon">📄</i>
+        </div>
+     </div><code data-trim="" data-noescape="" class="python hljs"><span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">MemePage</span>:</span>
+
+    <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">__init__</span>(<span class="hljs-params">self, name, organization</span>):</span>
+        self.name = name
+        self.organization = organization
+        self.posts = []
+        self.members = []
+
+    <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">add_member</span>(<span class="hljs-params">self, name</span>):</span>
+        self.members.append(name)
+
+    <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">add_post</span>(<span class="hljs-params">self, title_of_post</span>):</span>
+        self.posts.append(title_of_post)
+
+<span class="hljs-meta">    @property</span>
+    <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">num_members</span>(<span class="hljs-params">self</span>):</span>
+        <span class="hljs-keyword">return</span> len(self.members)</code></pre>
+
+                    <pre style="font-size:0.5em" class="code-badge-pre"><div class="code-badge">
+        <div class="code-badge-language">python</div>
+        <div title="Copy to clipboard">
+            <i class="fa fa-copy code-badge-copy-icon">📄</i>
+        </div>
+     </div><code data-trim="" data-noescape="" class="python hljs">page1 = MemePage(<span class="hljs-string">"UCB Memes For Edgy Teens"</span>, <span class="hljs-string">"UC Berkeley"</span>)
+page1.add_member(<span class="hljs-string">"Annie"</span>)
+page1.add_member(<span class="hljs-string">"Grinnell"</span>)
+page1.add_post(<span class="hljs-string">"Just Chilling On The Glade"</span>)
+
+page2 = MemePage(<span class="hljs-string">"Wholesome Memes for Tweens"</span>, <span class="hljs-string">"King Middle School"</span>)
+page1.add_member(<span class="hljs-string">"Poppy"</span>)
+page1.add_member(<span class="hljs-string">"Sequoia"</span>)
+page1.add_member(<span class="hljs-string">"Redwood"</span>)
+page2.add_post(<span class="hljs-string">"DEFYING GRAVITY!"</span>)</code></pre>
+
+                </section>
+
+                
+
+
+                
+
+                <section hidden="" aria-hidden="true" class="future" style="display: none;">
+                    <h3>Designing reusable classes</h3>
+
+                    <p>The Reuse Test:
+                        <br>🤔 Is it possible to create multiple instances
+                        of the class, where each instance stores
+                        its own relevant state?</p>
+
+                    <p>👉🏽 Use instance variables to store any state
+                        that's specific to an instance.
+                    </p>
+
+                    <p>👉🏽 Use class variables only for constants
+                        or for state that's shared across all instances.</p>
+                </section>
+
+			</div>
+		<div class="backgrounds"><div class="slide-background heading-only present" data-loaded="true" style="display: block;"><div class="slide-background-content"></div></div><div class="slide-background future" data-loaded="true" style="display: block;"><div class="slide-background-content"></div></div><div class="slide-background future" data-loaded="true" style="display: block;"><div class="slide-background-content"></div></div><div class="slide-background future" style="display: none;"><div class="slide-background-content"></div></div><div class="slide-background future" style="display: none;"><div class="slide-background-content"></div></div><div class="slide-background future" style="display: none;"><div class="slide-background-content"></div></div><div class="slide-background future" style="display: none;"><div class="slide-background-content"></div></div><div class="slide-background future" style="display: none;"><div class="slide-background-content"></div></div><div class="slide-background future" style="display: none;"><div class="slide-background-content"></div></div><div class="slide-background future" style="display: none;"><div class="slide-background-content"></div></div><div class="slide-background heading-only future" style="display: none;"><div class="slide-background-content"></div></div><div class="slide-background future" style="display: none;"><div class="slide-background-content"></div></div><div class="slide-background heading-only future" style="display: none;"><div class="slide-background-content"></div></div><div class="slide-background future" style="display: none;"><div class="slide-background-content"></div></div><div class="slide-background future" style="display: none;"><div class="slide-background-content"></div></div><div class="slide-background heading-only future" style="display: none;"><div class="slide-background-content"></div></div><div class="slide-background future" style="display: none;"><div class="slide-background-content"></div></div><div class="slide-background future" style="display: none;"><div class="slide-background-content"></div></div><div class="slide-background heading-only future" style="display: none;"><div class="slide-background-content"></div></div><div class="slide-background future" style="display: none;"><div class="slide-background-content"></div></div><div class="slide-background future" style="display: none;"><div class="slide-background-content"></div></div><div class="slide-background future" style="display: none;"><div class="slide-background-content"></div></div><div class="slide-background future" style="display: none;"><div class="slide-background-content"></div></div><div class="slide-background future" style="display: none;"><div class="slide-background-content"></div></div><div class="slide-background future" style="display: none;"><div class="slide-background-content"></div></div><div class="slide-background future" style="display: none;"><div class="slide-background-content"></div></div><div class="slide-background future" style="display: none;"><div class="slide-background-content"></div></div><div class="slide-background future" style="display: none;"><div class="slide-background-content"></div></div><div class="slide-background future" style="display: none;"><div class="slide-background-content"></div></div><div class="slide-background heading-only future" style="display: none;"><div class="slide-background-content"></div></div><div class="slide-background future" style="display: none;"><div class="slide-background-content"></div></div><div class="slide-background future" style="display: none;"><div class="slide-background-content"></div></div><div class="slide-background future" style="display: none;"><div class="slide-background-content"></div></div></div><div class="slide-number" style="display: block;"><a href="https://inst.eecs.berkeley.edu/~cs61a/sp21/assets/slides/37-OOP_Review_+_Design.html#/">
+					<span class="slide-number-a">1</span>
+					</a></div><aside class="controls" data-controls-layout="bottom-right" data-controls-back-arrows="faded" style="display: block;"><button class="navigate-left" aria-label="previous slide" disabled="disabled"><div class="controls-arrow"></div></button>
+			<button class="navigate-right enabled highlight" aria-label="next slide"><div class="controls-arrow"></div></button>
+			<button class="navigate-up" aria-label="above slide" disabled="disabled"><div class="controls-arrow"></div></button>
+			<button class="navigate-down" aria-label="below slide" disabled="disabled"><div class="controls-arrow"></div></button></aside><div class="progress" style="display: block;"><span style="transform: scaleX(0);"></span></div><div class="speaker-notes" data-prevent-swipe="" tabindex="0"></div><div class="pause-overlay"><button class="resume-button">Resume presentation</button></div><div class="aria-status" aria-live="polite" aria-atomic="true" style="position: absolute; height: 1px; width: 1px; overflow: hidden; clip: rect(1px, 1px, 1px, 1px);">Object-Oriented Programming Review and Design Tips for navigating the slides: Press O or Escape for overview mode. Visit this link for a nice printable version Press the copy icon on the upper right of code blocks to copy the code </div></div>
+
+		<script src="./Object Oriented Design Principles_files/reveal.js.下载"></script>
+        <script src="./Object Oriented Design Principles_files/highlight.js.下载"></script>
+        <script src="./Object Oriented Design Principles_files/highlightjs-badge.min.js.下载"></script>
+        <script src="./Object Oriented Design Principles_files/jsplumb.min.js.下载"></script>
+		<script>
+			const srcUrlPrefix = "https://cdn.jsdelivr.net/npm/reveal.js@4.1.0/";
+			Reveal.initialize({
+				hash: true,
+				center: false,
+				slideNumber: true,
+				showNotes: false,
+				margin: 0.1,
+				preloadIframes: true,
+				plugins: [ RevealHighlight ],
+				pdfSeparateFragments: true
+			});
+
+            // add HighlightJS-badge (options are optional)
+            var options = {
+                copyIconContent: "📄",
+                checkIconContent: "✅"
+            };
+            window.highlightJsBadge(options);
+
+            if (window.location.search == "?print-pdf") {
+                var uncounted = document.querySelectorAll("[data-visibility='uncounted']");
+                uncounted.forEach(node => {
+                    node.parentNode.classList.add("no-print")
+                })
+            }
+		</script>
+	
+
+<style>
+@media print {
+   .code-badge { display: none; }
+}
+    .code-badge-pre {
+        position: relative;
+    }
+    .code-badge {
+        display: flex;
+        flex-direction: row;
+        white-space: normal;
+        background: transparent;
+        background: #333;
+        color: white;
+        font-size: 0.875em;
+        opacity: 0.5;
+        transition: opacity linear 0.5s;
+        border-radius: 0 0 0 7px;
+        padding: 5px 8px 5px 8px;
+        position: absolute;
+        right: 0;
+        top: 0;
+    }
+    .code-badge.active {
+        opacity: 0.8;
+    }
+
+    .code-badge:hover {
+        opacity: .95;
+    }
+
+    .code-badge a,
+    .code-badge a:hover {
+        text-decoration: none;
+    }
+
+    .code-badge-language {
+        margin-right: 10px;
+        font-weight: 600;
+        color: goldenrod;
+    }
+    .code-badge-copy-icon {
+        font-size: 1.2em;
+        cursor: pointer;
+        padding: 0 7px;
+        margin-top:2;
+    }
+    .fa.text-success:{ color: limegreen !important }
+</style><div id="CodeBadgeTemplate" style="display:none">
+    <div class="code-badge">
+        <div class="code-badge-language">{{language}}</div>
+        <div title="Copy to clipboard">
+            <i class="{{copyIconClass}} code-badge-copy-icon"></i>
+        </div>
+     </div>
+</div></body></html>

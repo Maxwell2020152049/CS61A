@@ -1,0 +1,16 @@
+These files contain a few examples of Schemish Prolog programs.
+
+* (fact (PREDICATE-SYMBOL OPERANDS))   or
+  (! (PREDICATE-SYMBOL OPERANDS))
+
+      The predicate (logical true/false function) named PREDICATE-SYMBOL
+      holds for the given OPERANDS.
+
+* (query (PREDICATE-SYMBOL0 OPERANDS0)
+         (PREDICATE-SYMBOL1 OPERANDS1)
+         ...
+         (PREDICATE-SYMBOLn OPERANDSn)
+  (?      (PREDICATE-SYMBOL0 OPERANDS0)
+         (PREDICATE-SYMBOL1 OPERANDS1)
+         ...
+         (PREDICATE-SYMBOLn OPERANDSn)         

@@ -1,0 +1,962 @@
+<!DOCTYPE html>
+<!-- saved from url=(0100)https://inst.eecs.berkeley.edu/~cs61a/sp21/assets/slides/14-List_mutation_+_Identity_+_Nonlocal.html -->
+<html class="reveal-full-page"><head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+		
+		<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+		<title>List methods, Identity, and Nonlocal</title>
+		<link rel="stylesheet" href="./List methods, Identity, and Nonlocal_files/reset.css">
+		<link rel="stylesheet" href="./List methods, Identity, and Nonlocal_files/reveal.css">
+		<link rel="stylesheet" href="./List methods, Identity, and Nonlocal_files/simple.css" id="theme">
+		<link rel="stylesheet" href="./List methods, Identity, and Nonlocal_files/mono-blue.css">
+		<link rel="stylesheet" href="./List methods, Identity, and Nonlocal_files/css">
+		<style>
+			.reveal {
+				font-family: "Work Sans", sans-serif;
+			}
+
+			.reveal .slides section {
+				text-align: left;
+				font-size: smaller;
+			}
+
+			.reveal pre {
+				background-color: #f5f5f5;
+				width: 100%;
+				border: 1px solid #ccc;
+				border-radius: 4px;
+				box-shadow: none;
+			}
+
+			.reveal h1, .reveal h2, .reveal h3, .reveal h4, .reveal h5, .reveal h6 {
+				font-family: "Roboto", sans-serif;
+				color: #0072c1;
+			}
+
+			.reveal section.heading-only {
+				text-align:center;
+				padding-top:20%;
+			}
+
+            .code-badge-language {
+                display: none;
+            }
+
+			.python-tutor-link {
+				font-size: smaller;
+			}
+
+			.python-tutor-link:before {
+				content: "";
+				display: block;
+				background: url("http://pythontutor.com/favicon.ico") no-repeat;
+				width: 48px;
+				height: 48px;
+				float: left;
+				margin: 0 6px 0 0;
+			}
+
+			.reveal h3 {
+				margin-bottom: 40px;
+			}
+
+            .smaller {
+                font-size: smaller;
+            }
+
+			@media print
+			{
+				.no-print, .no-print *
+				{
+					display: none !important;
+				}
+			}
+		</style>
+	<style type="text/css">.hljs-ln{border-collapse:collapse}.hljs-ln td{padding:0}.hljs-ln-n:before{content:attr(data-line-number)}</style></head>
+	<body class="reveal-viewport" style="--slide-width: 960px; --slide-height: 700px;">
+		<div class="reveal slide focused has-horizontal-slides ready" role="application" data-transition-speed="default" data-background-transition="fade">
+			<div class="slides" style="width: 960px; height: 700px; zoom: 1.08771;">
+				<section class="heading-only present" style="display: block;">
+					<h2>List Mutation, Identity, and Nonlocal</h2>
+
+					<div class="no-print" style="text-align: left; margin-top: 200px; font-size: 70%;">
+						Tips for navigating the slides:
+						<ul>
+							<li>Press O or Escape for overview mode.</li>
+							<li>Visit <a href="https://inst.eecs.berkeley.edu/~cs61a/sp21/assets/slides/14-List_mutation_+_Identity_+_Nonlocal.html?print-pdf" target="_blank">this link</a> for a nice printable version</li>
+							<li>Press the copy icon on the upper right of code blocks to copy the code</li>
+						</ul>
+					</div>
+				</section>
+
+				<section class="heading-only future" hidden="" aria-hidden="true" style="display: block;">
+					<h3>Lists</h3>
+				</section>
+
+				<section hidden="" aria-hidden="true" class="future" style="display: block;">
+					<h3>List creation</h3>
+
+                    <p>Creating a list from scratch:</p>
+					<pre class="code-badge-pre"><div class="code-badge">
+        <div class="code-badge-language">angelscript</div>
+        <div title="Copy to clipboard">
+            <i class="fa fa-copy code-badge-copy-icon">📄</i>
+        </div>
+     </div><code data-trim="" data-noescape="" class="hljs angelscript">a = []
+b = [<span class="hljs-number">1</span>, <span class="hljs-number">2</span>, <span class="hljs-number">3</span>, <span class="hljs-number">4</span>, <span class="hljs-number">5</span>]</code></pre>
+
+                    <p>Creating a list from existing lists:</p>
+                    <pre class="code-badge-pre"><div class="code-badge">
+        <div class="code-badge-language">ini</div>
+        <div title="Copy to clipboard">
+            <i class="fa fa-copy code-badge-copy-icon">📄</i>
+        </div>
+     </div><code data-trim="" data-noescape="" class="hljs ini"><span class="hljs-attr">c</span> = b + [<span class="hljs-number">20</span>, <span class="hljs-number">30</span>]
+<span class="hljs-attr">d</span> = c[:]
+<span class="hljs-attr">e</span> = list(c)</code></pre>
+
+                    <p class="smaller">Non-destructive or destructive? <br>
+                    <span class="fragment" data-fragment-index="0">The operations above are <strong>non-destructive.</strong></span>
+                    </p>
+
+                    <p>
+						<a class="python-tutor-link" target="_blank" href="http://pythontutor.com/composingprograms.html#code=a%20%3D%20%5B%5D%0Ab%20%3D%20%5B1,%202,%203,%204,%205%5D%0A%0Ac%20%3D%20b%20%2B%20%5B20,%2030%5D%0Ad%20%3D%20c%5B%3A%5D%0Ae%20%3D%20list%28c%29%0Ae2%20%3D%20e&amp;cumulative=true&amp;curInstr=0&amp;mode=display&amp;origin=composingprograms.js&amp;py=3&amp;rawInputLstJSON=%5B%5D">
+						Try in PythonTutor.
+						</a>
+                    </p>
+                    <br>
+
+
+                    <aside class="notes">
+                        e2 = e<br>
+                        I like to say that the value of a variable like x in x = [1, 2, 3] is the arrow from x to the list object, as opposed to the list object itself.  Thus y = x copies an arrow, not an object.  x itself is then the box holding the arrow; it can be changed without changing the object at the end of the arrow.  Likewise x[0] is the first box in the list that is at the end of the arrow in x.  We confuse the issue by suggesting that x is the list object, whereas in fact it contains a reference to the list object.
+                    </aside>
+                
+
+                </section>
+
+                <section hidden="" aria-hidden="true" class="future" style="display: none;">
+                    <h3>List mutation</h3>
+
+                    <pre class="code-badge-pre"><div class="code-badge">
+        <div class="code-badge-language">angelscript</div>
+        <div title="Copy to clipboard">
+            <i class="fa fa-copy code-badge-copy-icon">📄</i>
+        </div>
+     </div><code data-trim="" data-noescape="" class="hljs angelscript">L[<span class="hljs-number">2</span>] = <span class="hljs-number">6</span>
+
+L[<span class="hljs-number">1</span>:<span class="hljs-number">3</span>] = [<span class="hljs-number">9</span>, <span class="hljs-number">8</span>]
+
+L[<span class="hljs-number">2</span>:<span class="hljs-number">4</span>] = []            # Deleting elements
+
+L[<span class="hljs-number">1</span>:<span class="hljs-number">1</span>] = [<span class="hljs-number">2</span>, <span class="hljs-number">3</span>, <span class="hljs-number">4</span>, <span class="hljs-number">5</span>]  # Inserting elements
+
+L[len(L):] = [<span class="hljs-number">10</span>, <span class="hljs-number">11</span>]  # Appending
+
+L[<span class="hljs-number">0</span>:<span class="hljs-number">0</span>] = range(<span class="hljs-number">-3</span>, <span class="hljs-number">0</span>)  # Prepending</code></pre>
+
+					<p>
+						<a class="python-tutor-link" target="_blank" href="http://pythontutor.com/composingprograms.html#code=L%20%3D%20%5B1,%202,%203,%204,%205%5D%0A%0AL%5B2%5D%20%3D%206%0A%0AL%5B1%3A3%5D%20%3D%20%5B9,%208%5D%0A%0AL%5B2%3A4%5D%20%3D%20%5B%5D%20%20%20%20%20%20%20%20%20%20%20%20%23%20Deleting%20elements%0A%0AL%5B1%3A1%5D%20%3D%20%5B2,%203,%204,%205%5D%20%20%23%20Inserting%20elements%0A%0AL%5Blen%28L%29%3A%5D%20%3D%20%5B10,%2011%5D%20%20%23%20Appending%0A%0AL%20%3D%20L%20%2B%20%5B20,%2030%5D%0A%0AL%5B0%3A0%5D%20%3D%20range%28-3,%200%29%20%20%23%20Prepending&amp;cumulative=true&amp;curInstr=8&amp;mode=display&amp;origin=composingprograms.js&amp;py=3&amp;rawInputLstJSON=%5B%5D">
+						Try in PythonTutor.
+						</a>
+                    </p>
+
+                    <p class="smaller">Non-destructive or destructive? <br>
+                        <span class="fragment" data-fragment-index="0">All of the operations above are <strong>destructive.</strong></span>
+                    </p>
+
+					<aside class="notes">
+					</aside>
+				</section>
+
+				<section hidden="" aria-hidden="true" class="future" style="display: none;">
+					<h3>List methods</h3>
+
+					<p><code>append()</code> adds a single element to a list:</p>
+
+					<pre class="code-badge-pre"><div class="code-badge">
+        <div class="code-badge-language">angelscript</div>
+        <div title="Copy to clipboard">
+            <i class="fa fa-copy code-badge-copy-icon">📄</i>
+        </div>
+     </div><code data-trim="" data-noescape="" class="hljs angelscript">s = [<span class="hljs-number">2</span>, <span class="hljs-number">3</span>]
+t = [<span class="hljs-number">5</span>, <span class="hljs-number">6</span>]
+s.append(<span class="hljs-number">4</span>)
+s.append(t)
+t = <span class="hljs-number">0</span></code></pre>
+
+					<p>
+						<a class="python-tutor-link" target="_blank" href="http://pythontutor.com/composingprograms.html#code=s%20%3D%20%5B2,%203%5D%0At%20%3D%20%5B5,%206%5D%0As.append%284%29%0As.append%28t%29%0At%20%3D%200&amp;cumulative=true&amp;curInstr=5&amp;mode=display&amp;origin=composingprograms.js&amp;py=3&amp;rawInputLstJSON=%5B%5D">
+						Try in PythonTutor.
+						</a>
+					</p>
+
+					<p style="margin-top:32px;"><code>extend()</code> adds all the elements in one list to a list:</p>
+
+					<pre class="code-badge-pre"><div class="code-badge">
+        <div class="code-badge-language">angelscript</div>
+        <div title="Copy to clipboard">
+            <i class="fa fa-copy code-badge-copy-icon">📄</i>
+        </div>
+     </div><code data-trim="" data-noescape="" class="hljs angelscript">s = [<span class="hljs-number">2</span>, <span class="hljs-number">3</span>]
+t = [<span class="hljs-number">5</span>, <span class="hljs-number">6</span>]
+s.extend(<span class="hljs-number">4</span>) <span class="fragment" data-fragment-index="0"># 🚫 Error: <span class="hljs-number">4</span> <span class="hljs-keyword">is</span> <span class="hljs-keyword">not</span> an iterable!</span>
+s.extend(t)
+t = <span class="hljs-number">0</span></code></pre>
+
+					<p>
+						<a class="python-tutor-link" target="_blank" href="http://pythontutor.com/composingprograms.html#code=s%20%3D%20%5B2,%203%5D%0At%20%3D%20%5B5,%206%5D%0As.extend%28t%29%0At%20%3D%200&amp;cumulative=true&amp;curInstr=0&amp;mode=display&amp;origin=composingprograms.js&amp;py=3&amp;rawInputLstJSON=%5B%5D">
+						Try in PythonTutor. <span class="fragment" data-fragment-index="0">(After deleting the bad line)</span>
+						</a>
+					</p>
+
+                    <p class="smaller">Non-destructive or destructive? <br>
+                        <span class="fragment" data-fragment-index="1"><code>append()</code> and <code>extend()</code> are <strong>destructive.</strong></span>
+                    </p>
+
+					<aside class="notes">
+					</aside>
+				</section>
+
+				<section hidden="" aria-hidden="true" class="future" style="display: none;">
+					<h3>List methods</h3>
+
+					<p><code>pop()</code> removes and returns the last element:</p>
+
+					<pre class="code-badge-pre"><div class="code-badge">
+        <div class="code-badge-language">ini</div>
+        <div title="Copy to clipboard">
+            <i class="fa fa-copy code-badge-copy-icon">📄</i>
+        </div>
+     </div><code data-trim="" data-noescape="" class="hljs ini"><span class="hljs-attr">s</span> = [<span class="hljs-number">2</span>, <span class="hljs-number">3</span>]
+<span class="hljs-attr">t</span> = [<span class="hljs-number">5</span>, <span class="hljs-number">6</span>]
+<span class="hljs-attr">t</span> = s.pop()</code></pre>
+
+					<p>
+						<a class="python-tutor-link" target="_blank" href="http://pythontutor.com/composingprograms.html#code=s%20%3D%20%5B2,%203%5D%0At%20%3D%20%5B5,%206%5D%0At%20%3D%20s.pop%28%29&amp;cumulative=true&amp;curInstr=0&amp;mode=display&amp;origin=composingprograms.js&amp;py=3&amp;rawInputLstJSON=%5B%5D">
+						Try in PythonTutor.
+						</a>
+					</p>
+
+					<p style="margin-top:32px;"><code>remove()</code> removes the first element equal to the argument:</p>
+
+					<pre class="code-badge-pre"><div class="code-badge">
+        <div class="code-badge-language">angelscript</div>
+        <div title="Copy to clipboard">
+            <i class="fa fa-copy code-badge-copy-icon">📄</i>
+        </div>
+     </div><code data-trim="" data-noescape="" class="hljs angelscript">s = [<span class="hljs-number">6</span>, <span class="hljs-number">2</span>, <span class="hljs-number">4</span>, <span class="hljs-number">8</span>, <span class="hljs-number">4</span>]
+s.remove(<span class="hljs-number">4</span>)
+s.remove(<span class="hljs-number">9</span>)</code></pre>
+
+					<p>
+						<a class="python-tutor-link" target="_blank" href="http://pythontutor.com/composingprograms.html#code=s%20%3D%20%5B6,%202,%204,%208,%204%5D%0As.remove%284%29&amp;cumulative=true&amp;curInstr=0&amp;mode=display&amp;origin=composingprograms.js&amp;py=3&amp;rawInputLstJSON=%5B%5D">
+						Try in PythonTutor.
+						</a>
+                    </p>
+
+                    <p class="smaller">Non-destructive or destructive? <br>
+                        <span class="fragment" data-fragment-index="0"><code>pop()</code> and <code>remove()</code> are <strong>destructive.</strong></span>
+                    </p>
+
+					<aside class="notes">
+						Try removing a list, too!
+					</aside>
+				</section>
+
+                <section class="heading-only future" hidden="" aria-hidden="true" style="display: none;">
+					<h3>Equality and Identity</h3>
+                </section>
+
+				<section hidden="" aria-hidden="true" class="future" style="display: none;">
+					<h3>Equality of contents vs. Identity of objects</h3>
+
+					<p><strong>Identity</strong>: <code>exp0 is exp1</code><br>
+						<span style="font-size:smaller;">evaluates to <code>True</code>
+						if both <code>exp0</code> and <code>exp1</code> evaluate to the same object</span></p>
+
+					<p style="margin-top:32px;"><strong>Equality</strong>: <code>exp0 == exp1</code><br>
+						<span style="font-size:smaller;">evaluates to <code>True</code>
+						if both <code>exp0</code> and <code>exp1</code> evaluate to objects containing equal values</span></p>
+
+					<pre style="margin-top:32px;" class="code-badge-pre"><div class="code-badge">
+        <div class="code-badge-language">python</div>
+        <div title="Copy to clipboard">
+            <i class="fa fa-copy code-badge-copy-icon">📄</i>
+        </div>
+     </div><code data-trim="" data-noescape="" class="python hljs">list1 = [<span class="hljs-number">1</span>,<span class="hljs-number">2</span>,<span class="hljs-number">3</span>]
+list2 = [<span class="hljs-number">1</span>,<span class="hljs-number">2</span>,<span class="hljs-number">3</span>]
+are_equal = list1 == list2
+identical = list1 <span class="hljs-keyword">is</span> list2</code></pre>
+
+					<p>
+						<a class="python-tutor-link" target="_blank" href="http://pythontutor.com/composingprograms.html#code=list1%20%3D%20%5B1,2,3%5D%0Alist2%20%3D%20%5B1,2,3%5D%0A%0Aare_equal%20%3D%20list1%20%3D%3D%20list2%0Aidentical%20%3D%20list1%20is%20list2%0A&amp;cumulative=true&amp;curInstr=0&amp;mode=display&amp;origin=composingprograms.js&amp;py=3&amp;rawInputLstJSON=%5B%5D">
+						Try in PythonTutor.
+						</a>
+					</p>
+
+					<p style="margin-top:32px;">Identical objects always have equal values.</p>
+
+					<aside class="notes">
+
+						https://inst.eecs.berkeley.edu/~cs61a/sp17/assets/slides/11_1pp.pdf
+						When dealing with immutable objects, we generally ignore identity;only equality of contents ever matters, and once equal always equal.
+						Allowsreferential transparency: ifS[0] ==3, andSas a whole isnot re-assigned, can substitute 3 forS[0]anywhere
+						When dealing with mutable structures, identity matters, andwedon’t have referential transparency.
+						 last slide
+					</aside>
+                </section>
+
+                <section hidden="" aria-hidden="true" class="future" style="display: none;">
+					<h3>Equality of contents vs. Identity of objects</h3>
+
+					<pre class="code-badge-pre"><div class="code-badge">
+        <div class="code-badge-language">python</div>
+        <div title="Copy to clipboard">
+            <i class="fa fa-copy code-badge-copy-icon">📄</i>
+        </div>
+     </div><code data-trim="" data-noescape="" class="python hljs">a = [<span class="hljs-string">"apples"</span>, <span class="hljs-string">"bananas"</span>]
+b = [<span class="hljs-string">"apples"</span>, <span class="hljs-string">"bananas"</span>]
+c = a
+
+<span class="hljs-keyword">if</span> a == b == c:
+    print(<span class="hljs-string">"All equal!"</span>)
+
+a[<span class="hljs-number">1</span>] = <span class="hljs-string">"oranges"</span>
+
+<span class="hljs-keyword">if</span> a <span class="hljs-keyword">is</span> c <span class="hljs-keyword">and</span> a == c:
+    print(<span class="hljs-string">"A and C are equal AND identical!"</span>)
+
+<span class="hljs-keyword">if</span> a == b:
+    print(<span class="hljs-string">"A and B are equal!"</span>) <span class="fragment" data-fragment-index="0"><span class="hljs-comment"># Nope!</span></span>
+
+<span class="hljs-keyword">if</span> b == c:
+    print(<span class="hljs-string">"B and C are equal!"</span>) <span class="fragment" data-fragment-index="0"><span class="hljs-comment"># Nope!</span></span></code></pre>
+
+					<p>
+						<a class="python-tutor-link" target="_blank" href="http://pythontutor.com/visualize.html#code=a%20%3D%20%5B%22apples%22,%20%22bananas%22%5D%0Ab%20%3D%20%5B%22apples%22,%20%22bananas%22%5D%0Ac%20%3D%20a%0A%0Aif%20a%20%3D%3D%20b%20%3D%3D%20c%3A%0A%20%20%20%20print%28%22All%20equal!%22%29%0A%0Aa%5B1%5D%20%3D%20%22oranges%22%0A%0Aif%20a%20is%20c%20and%20a%20%3D%3D%20c%3A%0A%20%20%20%20print%28%22A%20and%20C%20are%20equal%20AND%20identical!%22%29%0A%0Aif%20a%20%3D%3D%20b%3A%0A%20%20%20%20print%28%22A%20and%20B%20are%20equal!%22%29%0A%0Aif%20b%20%3D%3D%20c%3A%0A%20%20%20%20print%28%22B%20and%20C%20are%20equal!%22%29%0A%20%20%20%20&amp;cumulative=true&amp;curInstr=0&amp;heapPrimitives=nevernest&amp;mode=display&amp;origin=opt-frontend.js&amp;py=3&amp;rawInputLstJSON=%5B%5D&amp;textReferences=false">
+						Try in PythonTutor.
+						</a>
+                    </p>
+
+                    <aside class="notes">
+                        Can also show: <code>if a is c == a:</code>
+                    </aside>
+                </section>
+
+
+                <section hidden="" aria-hidden="true" class="future" style="display: none;">
+					<h3>Identity and immutables</h3>
+
+                    <p class="smaller">Try this in your local friendly Python interpreter:</p>
+
+					<pre class="code-badge-pre"><div class="code-badge">
+        <div class="code-badge-language">python</div>
+        <div title="Copy to clipboard">
+            <i class="fa fa-copy code-badge-copy-icon">📄</i>
+        </div>
+     </div><code data-trim="" data-noescape="" class="python hljs">a = <span class="hljs-string">"orange"</span>
+b = <span class="hljs-string">"orange"</span>
+c = <span class="hljs-string">"o"</span> + <span class="hljs-string">"range"</span>
+print(a <span class="hljs-keyword">is</span> b)
+print(a <span class="hljs-keyword">is</span> c)
+
+a = <span class="hljs-number">100</span>
+b = <span class="hljs-number">100</span>
+print(a <span class="hljs-keyword">is</span> b)
+print(a <span class="hljs-keyword">is</span> <span class="hljs-number">10</span> * <span class="hljs-number">10</span>)
+print(a == <span class="hljs-number">10</span> * <span class="hljs-number">10</span>)
+
+a = <span class="hljs-number">100000000000000000</span>
+b = <span class="hljs-number">100000000000000000</span>
+print(a <span class="hljs-keyword">is</span> b)
+print(<span class="hljs-number">100000000000000000</span> <span class="hljs-keyword">is</span> <span class="hljs-number">100000000000000000</span>)</code></pre>
+
+                    <p class="smaller">Beware: <code>is</code> may not act like you expect for strings/numbers!</p>
+
+                </section>
+
+                <section class="heading-only future" hidden="" aria-hidden="true" style="display: none;">
+					<h3>Scopes</h3>
+                </section>
+
+                <section hidden="" aria-hidden="true" class="future" style="display: none;">
+                    <h3>Names inside local scopes</h3>
+
+                    <p>Does this work? <span class="fragment" data-fragment-index="0">😊 Yes!</span></p>
+                    <pre class="code-badge-pre"><div class="code-badge">
+        <div class="code-badge-language">python</div>
+        <div title="Copy to clipboard">
+            <i class="fa fa-copy code-badge-copy-icon">📄</i>
+        </div>
+     </div><code data-trim="" data-noescape="" class="python hljs">attendees = []
+
+<span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">mark_attendance</span>(<span class="hljs-params">name</span>):</span>
+    attendees.append(name)
+    print(<span class="hljs-string">"In attendance:"</span>, attendees)
+
+mark_attendance(<span class="hljs-string">"Emily"</span>)
+mark_attendance(<span class="hljs-string">"Cristiano"</span>)
+mark_attendance(<span class="hljs-string">"Samantha"</span>)</code></pre>
+
+                    <p style="margin-top:32px;">Does this work? <span class="fragment" data-fragment-index="1">😿 No!</span></p>
+
+                    <pre class="code-badge-pre"><div class="code-badge">
+        <div class="code-badge-language">python</div>
+        <div title="Copy to clipboard">
+            <i class="fa fa-copy code-badge-copy-icon">📄</i>
+        </div>
+     </div><code data-trim="" data-noescape="" class="python hljs">current = <span class="hljs-number">0</span>
+
+<span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">count</span>():</span>
+    current = current + <span class="hljs-number">1</span>
+    print(<span class="hljs-string">"Count:"</span>, current)
+
+count()
+count()</code></pre>
+                    <p class="fragment" style="color:maroon; font-size:60%" data-fragment-index="1">UnboundLocalError: local variable 'current' referenced before assignment </p>
+
+                </section>
+
+                <section hidden="" aria-hidden="true" class="future" style="display: none;">
+                    <h3>Scope rules</h3>
+
+                    <table class="smaller">
+                        <thead>
+                            <tr>
+                                <th>Action</th>
+                                <th>Global code</th>
+                                <th>Local code</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td>Access names that are bound in the global scope?</td>
+                                <td>✅ Yes</td>
+                                <td>✅ Yes</td>
+                            </tr>
+                            <tr>
+                                <td>Re-assign names that are bound in the global scope?</td>
+                                <td>🚫 No (unless declared <code>global</code>)</td>
+                                <td>🚫 No (unless declared <code>global</code>)</td>
+                            </tr>
+                        </tbody>
+                    </table>
+
+                    <pre class="code-badge-pre"><div class="code-badge">
+        <div class="code-badge-language">python</div>
+        <div title="Copy to clipboard">
+            <i class="fa fa-copy code-badge-copy-icon">📄</i>
+        </div>
+     </div><code data-trim="" data-noescape="" class="python hljs">current = <span class="hljs-number">0</span>
+
+<span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">count</span>():</span>
+    current = current + <span class="hljs-number">1</span>     <span class="hljs-comment"># 🚫  Error!</span>
+    print(<span class="hljs-string">"Count:"</span>, current)
+
+count()
+count()</code></pre>
+
+                    <p>
+                        <a class="python-tutor-link" target="_blank" href="http://pythontutor.com/composingprograms.html#code=current%20%3D%200%0A%0Adef%20count%28%29%3A%0A%20%20%20%20current%20%3D%20current%20%2B%201%20%20%20%20%20%23%20%F0%9F%9A%AB%20%20Error!%0A%20%20%20%20print%28%22Count%3A%22,%20current%29%20%20%23%20%E2%9C%85%20%20This%20is%20fine.%0A%0Acount%28%29%0Acount%28%29&amp;cumulative=true&amp;curInstr=0&amp;mode=display&amp;origin=composingprograms.js&amp;py=3&amp;rawInputLstJSON=%5B%5D">
+                        Try in PythonTutor
+                        </a>
+                    </p>
+                </section>
+
+                <section hidden="" aria-hidden="true" class="future" style="display: none;">
+                    <h3>Re-assigning globals</h3>
+
+                    <pre class="code-badge-pre"><div class="code-badge">
+        <div class="code-badge-language">python</div>
+        <div title="Copy to clipboard">
+            <i class="fa fa-copy code-badge-copy-icon">📄</i>
+        </div>
+     </div><code data-trim="" data-noescape="" class="python hljs">current = <span class="hljs-number">0</span>
+
+<span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">count</span>():</span>
+    <span class="fragment" data-fragment-index="0"><span class="hljs-keyword">global</span> current</span>
+    current = current + <span class="hljs-number">1</span>
+    print(<span class="hljs-string">"Count:"</span>, current)
+
+count()
+count()</code></pre>
+
+                    <p>
+                        <a class="python-tutor-link" target="_blank" href="http://pythontutor.com/composingprograms.html#code=current%20%3D%200%0A%0Adef%20count%28%29%3A%0A%20%20%20%20global%20current%0A%20%20%20%20current%20%3D%20current%20%2B%201%20%20%20%20%20%23%20%F0%9F%9A%AB%20%20Error!%0A%20%20%20%20print%28%22Count%3A%22,%20current%29%20%20%23%20%E2%9C%85%20%20This%20is%20fine.%0A%0Acount%28%29%0Acount%28%29&amp;cumulative=true&amp;curInstr=0&amp;mode=display&amp;origin=composingprograms.js&amp;py=3&amp;rawInputLstJSON=%5B%5D">
+                        Try in PythonTutor
+                        </a>
+                    </p>
+
+                </section>
+
+                <section hidden="" aria-hidden="true" class="future" style="display: none;">
+                    <h3>Avoiding <code>global</code></h3>
+
+                    <p style="font-style:italic;">"Just because you can do something in a language, it doesn't mean you should." - Prof Fox</p>
+
+                    <p>Re-assigning global variables inside functions can lead to more brittle and unpredictable code.</p>
+
+                    <p>How about...</p>
+                    <div class="data-fragment">
+                    <pre class="code-badge-pre"><div class="code-badge">
+        <div class="code-badge-language">python</div>
+        <div title="Copy to clipboard">
+            <i class="fa fa-copy code-badge-copy-icon">📄</i>
+        </div>
+     </div><code data-trim="" data-noescape="" class="python hljs">current = <span class="hljs-number">0</span>
+
+<span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">count</span>(<span class="hljs-params">current</span>):</span>
+    current = current + <span class="hljs-number">1</span>
+    print(<span class="hljs-string">"Count:"</span>, current)
+    <span class="hljs-keyword">return</span> current
+
+current = count(current)
+current = count(current)</code></pre>
+
+                    <p>✨❤️🥰🌼💖✨</p>
+                    </div>
+                </section>
+
+                <section hidden="" aria-hidden="true" class="future" style="display: none;">
+                    <h3>Names inside nested scopes</h3>
+
+                    <p>Does this work? <span class="fragment" data-fragment-index="0">😊 Yes!</span></p>
+                    <pre class="code-badge-pre"><div class="code-badge">
+        <div class="code-badge-language">python</div>
+        <div title="Copy to clipboard">
+            <i class="fa fa-copy code-badge-copy-icon">📄</i>
+        </div>
+     </div><code data-trim="" data-noescape="" class="python hljs"><span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">make_tracker</span>(<span class="hljs-params">class_name</span>):</span>
+    attendees = []
+
+    <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">track_attendance</span>(<span class="hljs-params">name</span>):</span>
+        attendees.append(name)
+        print(class_name, <span class="hljs-string">": "</span>, attendees)
+
+    <span class="hljs-keyword">return</span> track_attendance
+
+tracker = make_tracker(<span class="hljs-string">"CS61A"</span>)
+tracker(<span class="hljs-string">"Emily"</span>)
+tracker(<span class="hljs-string">"Cristiano"</span>)
+tracker(<span class="hljs-string">"Julian"</span>)</code></pre>
+
+                </section>
+
+
+                <section hidden="" aria-hidden="true" class="future" style="display: none;">
+                    <h3>Names inside nested scopes</h3>
+
+                    <p style="margin-top:32px;">Does this work? <span class="fragment" data-fragment-index="0">😿 No!</span></p>
+
+                    <pre class="code-badge-pre"><div class="code-badge">
+        <div class="code-badge-language">python</div>
+        <div title="Copy to clipboard">
+            <i class="fa fa-copy code-badge-copy-icon">📄</i>
+        </div>
+     </div><code data-trim="" data-noescape="" class="python hljs"><span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">make_counter</span>(<span class="hljs-params">start</span>):</span>
+    current = start
+
+    <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">count</span>():</span>
+        current = current + <span class="hljs-number">1</span>
+        print(<span class="hljs-string">"Count:"</span>, current)
+
+    <span class="hljs-keyword">return</span> count
+
+counter = make_counter(<span class="hljs-number">30</span>)
+counter()
+counter()
+counter()</code></pre>
+
+                    <p class="fragment" style="color:maroon; font-size:60%" data-fragment-index="0">UnboundLocalError: local variable 'current' referenced before assignment</p>
+
+                </section>
+
+                <section hidden="" aria-hidden="true" class="future" style="display: none;">
+                    <h3>Scope rules</h3>
+
+                    <table class="smaller">
+                        <thead>
+                            <tr>
+                                <th>Can code inside functions...</th>
+                                <th></th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td>Access names that are bound in the enclosing function?</td>
+                                <td>✅ Yes</td>
+                            </tr>
+                            <tr>
+                                <td>Re-assign names that are bound in the enclosing function?</td>
+                                <td>🚫 No (unless declared <code>nonlocal</code>)</td>
+                            </tr>
+                        </tbody>
+                    </table>
+
+                    <pre class="code-badge-pre"><div class="code-badge">
+        <div class="code-badge-language">python</div>
+        <div title="Copy to clipboard">
+            <i class="fa fa-copy code-badge-copy-icon">📄</i>
+        </div>
+     </div><code data-trim="" data-noescape="" class="python hljs"><span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">make_counter</span>(<span class="hljs-params">start</span>):</span>
+    current = start
+
+    <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">count</span>():</span>
+        current = current + <span class="hljs-number">1</span>     <span class="hljs-comment"># 🚫  Error!</span>
+        print(<span class="hljs-string">"Count:"</span>, current)
+
+    <span class="hljs-keyword">return</span> count
+
+counter = make_counter(<span class="hljs-number">30</span>)
+counter()
+counter()
+counter()</code></pre>
+
+                    <p>
+                        <a class="python-tutor-link" target="_blank" href="http://pythontutor.com/composingprograms.html#code=current%20%3D%200%0A%0Adef%20count%28%29%3A%0A%20%20%20%20current%20%3D%20current%20%2B%201%20%20%20%20%20%23%20%F0%9F%9A%AB%20%20Error!%0A%20%20%20%20print%28%22Count%3A%22,%20current%29%20%20%23%20%E2%9C%85%20%20This%20is%20fine.%0A%0Acount%28%29%0Acount%28%29&amp;cumulative=true&amp;curInstr=0&amp;mode=display&amp;origin=composingprograms.js&amp;py=3&amp;rawInputLstJSON=%5B%5D">
+                        Try in PythonTutor
+                        </a>
+                    </p>
+                </section>
+
+                <section hidden="" aria-hidden="true" class="future" style="display: none;">
+                    <h3>Re-assigning names in parent scope</h3>
+
+                    <p class="fragment" data-fragment-index="0">The <code>nonlocal</code> declaration tells Python to look in the parent frame
+                    for the name lookup.
+                    </p>
+
+                    <pre class="code-badge-pre"><div class="code-badge">
+        <div class="code-badge-language">python</div>
+        <div title="Copy to clipboard">
+            <i class="fa fa-copy code-badge-copy-icon">📄</i>
+        </div>
+     </div><code data-trim="" data-noescape="" class="python hljs"><span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">make_counter</span>(<span class="hljs-params">start</span>):</span>
+    current = start
+
+    <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">count</span>():</span>
+        <span class="fragment" data-fragment-index="0"><span class="hljs-keyword">nonlocal</span> current</span>
+        current = current + <span class="hljs-number">1</span>
+        print(<span class="hljs-string">"Count:"</span>, current)
+
+    <span class="hljs-keyword">return</span> count
+
+counter = make_counter(<span class="hljs-number">30</span>)
+counter()
+counter()
+counter()</code></pre>
+
+                    <p>
+                        <a class="python-tutor-link" target="_blank" href="http://pythontutor.com/composingprograms.html#code=def%20make_counter%28start%29%3A%0A%20%20%20%20current%20%3D%20start%0A%0A%20%20%20%20def%20count%28%29%3A%0A%20%20%20%20%20%20%20%20nonlocal%20current%0A%20%20%20%20%20%20%20%20current%20%3D%20current%20%2B%201%0A%20%20%20%20%20%20%20%20print%28%22Count%3A%22,%20current%29%0A%0A%20%20%20%20return%20count%0A%0Acounter%20%3D%20make_counter%2830%29%0Acounter%28%29%0Acounter%28%29%0Acounter%28%29&amp;cumulative=true&amp;curInstr=1&amp;mode=display&amp;origin=composingprograms.js&amp;py=3&amp;rawInputLstJSON=%5B%5D">
+                        Try in PythonTutor
+                        </a>
+                    </p>
+
+                </section>
+
+                <section hidden="" aria-hidden="true" class="future" style="display: none;">
+                    <h3>Avoiding <code>nonlocal</code></h3>
+
+                    <p>The <code>nonlocal</code> keyword was only added to Python 3,
+                    so most code that might use it can be done in more Pythonic ways.</p>
+
+                    <p class="smaller">For the example, the counter can be done with a generator:</p>
+
+                    <pre class="code-badge-pre"><div class="code-badge">
+        <div class="code-badge-language">python</div>
+        <div title="Copy to clipboard">
+            <i class="fa fa-copy code-badge-copy-icon">📄</i>
+        </div>
+     </div><code data-trim="" data-noescape="" class="python hljs"><span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">make_counter</span>(<span class="hljs-params">start</span>):</span>
+    current = start
+    <span class="hljs-keyword">while</span> <span class="hljs-literal">True</span>:
+        current = current + <span class="hljs-number">1</span>
+        print(<span class="hljs-string">"Count:"</span>, current)
+        <span class="hljs-keyword">yield</span>
+
+counter = make_counter(<span class="hljs-number">30</span>)
+next(counter)
+next(counter)</code></pre>
+
+                    <p class="smaller">⚠️ But we haven't learned about generators yet! Stay tuned! ⚠️</p>
+
+                </section>
+
+
+                <section hidden="" aria-hidden="true" class="future" style="display: none;">
+                    <h3>Avoiding <code>nonlocal</code></h3>
+
+                    <p>We could also use a mutable value like a list or dict:</p>
+
+                    <pre class="code-badge-pre"><div class="code-badge">
+        <div class="code-badge-language">python</div>
+        <div title="Copy to clipboard">
+            <i class="fa fa-copy code-badge-copy-icon">📄</i>
+        </div>
+     </div><code data-trim="" data-noescape="" class="python hljs"><span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">make_counter</span>(<span class="hljs-params">start</span>):</span>
+    current = [<span class="hljs-number">0</span>]
+
+    <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">count</span>():</span>
+        current[<span class="hljs-number">0</span>] = <span class="hljs-number">1</span>
+        print(<span class="hljs-string">"Count:"</span>, current[<span class="hljs-number">0</span>])
+
+    <span class="hljs-keyword">return</span> count
+
+counter = make_counter(<span class="hljs-number">30</span>)
+counter()
+counter()
+counter()</code></pre>
+
+                    <p>
+                        <a class="python-tutor-link" target="_blank" href="http://pythontutor.com/composingprograms.html#code=def%20make_counter%28start%29%3A%0A%20%20%20%20current%20%3D%20%5B0%5D%0A%0A%20%20%20%20def%20count%28%29%3A%0A%20%20%20%20%20%20%20%20current%5B0%5D%20%3D%201%0A%20%20%20%20%20%20%20%20print%28%22Count%3A%22,%20current%5B0%5D%29%0A%0A%20%20%20%20return%20count%0A%0Acounter%20%3D%20make_counter%2830%29%0Acounter%28%29%0Acounter%28%29%0Acounter%28%29&amp;cumulative=true&amp;curInstr=0&amp;mode=display&amp;origin=composingprograms.js&amp;py=3&amp;rawInputLstJSON=%5B%5D">
+                        Try in PythonTutor
+                        </a>
+                    </p>
+
+                </section>
+
+                <section hidden="" aria-hidden="true" class="future" style="display: none;">
+                    <h3>Another use of <code>nonlocal</code></h3>
+
+                    <p>We saw it earlier when making a pair data abstraction:</p>
+
+                    <pre class="code-badge-pre"><div class="code-badge">
+        <div class="code-badge-language">python</div>
+        <div title="Copy to clipboard">
+            <i class="fa fa-copy code-badge-copy-icon">📄</i>
+        </div>
+     </div><code data-trim="" data-noescape="" class="python hljs"><span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">pair</span>(<span class="hljs-params">a, b</span>):</span>
+    <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">pair_func</span>(<span class="hljs-params">which, v=None</span>):</span>
+        <span class="hljs-keyword">nonlocal</span> a, b
+        <span class="hljs-keyword">if</span> which == <span class="hljs-number">0</span>:
+            <span class="hljs-keyword">return</span> a
+        <span class="hljs-keyword">elif</span> which == <span class="hljs-number">1</span>:
+            <span class="hljs-keyword">return</span> b
+        <span class="hljs-keyword">elif</span> which == <span class="hljs-number">2</span>:
+            a = v
+        <span class="hljs-keyword">else</span>:
+            b = v
+    <span class="hljs-keyword">return</span> pair_func
+
+<span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">left</span>(<span class="hljs-params">p</span>):</span>
+    <span class="hljs-keyword">return</span> p(<span class="hljs-number">0</span>)
+
+<span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">right</span>(<span class="hljs-params">p</span>):</span>
+    <span class="hljs-keyword">return</span> p(<span class="hljs-number">1</span>)
+
+<span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">set_left</span>(<span class="hljs-params">p, v</span>):</span>
+    p(<span class="hljs-number">2</span>, v)
+
+<span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">set_right</span>(<span class="hljs-params">p, v</span>):</span>
+    p(<span class="hljs-number">3</span>, v)
+
+aPair = pair(<span class="hljs-number">3</span>, <span class="hljs-number">2</span>)
+set_left(aPair, <span class="hljs-number">5</span>)
+print(left(aPair))</code></pre>
+
+                </section>
+
+                <section hidden="" aria-hidden="true" class="future" style="display: none;">
+                    <h3>Avoiding <code>nonlocal</code></h3>
+
+                    <p>But then we learned about tuples, lists, and dicts...</p>
+
+                    <pre class="code-badge-pre"><div class="code-badge">
+        <div class="code-badge-language">python</div>
+        <div title="Copy to clipboard">
+            <i class="fa fa-copy code-badge-copy-icon">📄</i>
+        </div>
+     </div><code data-trim="" data-noescape="" class="python hljs"><span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">pair</span>(<span class="hljs-params">a, b</span>):</span>
+    <span class="hljs-keyword">return</span> [a, b]
+
+<span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">left</span>(<span class="hljs-params">p</span>):</span>
+    <span class="hljs-keyword">return</span> p[<span class="hljs-number">0</span>]
+
+<span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">right</span>(<span class="hljs-params">p</span>):</span>
+    <span class="hljs-keyword">return</span> p[<span class="hljs-number">1</span>)
+
+<span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">set_left</span>(<span class="hljs-params">p, v</span>):</span>
+    p[<span class="hljs-number">0</span>] = v
+
+<span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">set_right</span>(<span class="hljs-params">p, v</span>):</span>
+    p[<span class="hljs-number">1</span>] = v
+
+aPair = pair(<span class="hljs-number">3</span>, <span class="hljs-number">2</span>)
+set_left(aPair, <span class="hljs-number">5</span>)
+print(left(aPair))</code></pre>
+
+                </section>
+
+                <section hidden="" aria-hidden="true" class="future" style="display: none;">
+                    <h3>Avoiding <code>nonlocal</code></h3>
+
+                    <p>And we'll soon be learning how to use classes!</p>
+
+                    <pre class="code-badge-pre"><div class="code-badge">
+        <div class="code-badge-language">python</div>
+        <div title="Copy to clipboard">
+            <i class="fa fa-copy code-badge-copy-icon">📄</i>
+        </div>
+     </div><code data-trim="" data-noescape="" class="python hljs"><span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">Pair</span>:</span>
+
+    <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">__init__</span>(<span class="hljs-params">left, right</span>):</span>
+        self.left = left
+        self.right = right
+
+    <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">set_left</span>(<span class="hljs-params">left</span>):</span>
+        self.left = left
+
+    <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">set_right</span>(<span class="hljs-params">right</span>):</span>
+        self.right = right
+
+aPair = Pair(<span class="hljs-number">3</span>, <span class="hljs-number">2</span>)
+aPair.set_left(<span class="hljs-number">5</span>)
+print(aPair.left)</code></pre>
+
+                    <p class="smaller">⚠️ You don't need to understand that code yet! Stay tuned! ⚠️</p>
+
+
+                </section>
+
+                <section hidden="" aria-hidden="true" class="future" style="display: none;">
+                    <h3>When to use <code>nonlocal</code> or <code>global</code></h3>
+
+                    <p>Rarely! Once you finish this class, you will have many tools in your toolbox,
+                        and you will often find a way to write your code
+                        that doesn't need to re-assign names in parent scopes.
+                    </p>
+                </section>
+
+                <section hidden="" aria-hidden="true" class="future" style="display: none;">
+                    <h3>Scope rules</h3>
+
+                    <table class="smaller">
+                        <thead>
+                            <tr>
+                                <th>Action</th>
+                                <th>Global code</th>
+                                <th>Local code</th>
+                                <th>Nested function code</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td>Access names that are bound in the global scope?</td>
+                                <td>✅ Yes</td>
+                                <td>✅ Yes</td>
+                                <td>✅ Yes</td>
+                            </tr>
+                            <tr>
+                                <td>Re-assign names that are bound in the global scope?</td>
+                                <td>✅ Yes</td>
+                                <td>🚫 No (unless declared <code>global</code>)</td>
+                                <td>🚫 No (unless declared <code>global</code>)</td>
+                            </tr>
+                            <tr>
+                                <td>Access names in enclosing function?</td>
+                                <td>N/A</td>
+                                <td>N/A</td>
+                                <td>✅ Yes
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>Re-assign names in enclosing function?</td>
+                                <td>N/A</td>
+                                <td>N/A</td>
+                                <td>🚫 No (unless declared <code>nonlocal</code>)
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+
+                </section>
+
+			</div>
+		<div class="backgrounds"><div class="slide-background heading-only present" data-loaded="true" style="display: block;"><div class="slide-background-content"></div></div><div class="slide-background heading-only future" data-loaded="true" style="display: block;"><div class="slide-background-content"></div></div><div class="slide-background future" data-loaded="true" style="display: block;"><div class="slide-background-content"></div></div><div class="slide-background future" style="display: none;"><div class="slide-background-content"></div></div><div class="slide-background future" style="display: none;"><div class="slide-background-content"></div></div><div class="slide-background future" style="display: none;"><div class="slide-background-content"></div></div><div class="slide-background heading-only future" style="display: none;"><div class="slide-background-content"></div></div><div class="slide-background future" style="display: none;"><div class="slide-background-content"></div></div><div class="slide-background future" style="display: none;"><div class="slide-background-content"></div></div><div class="slide-background future" style="display: none;"><div class="slide-background-content"></div></div><div class="slide-background heading-only future" style="display: none;"><div class="slide-background-content"></div></div><div class="slide-background future" style="display: none;"><div class="slide-background-content"></div></div><div class="slide-background future" style="display: none;"><div class="slide-background-content"></div></div><div class="slide-background future" style="display: none;"><div class="slide-background-content"></div></div><div class="slide-background future" style="display: none;"><div class="slide-background-content"></div></div><div class="slide-background future" style="display: none;"><div class="slide-background-content"></div></div><div class="slide-background future" style="display: none;"><div class="slide-background-content"></div></div><div class="slide-background future" style="display: none;"><div class="slide-background-content"></div></div><div class="slide-background future" style="display: none;"><div class="slide-background-content"></div></div><div class="slide-background future" style="display: none;"><div class="slide-background-content"></div></div><div class="slide-background future" style="display: none;"><div class="slide-background-content"></div></div><div class="slide-background future" style="display: none;"><div class="slide-background-content"></div></div><div class="slide-background future" style="display: none;"><div class="slide-background-content"></div></div><div class="slide-background future" style="display: none;"><div class="slide-background-content"></div></div><div class="slide-background future" style="display: none;"><div class="slide-background-content"></div></div><div class="slide-background future" style="display: none;"><div class="slide-background-content"></div></div></div><div class="slide-number" style="display: block;"><a href="https://inst.eecs.berkeley.edu/~cs61a/sp21/assets/slides/14-List_mutation_+_Identity_+_Nonlocal.html#/">
+					<span class="slide-number-a">1</span>
+					</a></div><aside class="controls" data-controls-layout="bottom-right" data-controls-back-arrows="faded" style="display: block;"><button class="navigate-left" aria-label="previous slide" disabled="disabled"><div class="controls-arrow"></div></button>
+			<button class="navigate-right enabled highlight" aria-label="next slide"><div class="controls-arrow"></div></button>
+			<button class="navigate-up" aria-label="above slide" disabled="disabled"><div class="controls-arrow"></div></button>
+			<button class="navigate-down" aria-label="below slide" disabled="disabled"><div class="controls-arrow"></div></button></aside><div class="progress" style="display: block;"><span style="transform: scaleX(0);"></span></div><div class="speaker-notes" data-prevent-swipe="" tabindex="0"></div><div class="pause-overlay"><button class="resume-button">Resume presentation</button></div><div class="aria-status" aria-live="polite" aria-atomic="true" style="position: absolute; height: 1px; width: 1px; overflow: hidden; clip: rect(1px, 1px, 1px, 1px);">List Mutation, Identity, and Nonlocal Tips for navigating the slides: Press O or Escape for overview mode. Visit this link for a nice printable version Press the copy icon on the upper right of code blocks to copy the code </div></div>
+
+		<script src="./List methods, Identity, and Nonlocal_files/reveal.js.下载"></script>
+        <script src="./List methods, Identity, and Nonlocal_files/highlight.js.下载"></script>
+        <script src="./List methods, Identity, and Nonlocal_files/highlightjs-badge.min.js.下载"></script>
+		<script>
+			const srcUrlPrefix = "https://cdn.jsdelivr.net/npm/reveal.js@4.1.0/";
+			Reveal.initialize({
+				hash: true,
+				center: false,
+				slideNumber: true,
+				showNotes: false,
+				margin: 0.1,
+				preloadIframes: true,
+				plugins: [ RevealHighlight ],
+				pdfSeparateFragments: true
+			});
+
+            // add HighlightJS-badge (options are optional)
+            var options = {
+                copyIconContent: "📄",
+                checkIconContent: "✅"
+            };
+            window.highlightJsBadge(options);
+		</script>
+	
+
+<style>
+@media print {
+   .code-badge { display: none; }
+}
+    .code-badge-pre {
+        position: relative;
+    }
+    .code-badge {
+        display: flex;
+        flex-direction: row;
+        white-space: normal;
+        background: transparent;
+        background: #333;
+        color: white;
+        font-size: 0.875em;
+        opacity: 0.5;
+        transition: opacity linear 0.5s;
+        border-radius: 0 0 0 7px;
+        padding: 5px 8px 5px 8px;
+        position: absolute;
+        right: 0;
+        top: 0;
+    }
+    .code-badge.active {
+        opacity: 0.8;
+    }
+
+    .code-badge:hover {
+        opacity: .95;
+    }
+
+    .code-badge a,
+    .code-badge a:hover {
+        text-decoration: none;
+    }
+
+    .code-badge-language {
+        margin-right: 10px;
+        font-weight: 600;
+        color: goldenrod;
+    }
+    .code-badge-copy-icon {
+        font-size: 1.2em;
+        cursor: pointer;
+        padding: 0 7px;
+        margin-top:2;
+    }
+    .fa.text-success:{ color: limegreen !important }
+</style><div id="CodeBadgeTemplate" style="display:none">
+    <div class="code-badge">
+        <div class="code-badge-language">{{language}}</div>
+        <div title="Copy to clipboard">
+            <i class="{{copyIconClass}} code-badge-copy-icon"></i>
+        </div>
+     </div>
+</div></body></html>

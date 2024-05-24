@@ -1,0 +1,669 @@
+<!doctype html>
+<html>
+	<head>
+		<meta charset="utf-8">
+		<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+		<title>Generics</title>
+		<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/reveal.js@4.1.0/dist/reset.css">
+		<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/reveal.js@4.1.0/dist/reveal.css">
+		<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/reveal.js@4.1.0/dist/theme/simple.css" id="theme">
+		<link rel="stylesheet" href="https://cs61a.org/assets/css/mono-blue.css">
+		<link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Inconsolata|Roboto:300,400,500|Work+Sans:400,700">
+		<style>
+			.reveal {
+				font-family: "Work Sans", sans-serif;
+			}
+
+			.reveal .slides section {
+				text-align: left;
+				font-size: smaller;
+			}
+
+			.reveal pre {
+				background-color: #f5f5f5;
+				width: 100%;
+				border: 1px solid #ccc;
+				border-radius: 4px;
+				box-shadow: none;
+			}
+
+			.reveal h1, .reveal h2, .reveal h3, .reveal h4, .reveal h5, .reveal h6 {
+				font-family: "Roboto", sans-serif;
+				color: #0072c1;
+			}
+
+			.reveal section.heading-only {
+				text-align:center;
+				padding-top:20%;
+			}
+
+            .column .no-code-badge .code-badge {
+                display: none;
+            }
+
+            .code-badge-language {
+                display: none;
+            }
+
+			.python-tutor-link {
+				font-size: smaller;
+			}
+
+			.python-tutor-link:before {
+				content: "";
+				display: block;
+				background: url("http://pythontutor.com/favicon.ico") no-repeat;
+				width: 48px;
+				height: 48px;
+				float: left;
+				margin: 0 6px 0 0;
+			}
+
+			.reveal h3 {
+				margin-bottom: 40px;
+			}
+
+            .smaller {
+                font-size: smaller;
+            }
+
+            code {
+                padding: 2px 4px;
+                font-size: 90%;
+                color: #0072c1;
+                background-color: #f9f2f4;
+                border-radius: 4px;
+            }
+
+            p.padded {
+                margin-top: 32px;
+            }
+
+            section .row {
+                display: flex;
+            }
+
+            section .column {
+                flex: 48%;
+                margin: 10px;
+            }
+
+            #insertion-demo {
+                height: 200px;
+            }
+            .array-address, .array-index, .array-value {
+                background: #ffffc6;
+                text-align: center;
+                border: 1px solid #888;
+                position: absolute;
+                width: 100px;
+                height: 50px;
+                transition: 1s;
+            }
+
+            .array-address {
+                background: #c6f2ff;
+            }
+
+            .array-addresses, .array-indices, .array-values {
+                margin-bottom: 8px;
+            }
+
+            .array-insert-form input, .array-insert-form button, .linkedlist-insert-form input, .linkedlist-insert-form button {
+                font-size: 32px;
+                width: 120px;
+            }
+
+            .linkedlist-visualization {
+                height: 120px;
+                position: relative;
+            }
+
+            .linkedlist-link {
+                position: absolute;
+                top: 0px;
+                left: 0px;
+                width:80px;
+                border: 1px solid #888;
+                font-size: 0.5em;
+                text-align: center;
+            }
+            .linkedlist-parts {
+                background-color: #ffffc6;
+                display: flex;
+            }
+            .linkedlist-value {
+                display:inline-block;
+                width: 40px;
+                border-right: 1px solid #888;
+            }
+            .linkedlist-pointer {
+                display:inline-block;
+                width: 40px;
+            }
+            .linkedlist-address {
+                width:100%;
+                background: #c6f2ff;
+                border-top: 1px solid #888;
+            }
+
+			@media print
+			{
+				.no-print, .no-print *
+				{
+					display: none !important;
+				}
+			}
+		</style>
+	</head>
+	<body>
+		<div class="reveal">
+			<div class="slides">
+				<section class="heading-only">
+                    <h1 class="smaller">Generics</h1>
+
+					<div class="no-print" style="text-align: left; margin-top: 100px; font-size: 70%;">
+						Tips for navigating the slides:
+						<ul>
+							<li>Press O or Escape for overview mode.</li>
+							<li>Visit <a href="?print-pdf" target="_blank">this link</a> for a nice printable version</li>
+							<li>Press the copy icon on the upper right of code blocks to copy the code</li>
+						</ul>
+					</div>
+				</section>
+
+                <section>
+                    <h3>Today we will cover..</h3>
+                    <ul>
+                        <li>String formatting</li>
+                        <li>Generics/Duck typing</li>
+                        <li>String joinings</li>
+                    </ul>
+                </section>
+
+                <section class="heading-only">
+                    <h2>String formatting</h2>
+                </section>
+
+                <section>
+                    <h3>Old string formatting methods</h3>
+
+                    <p>Back when I was a wee lass, this was all we had:</p>
+
+                    <pre style="font-size:0.8em"><code data-trim data-noescape class="python">
+                    greeting = "Ahoy"
+                    noun = "Boat"
+
+                    print(greeting + ", " + noun + "yMc" + noun + "Face")
+
+                    print("%s, %syMc%sFace" % (greeting, noun, noun))
+                    </code></pre>
+
+                    <div class="fragment">
+                    <p>Python 2.6 introduced <code>str.format()</code>:</p>
+
+                    <pre style="font-size:0.8em"><code data-trim data-noescape class="python">
+                    print("{}, {}yMc{}Face".format(greeting, noun, noun))
+
+                    print("{0}, {1}yMc{1}Face".format(greeting, noun))
+
+                    print("{greeting}, {noun}yMc{noun}Face".format(
+                        greeting=greeting, noun=noun))
+                    </code></pre>
+                    </div>
+
+                </section>
+
+                <section>
+                    <h3>f strings</h3>
+
+                    <p>Available since Python 3.5, <strong>f strings</strong> (formatted string literals)
+                    are the new recommended way to format strings.</p>
+
+                    <p>Just put an <code>f</code> in front of the quotes and then
+                    put any valid Python expression in curly brackets inside:</p>
+
+                    <pre style="font-size:0.8em"><code data-trim data-noescape class="python">
+                    greeting = "Ahoy"
+                    noun = "Boat"
+
+                    print(f"{greeting}, {noun}yMc{noun}Face")
+                    </code></pre>
+
+                    <p>😍😍😍😍😍😍</p>
+
+                    <p>Any valid Python expression!</p>
+
+                    <pre style="font-size:0.8em"><code data-trim data-noescape class="python">
+                    print(f"{greeting.lower()}, {noun.upper()}yMc{noun}Face")
+
+                    print(f"{greeting*3}, {noun[0:3]}yMc{noun[-1]}Face")
+                    </code></pre>
+
+                </section>
+
+                <section>
+                    <h3>f strings + Link/Tree</h3>
+
+                    <p>Using our standard 61A definitions, what will this show?</p>
+
+                    <pre style="font-size:0.8em"><code data-trim data-noescape class="python">
+                    link = Link("A", Link("B", Link("C")))
+                    tree = Tree(1, [Tree(2), Tree(3)])
+
+                    print(f"{link} and\n {tree}")
+                    </code></pre>
+
+                    <div class="fragment">
+                    <p>It shows the result of calling <code>__str__</code> on each object:</p>
+                    <pre style="font-size:0.8em"><code data-trim data-noescape class="text">
+                    &lt;A B C&gt; and
+                        1
+                         2
+                         3
+                    </code></pre>
+                    </div>
+                </section>
+
+                <section class="heading-only">
+                    <h2>Generics</h2>
+                </section>
+
+                <section>
+                    <h3>A generic function</h3>
+
+                    <pre style="font-size:0.8em"><code data-trim data-noescape class="python">
+                    def map_em(items, func):
+                        """Returns a list with FUNC applied to each item in ITEMS."""
+                        mapped = []
+                        for item in items:
+                            mapped.append(func(item))
+                        return mapped
+                    </code></pre>
+
+                    <p>What could <code>items</code> be? <span class="fragment">Anything iterable!</span></p>
+
+                    <p>The function <code>map_em</code> is <strong>generic</strong> in the type of <code>items</code> .</p>
+                </section>
+
+                <section>
+                    <h3>What makes something iterable?</h3>
+
+                    <p>The object must have an <code>__iter__</code> method
+                        that returns an iterator.</p>
+
+                    <p>Built-in iterables:<br> <code>list</code>, <code>tuple</code>, <code>dict</code>, <code>str</code>, <code>set</code></p>
+
+                    <p>Built-in functions that return iterables:<br> <code>list()</code>, <code>tuple()</code>, <code>sorted()</code></p>
+
+                    <p>Built-in functions that return iterators:<br> <code>reversed()</code>, <code>zip()</code>, <code>map()</code>, <code>filter()</code></p>
+
+                </section>
+
+                <section>
+                    <h3>Duck typing</h3>
+
+                    <p>The ability to use any type of object in a function based on its behavior (versus its type) is known as <strong>duck typing</strong>.</p>
+
+                    <p>The duck test: 🐥<br>
+                    <span class="smaller">“The parameter to this function must be a duck. If it looks like a duck and quacks like a duck, then we’ll say it IS a duck!”</span>
+                    </p>
+
+                    <p>Which parameters pass the duck test?</p>
+
+                    <pre style="font-size:0.9em"><code data-trim data-noescape class="python">
+                    map_em([1, 2, 3, 4], lambda n: n * 2)
+                    map_em(("A", "B", "C", "D"), lambda l: l.lower())
+                    map_em({"CA": "poppy", "OR": "grape"}, lambda k: k[0])
+                    map_em([(34, -144), (37, -122)], lambda latlon: latlon[0])
+                    map_em("Supercalifragilisticexpialidocious", lambda s: s.upper())
+                    map_em(Link(1, Link(2, Link(3))), lambda n: n * 3)
+                    </code></pre>
+
+                </section>
+
+                <section>
+                    <h3>Why does Link fail?</h3>
+
+                    <p>🚫 TypeError: 'Link' object is not iterable</p>
+
+                    <p>Our 61A standard definition of Link:</p>
+
+                    <pre style="font-size:0.45em"><code data-trim data-noescape class="python">
+                    class Link:
+                        empty = ()
+
+                        def __init__(self, first, rest=empty):
+                            assert rest is Link.empty or isinstance(rest, Link)
+                            self.first = first
+                            self.rest = rest
+
+                        def __repr__(self):
+                            if self.rest:
+                                rest_repr = ', ' + repr(self.rest)
+                            else:
+                                rest_repr = ''
+                            return 'Link(' + repr(self.first) + rest_repr + ')'
+
+                        def __str__(self):
+                            string = '<'
+                            while self.rest is not Link.empty:
+                                string += str(self.first) + ' '
+                                self = self.rest
+                            return string + str(self.first) + '>'
+                    </code></pre>
+
+                    <p>Our object supports initialization and string representations,
+                        but not iteration.</p>
+                </section>
+
+                <section>
+                    <h3>Custom iterable</h3>
+
+                    <p>We can make our own objects iterable by defining <code>__iter__</code>.
+                    </p>
+
+                    <pre style="font-size:0.6em"><code data-trim data-noescape class="python">
+                    class Link:
+                        empty = ()
+
+                        def __init__(self, first, rest=empty):
+                            assert rest is Link.empty or isinstance(rest, Link)
+                            self.first = first
+                            self.rest = rest
+
+                        def __iter__(self):
+                            current = self
+                            while current is not Link.empty:
+                                yield current.first
+                                current = current.rest
+
+                        # The rest...
+                    </code></pre>
+                </section>
+
+                <section>
+                    <h3>Will it duck?</h3>
+
+                    <p>Given the addition of <code>__iter__</code>,
+                    can we now pass an instance of <code>Link</code> into <code>map_em</code>?</p>
+
+                    <pre style="font-size:0.8em"><code data-trim data-noescape class="python">
+                    def map_em(items, func):
+                        """Returns a list with FUNC applied to each item in ITEMS."""
+                        mapped = []
+                        for item in items:
+                            mapped.append(func(item))
+                        return mapped
+                    </code></pre>
+
+                    <pre style="font-size:0.8em"><code data-trim data-noescape class="python">
+                    mapped1 = map_em(Link(1, Link(2, Link(3))), lambda n: n * 3)
+                    </code></pre>
+
+                    <br>
+                    <p>What about an empty linked list?</p>
+
+                    <pre style="font-size:0.8em"><code data-trim data-noescape class="python">
+                    mapped2 = map_em(Link.empty, lambda n: n * 3)
+                    </code></pre>
+
+                </section>
+
+                <section>
+                    <h3>Another generic function: sum_em</h3>
+
+                    <pre style="font-size:0.8em"><code data-trim data-noescape class="python">
+                    def sum_em(items, initial_value):
+                        """Returns the sum of ITEMS,
+                        starting with a value of INITIAL_VALUE."""
+                        sum = initial_value
+                        for item in items:
+                            sum += item
+                        return sum
+                    </code></pre>
+
+                    <p>What could <code>items</code> be? <span class="fragment">Any iterable.</span></p>
+                    <p>What could <code>initial_value</code> be? <span class="fragment">Any value that can be summed with the values in iterable.</span></p>
+
+                    <p>The function <code>sum_em</code> is <strong>generic</strong> in the type of <code>items</code> and the type of <code>initial_value</code>.</p>
+                </section>
+
+                <section>
+                    <h3>Duck typing with sum_em</h3>
+
+                    <p>The duck test: 🐥<br>
+                    <span class="smaller">“The parameter to this function must be a duck. If it looks like a duck and quacks like a duck, then we’ll say it IS a duck!”</span>
+                    </p>
+
+                    <p>Which parameters pass the duck test?</p>
+
+                    <pre style="font-size:0.9em"><code data-trim data-noescape class="python">
+                    sum_em([1, 2, 3, 4], 0)
+                    sum_em(("H", "E", "L", "L", "O"), "")
+                    sum_em({"CA": "poppy", "OR": "grape"}, "")
+                    sum_em([(10, 20), (30, 40)], (0, 1))
+                    sum_em("Superkalifragilous", "Oh")
+                    sum_em(Link(1, Link(2, Link(3))), 0)
+                    </code></pre>
+
+                </section>
+
+                <section>
+                    <h3>Adding custom objects</h3>
+
+                    <p>Consider the following class:</p>
+
+                    <pre style="font-size:0.55em"><code data-trim data-noescape class="python">
+                    from math import gcd
+
+                    class Rational:
+                        def __init__(self, numerator, denominator):
+                            g = gcd(numerator, denominator)
+                            self.numer = numerator // g
+                            self.denom = denominator // g
+
+                        def __str__(self):
+                            return f"{self.numer}/{self.denom}"
+
+                        def __repr__(self):
+                            return f"Rational({self.numer}, {self.denom})"
+                    </code></pre>
+
+                    <p>Will it duck?</p>
+
+                    <pre style="font-size:0.9em"><code data-trim data-noescape class="python">
+                    sum_em([Rational(1, 2), Rational(3, 4), Rational(2, 3)],
+                        Rational(0, 1))
+                    </code></pre>
+
+                    <p class="fragment" style="font-size:0.8em">🚫 TypeError: unsupported operand type(s) for +: 'Rational' and 'Rational'</p>
+
+                </section>
+
+                <section>
+                    <h3>Custom addable</h3>
+
+                    <p>We can make custom objects addable by defining the <a href="https://docs.python.org/3/reference/datamodel.html#object.__add__" target="_blank"><code>__add__</code></a> method:
+                    </p>
+
+                    <pre style="font-size:0.7em"><code data-trim data-noescape class="python">
+                    class Rational:
+                        def __init__(self, numerator, denominator):
+                            g = gcd(numerator, denominator)
+                            self.numer = numerator // g
+                            self.denom = denominator // g
+
+                        def __add__(self, other):
+                            <span class="fragment">new_numer = self.numer * other.denom + other.numer * self.denom
+                            new_denom = self.denom * other.denom
+                            return Rational(new_numer, new_denom)</span>
+
+                        # The rest...
+                    </code></pre>
+                    <br>
+                    <p class="smaller">P.S. We could also define <code>__iadd__</code> to specifically override <code>+=</code>.</p>
+                </section>
+
+                <section>
+                    <h3>Will it duck?</h3>
+
+                    <p>Given the addition of <code>__add__</code>,
+                    can we now pass <code>Rational</code> objects into <code>sum_em</code>?</p>
+
+                    <pre style="font-size:0.8em"><code data-trim data-noescape class="python">
+                    def sum_em(items, initial_value):
+                        """Returns the sum of ITEMS,
+                        starting with a value of INITIAL_VALUE."""
+                        sum = initial_value
+                        for item in items:
+                            sum += item
+                        return sum
+                    </code></pre>
+
+                    <pre style="font-size:0.9em"><code data-trim data-noescape class="python">
+                    sum_em([Rational(1, 2), Rational(3, 4), Rational(2, 3)],
+                        Rational(0, 1))
+                    </code></pre>
+
+                </section>
+
+                <section>
+                    <h3>Generic method names</h3>
+
+                    <p>Python has many ways to make custom objects
+                        work generically with its syntax. For example:
+                    </p>
+
+                    <table class="smaller">
+                        <thead>
+                            <tr>
+                                <th>Method</th>
+                                <th>Implements</th>
+                            </tr>
+                        <tbody>
+                            <tr>
+                                <td><code>__getitem__(S, k)</code></td>
+                                <td><code>S[k]</code></td>
+                            </tr>
+                            <tr>
+                                <td><code>__setitem__(S, k, v)</code></td>
+                                <td><code>S[k] = v</code></td>
+                            </tr>
+                            <tr>
+                                <td><code>__len__(S)</code></td>
+                                <td><code>len(s)</code></td>
+                            </tr>
+                            <tr>
+                                <td><code>__setattr__(obj, "n", v)</code></td>
+                                <td><code>x.n = v</code></td>
+                            </tr>
+                            <tr>
+                                <td><code>__delattr__(obj, "n")</code></td>
+                                <td><code>del x.n</code></td>
+                            </tr>
+                            <tr>
+                                <td><code>__sub__(S, x)</code></td>
+                                <td><code>S - x</code></td>
+                            </tr>
+                            <tr>
+                                <td><code>__mul__(S, x)</code></td>
+                                <td><code>S * x</code></td>
+                            </tr>
+                            <tr>
+                                <td><code>__eq__(obj, x)</code></td>
+                                <td><code>obj == x</code></td>
+                            </tr>
+                            <tr>
+                                <td><code>__lt__(obj, x)</code></td>
+                                <td><code>obj &lt; x<code></td>
+                            </tr>
+                            <tr>
+                                <td>...
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </section>
+
+                <section class="heading-only">
+                    <h2>String joining</h2>
+                </section>
+
+                <section>
+                    <h3>Joining strings</h3>
+
+                    <p>The method <code>str.join(iterable)</code>
+                    returns a string which is the concatenation of the strings in an iterable.</p>
+
+                    <pre style="font-size:0.8em"><code data-trim data-noescape class="text">
+                    names = ["Gray", "Fox"]
+                    print("".join(names))
+
+                    address_parts = ["123 Pining St", "Nibbsville", "OH"]
+                    print(",".join(address_parts))
+
+                    poem_lines = ["Forgive me", "they were delicious", "so sweet", "and so cold"]
+                    print("\n".join(poem_lines))
+                    </code></pre>
+
+                    <p><a href="https://docs.python.org/3/library/stdtypes.html#str.join">Python documentation: str.join</a></p>
+
+                </section>
+
+                <section>
+                    <h3>Joining strings from Link</h3>
+
+                    <p>Using our standard 61A definition, what will this do?</p>
+
+                    <pre style="font-size:0.8em"><code data-trim data-noescape class="text">
+                    link = Link("A", Link("B", Link("C")))
+                    letters = "->".join(link)
+                    </code></pre>
+
+                    <div class="fragment">
+
+                    <p>🚫 TypeError: 'Link' object is not iterable</p>
+                    <br>
+
+                    <p>What if we use the <a target="_blank" href="https://code.cs61a.org/link_iter">definition from earlier</a> with <code>__iter__</code>?</p>
+                    </div>
+
+                </section>
+
+			</div>
+		</div>
+
+		<script src="https://cdn.jsdelivr.net/npm/reveal.js@4.1.0/dist/reveal.js"></script>
+        <script src="https://cdn.jsdelivr.net/npm/reveal.js@4.1.0/plugin/highlight/highlight.js"></script>
+        <script src="https://cdn.jsdelivr.net/npm/highlightjs-badge@0.1.9/highlightjs-badge.min.js"></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/jsPlumb/2.15.5/js/jsplumb.min.js"></script>
+		<script>
+			const srcUrlPrefix = "https://cdn.jsdelivr.net/npm/reveal.js@4.1.0/";
+			Reveal.initialize({
+				hash: true,
+				center: false,
+				slideNumber: true,
+				showNotes: false,
+				margin: 0.1,
+				preloadIframes: true,
+				plugins: [ RevealHighlight ],
+				pdfSeparateFragments: true
+			});
+
+            // add HighlightJS-badge (options are optional)
+            var options = {
+                copyIconContent: "📄",
+                checkIconContent: "✅"
+            };
+            window.highlightJsBadge(options);
+
+            if (window.location.search == "?print-pdf") {
+                var uncounted = document.querySelectorAll("[data-visibility='uncounted']");
+                uncounted.forEach(node => {
+                    node.parentNode.classList.add("no-print")
+                })
+            }
+		</script>
+	</body>
+</html>

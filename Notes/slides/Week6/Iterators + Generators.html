@@ -1,0 +1,893 @@
+<!DOCTYPE html>
+<!-- saved from url=(0087)https://inst.eecs.berkeley.edu/~cs61a/sp21/assets/slides/15-Iterators_+_Generators.html -->
+<html class="reveal-full-page"><head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+		
+		<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+		<title>Iterators + Generators</title>
+		<link rel="stylesheet" href="./Iterators + Generators_files/reset.css">
+		<link rel="stylesheet" href="./Iterators + Generators_files/reveal.css">
+		<link rel="stylesheet" href="./Iterators + Generators_files/simple.css" id="theme">
+		<link rel="stylesheet" href="./Iterators + Generators_files/mono-blue.css">
+		<link rel="stylesheet" href="./Iterators + Generators_files/css">
+		<style>
+			.reveal {
+				font-family: "Work Sans", sans-serif;
+			}
+
+			.reveal .slides section {
+				text-align: left;
+				font-size: smaller;
+			}
+
+			.reveal pre {
+				background-color: #f5f5f5;
+				width: 100%;
+				border: 1px solid #ccc;
+				border-radius: 4px;
+				box-shadow: none;
+			}
+
+			.reveal h1, .reveal h2, .reveal h3, .reveal h4, .reveal h5, .reveal h6 {
+				font-family: "Roboto", sans-serif;
+				color: #0072c1;
+			}
+
+			.reveal section.heading-only {
+				text-align:center;
+				padding-top:20%;
+			}
+
+            .code-badge-language {
+                display: none;
+            }
+
+			.python-tutor-link {
+				font-size: smaller;
+			}
+
+			.python-tutor-link:before {
+				content: "";
+				display: block;
+				background: url("http://pythontutor.com/favicon.ico") no-repeat;
+				width: 48px;
+				height: 48px;
+				float: left;
+				margin: 0 6px 0 0;
+			}
+
+			.reveal h3 {
+				margin-bottom: 40px;
+			}
+
+            .smaller {
+                font-size: smaller;
+            }
+
+            code {
+                padding: 2px 4px;
+                font-size: 90%;
+                color: #0072c1;
+                background-color: #f9f2f4;
+                border-radius: 4px;
+            }
+
+            p.padded {
+                margin-top: 32px;
+            }
+
+			@media print
+			{
+				.no-print, .no-print *
+				{
+					display: none !important;
+				}
+			}
+		</style>
+	<style type="text/css">.hljs-ln{border-collapse:collapse}.hljs-ln td{padding:0}.hljs-ln-n:before{content:attr(data-line-number)}</style></head>
+	<body class="reveal-viewport" style="--slide-width: 960px; --slide-height: 700px;">
+		<div class="reveal slide focused has-vertical-slides has-horizontal-slides ready" role="application" data-transition-speed="default" data-background-transition="fade">
+			<div class="slides" style="width: 960px; height: 700px; zoom: 1.08771;">
+				<section class="heading-only present" style="display: block;">
+					<h1>Iterators + Generators</h1>
+
+					<div class="no-print" style="text-align: left; margin-top: 100px; font-size: 70%;">
+						Tips for navigating the slides:
+						<ul>
+							<li>Press O or Escape for overview mode.</li>
+							<li>Visit <a href="https://inst.eecs.berkeley.edu/~cs61a/sp21/assets/slides/15-Iterators_+_Generators.html?print-pdf" target="_blank">this link</a> for a nice printable version</li>
+							<li>Press the copy icon on the upper right of code blocks to copy the code</li>
+						</ul>
+					</div>
+				</section>
+
+				<section class="heading-only future" hidden="" aria-hidden="true" style="display: block;">
+					<h2>Iterators</h2>
+				</section>
+
+				<section hidden="" aria-hidden="true" class="future" style="display: block;">
+					<h3>Iterables</h3>
+
+                    <p class="smaller">Lists, tuples, dictionaries, and strings are all <strong>iterable</strong> objects.</p>
+
+					<pre style="font-size:0.7em;" class="code-badge-pre"><div class="code-badge">
+        <div class="code-badge-language">python</div>
+        <div title="Copy to clipboard">
+            <i class="fa fa-copy code-badge-copy-icon">📄</i>
+        </div>
+     </div><code data-trim="" data-noescape="" class="python hljs">my_order = [<span class="hljs-string">"Yuca Shepherds Pie"</span>, <span class="hljs-string">"Pão de queijo"</span>, <span class="hljs-string">"Guaraná"</span>]
+
+ranked_chocolates = (<span class="hljs-string">"Dark"</span>, <span class="hljs-string">"Milk"</span>, <span class="hljs-string">"White"</span>)
+
+prices = {<span class="hljs-string">"pineapple"</span>: <span class="hljs-number">9.99</span>, <span class="hljs-string">"pen"</span>: <span class="hljs-number">2.99</span>, <span class="hljs-string">"pineapple-pen"</span>: <span class="hljs-number">19.99</span>}
+
+best_topping = <span class="hljs-string">"pineapple"</span></code></pre>
+
+                    <p style="font-size:0.6em;">🕵🏽‍♀️ <a target="_blank" href="https://docs.python.org/3/library/stdtypes.html#set-types-set-frozenset">Sets</a> are also iterable, but we haven't discussed those at length.
+                    </p>
+
+                    <aside class="notes">They are all container objects, and contain some sort of sequential values (keys for the dict, characters for the string).</aside>
+                </section>
+
+                <section hidden="" aria-hidden="true" class="future" style="display: none;">
+					<h3>Iterating</h3>
+
+                    <p>We can iterate over iterable objects:</p>
+
+					<pre class="code-badge-pre"><div class="code-badge">
+        <div class="code-badge-language">python</div>
+        <div title="Copy to clipboard">
+            <i class="fa fa-copy code-badge-copy-icon">📄</i>
+        </div>
+     </div><code data-trim="" data-noescape="" class="python hljs">my_order = [<span class="hljs-string">"Yuca Shepherds Pie"</span>, <span class="hljs-string">"Pão de queijo"</span>, <span class="hljs-string">"Guaraná"</span>]
+<span class="hljs-keyword">for</span> item <span class="hljs-keyword">in</span> my_order:
+    print(item)
+lowered = [item.lower() <span class="hljs-keyword">for</span> item <span class="hljs-keyword">in</span> my_order]
+
+ranked_chocolates = (<span class="hljs-string">"Dark"</span>, <span class="hljs-string">"Milk"</span>, <span class="hljs-string">"White"</span>)
+<span class="hljs-keyword">for</span> chocolate <span class="hljs-keyword">in</span> ranked_chocolates:
+    print(chocolate)
+
+prices = {<span class="hljs-string">"pineapple"</span>: <span class="hljs-number">9.99</span>, <span class="hljs-string">"pen"</span>: <span class="hljs-number">2.99</span>, <span class="hljs-string">"pineapple-pen"</span>: <span class="hljs-number">19.99</span>}
+<span class="hljs-keyword">for</span> product <span class="hljs-keyword">in</span> prices:
+    print(product, <span class="hljs-string">" costs "</span>, prices[product])
+discounted = { item: prices[item] * <span class="hljs-number">0.75</span> <span class="hljs-keyword">for</span> item <span class="hljs-keyword">in</span> prices }
+
+best_topping = <span class="hljs-string">"pineapple"</span>
+<span class="hljs-keyword">for</span> letter <span class="hljs-keyword">in</span> best_topping:
+    print(letter)</code></pre>
+                </section>
+
+                <section hidden="" aria-hidden="true" class="future" style="display: none;">
+					<h3>Iterators</h3>
+
+                    <p>An <strong>iterator</strong> is an object that provides sequential access to values, one by one.</p>
+
+                    <p class="smaller"><code>iter(iterable)</code> returns an iterator over the elements of an iterable.</p>
+
+                    <p class="smaller"><code>next(iterator)</code> returns the next element in an iterator.</p>
+
+					<pre style="font-size:0.7em" class="code-badge-pre"><div class="code-badge">
+        <div class="code-badge-language">python</div>
+        <div title="Copy to clipboard">
+            <i class="fa fa-copy code-badge-copy-icon">📄</i>
+        </div>
+     </div><code data-trim="" data-noescape="" class="python hljs">toppings = [<span class="hljs-string">"pineapple"</span>, <span class="hljs-string">"pepper"</span>, <span class="hljs-string">"mushroom"</span>, <span class="hljs-string">"roasted red pepper"</span>]
+
+topperator = iter(toppings)
+next(iter) <span class="fragment" data-fragment-index="0"><span class="hljs-comment"># 'pineapple'</span></span>
+next(iter) <span class="fragment" data-fragment-index="0"><span class="hljs-comment"># 'pepper'</span></span>
+next(iter) <span class="fragment" data-fragment-index="0"><span class="hljs-comment"># 'mushroom'</span></span>
+next(iter) <span class="fragment" data-fragment-index="0"><span class="hljs-comment"># 'roasted red pepper'</span></span>
+next(iter) <span class="fragment" data-fragment-index="1"><span class="hljs-comment"># ❌ StopIteration exception</span></span></code></pre>
+
+                </section>
+
+                <section hidden="" aria-hidden="true" class="future" style="display: none;">
+                    <h3>Handling StopIteration</h3>
+
+                    <p>An unhandled exception will immediately stop a program.</p>
+
+                    <p>Use <code>try</code>/<code>except</code> to handle an exception:</p>
+
+                    <pre style="font-size:0.9em" class="code-badge-pre"><div class="code-badge">
+        <div class="code-badge-language">python</div>
+        <div title="Copy to clipboard">
+            <i class="fa fa-copy code-badge-copy-icon">📄</i>
+        </div>
+     </div><code data-trim="" data-noescape="" class="python hljs">ranked_chocolates = (<span class="hljs-string">"Dark"</span>, <span class="hljs-string">"Milk"</span>, <span class="hljs-string">"White"</span>)
+
+chocolaterator = iter(ranked_chocolates)
+print(next(chocolaterator))
+print(next(chocolaterator))
+print(next(chocolaterator))
+
+<span class="hljs-keyword">try</span>:
+    print(next(chocolaterator))
+<span class="hljs-keyword">except</span> StopIteration:
+    print(<span class="hljs-string">"No more left!"</span>)</code></pre>
+
+                </section>
+
+                <section hidden="" aria-hidden="true" class="future" style="display: none;">
+                    <h3>Iterating with Iterators</h3>
+
+                    <p class="smaller">We can use a <code>while</code> loop to process iterators of arbitrary length:
+                    </p>
+
+                    <pre style="font-size:0.9em" class="code-badge-pre"><div class="code-badge">
+        <div class="code-badge-language">python</div>
+        <div title="Copy to clipboard">
+            <i class="fa fa-copy code-badge-copy-icon">📄</i>
+        </div>
+     </div><code data-trim="" data-noescape="" class="python hljs">ranked_chocolates = (<span class="hljs-string">"Dark"</span>, <span class="hljs-string">"Milk"</span>, <span class="hljs-string">"White"</span>)
+chocolaterator = iter(ranked_chocolates)
+
+<span class="hljs-keyword">try</span>:
+    <span class="hljs-keyword">while</span> <span class="hljs-literal">True</span>:
+        choco = next(chocolaterator)
+        print(choco)
+<span class="hljs-keyword">except</span> StopIteration:
+    print(<span class="hljs-string">"No more left!"</span>)</code></pre>
+
+                </section>
+
+                <section hidden="" aria-hidden="true" class="future" style="display: none;">
+                    <h3>Iterators vs. For loops</h3>
+
+                    <pre style="font-size:0.7em" class="code-badge-pre"><div class="code-badge">
+        <div class="code-badge-language">python</div>
+        <div title="Copy to clipboard">
+            <i class="fa fa-copy code-badge-copy-icon">📄</i>
+        </div>
+     </div><code data-trim="" data-noescape="" class="python hljs">ranked_chocolates = (<span class="hljs-string">"Dark"</span>, <span class="hljs-string">"Milk"</span>, <span class="hljs-string">"White"</span>)
+chocorator = iter(ranked_chocolates)
+
+<span class="hljs-keyword">try</span>:
+    <span class="hljs-keyword">while</span> <span class="hljs-literal">True</span>:
+        choco = next(chocorator)
+        print(choco)
+<span class="hljs-keyword">except</span> StopIteration:
+    print(<span class="hljs-string">"No more left!"</span>)</code></pre>
+
+                    <p class="padded">Why not just...</p>
+                    <pre style="font-size:0.7em" class="code-badge-pre"><div class="code-badge">
+        <div class="code-badge-language">python</div>
+        <div title="Copy to clipboard">
+            <i class="fa fa-copy code-badge-copy-icon">📄</i>
+        </div>
+     </div><code data-trim="" data-noescape="" class="python hljs">ranked_chocolates = (<span class="hljs-string">"Dark"</span>, <span class="hljs-string">"Milk"</span>, <span class="hljs-string">"White"</span>)
+<span class="hljs-keyword">for</span> chocolate <span class="hljs-keyword">in</span> ranked_chocolates:
+    print(chocolate)</code></pre>
+
+                    <p class="fragment smaller" data-fragment-index="0">Well, actually, a for loop is just syntactic sugar! 🍬</p>
+
+                </section>
+
+                <section hidden="" aria-hidden="true" class="stack future" style="display: none;">
+                <section id="for-loop-execution" style="display: none;">
+                    <h3>For loop execution</h3>
+
+                    <pre style="font-size:0.9em" class="code-badge-pre"><div class="code-badge">
+        <div class="code-badge-language">python</div>
+        <div title="Copy to clipboard">
+            <i class="fa fa-copy code-badge-copy-icon">📄</i>
+        </div>
+     </div><code data-trim="" data-noescape="" class="python hljs"><span class="hljs-keyword">for</span> &lt;name&gt; <span class="hljs-keyword">in</span> &lt;expression&gt;:
+    &lt;suite&gt;</code></pre>
+
+                    <ol class="smaller">
+                        <li>Python evaluates <code>&lt;expression&gt;</code> to make sure it's an iterable.</li>
+                        <li>Python gets an iterator for the iterable.</li>
+                        <li>Python gets the next value from the iterator and assigns to <code>&lt;name&gt;</code>.</li>
+                        <li>Python executes <code>&lt;suite&gt;</code>.</li>
+                        <li>Python repeats until it sees a StopIteration error.</li>
+                    </ol>
+
+                    <pre class="code-badge-pre"><div class="code-badge">
+        <div class="code-badge-language">python</div>
+        <div title="Copy to clipboard">
+            <i class="fa fa-copy code-badge-copy-icon">📄</i>
+        </div>
+     </div><code data-trim="" data-noescape="" class="python hljs">iterator = iter(&lt;expression&gt;)
+<span class="hljs-keyword">try</span>:
+    <span class="hljs-keyword">while</span> <span class="hljs-literal">True</span>:
+        &lt;name&gt; = next(iterator)
+        &lt;suite&gt;
+<span class="hljs-keyword">except</span> StopIteration:
+    <span class="hljs-keyword">pass</span></code></pre>
+
+                    <p class="no-print" style="font-size:0.5em; margin-top:48px;">🕵🏼‍♂️ <a href="https://inst.eecs.berkeley.edu/~cs61a/sp21/assets/slides/15-Iterators_+_Generators.html#/dunder-methods">Click here to dig deeper...</a></p>
+                </section>
+
+                <section class="no-print future" data-visibility="uncounted" id="dunder-methods" aria-hidden="true" style="display: none;">
+                    <h3>__next__() and __iter__()</h3>
+
+                    <p>When the <code>iter()</code> function is passed an iterable object, it
+                    calls the <code>__iter__()</code> method on it:</p>
+
+                    <pre style="font-size:0.8em" class="code-badge-pre"><div class="code-badge">
+        <div class="code-badge-language">python</div>
+        <div title="Copy to clipboard">
+            <i class="fa fa-copy code-badge-copy-icon">📄</i>
+        </div>
+     </div><code data-trim="" data-noescape="" class="python hljs">ranked_chocolates = (<span class="hljs-string">"Dark"</span>, <span class="hljs-string">"Milk"</span>, <span class="hljs-string">"White"</span>)
+chocorator1 = iter(ranked_chocolates)
+chocorator2 = ranked_chocolates.__iter__()</code></pre>
+
+                    <p class="padded">When the <code>next()</code> function is passed an iterator, it
+                    calls the <code>__next__()</code> method on it:</p>
+
+                    <pre style="font-size:0.8em" class="code-badge-pre"><div class="code-badge">
+        <div class="code-badge-language">python</div>
+        <div title="Copy to clipboard">
+            <i class="fa fa-copy code-badge-copy-icon">📄</i>
+        </div>
+     </div><code data-trim="" data-noescape="" class="python hljs">ranked_chocolates = (<span class="hljs-string">"Dark"</span>, <span class="hljs-string">"Milk"</span>, <span class="hljs-string">"White"</span>)
+chocolate1 = next(chocorator1)
+chocolate2 = chocorator2.__next__()</code></pre>
+
+                    <p class="smaller">Once we learn how to make our own objects, we can make anything iterable!</p>
+
+                    <p style="font-size:0.5em; ">⬆️ <a href="https://inst.eecs.berkeley.edu/~cs61a/sp21/assets/slides/15-Iterators_+_Generators.html#/for-loop-execution">Got it! Go back to the last slide</a></p>
+                </section>
+
+                </section>
+
+                <section hidden="" aria-hidden="true" class="future" style="display: none;">
+                    <h3>Comparison</h3>
+
+                    <p>The sugary for loop: 🍬 </p>
+                    <pre style="font-size:0.6em" class="code-badge-pre"><div class="code-badge">
+        <div class="code-badge-language">python</div>
+        <div title="Copy to clipboard">
+            <i class="fa fa-copy code-badge-copy-icon">📄</i>
+        </div>
+     </div><code data-trim="" data-noescape="" class="python hljs">ranked_chocolates = (<span class="hljs-string">"Dark"</span>, <span class="hljs-string">"Milk"</span>, <span class="hljs-string">"White"</span>)
+<span class="hljs-keyword">for</span> chocolate <span class="hljs-keyword">in</span> ranked_chocolates:
+    print(chocolate)</code></pre>
+
+                    <p class="padded">The "look ma, no sugar" version: 🙌🏽 </p>
+                    <pre style="font-size:0.6em" class="code-badge-pre"><div class="code-badge">
+        <div class="code-badge-language">python</div>
+        <div title="Copy to clipboard">
+            <i class="fa fa-copy code-badge-copy-icon">📄</i>
+        </div>
+     </div><code data-trim="" data-noescape="" class="python hljs">ranked_chocolates = (<span class="hljs-string">"Dark"</span>, <span class="hljs-string">"Milk"</span>, <span class="hljs-string">"White"</span>)
+chocorator = iter(ranked_chocolates)
+<span class="hljs-keyword">try</span>:
+    <span class="hljs-keyword">while</span> <span class="hljs-literal">True</span>:
+        print(next(chocorator))
+<span class="hljs-keyword">except</span> StopIteration:
+    <span class="hljs-keyword">pass</span></code></pre>
+
+                    <p class="padded">Poll time! What do you prefer? ✍🏽 </p>
+
+                </section>
+
+                <section hidden="" aria-hidden="true" class="stack future" style="display: none;">
+
+                    <section id="timing-comparison" style="display: none;">
+                        <h3>Behavior != Implementation</h3>
+
+                        <p>The for loop and iterator version behave the same,
+                        but the Python interpreter can choose to implement them in different ways,
+                        which can affect execution time.
+                        </p>
+
+                        <table>
+                            <thead>
+                                <tr><th>Version</th>
+                                <th>10,000 runs</th>
+                                <th>1,000,000 runs</th>
+                            </tr></thead>
+                            <tbody>
+                                <tr>
+                                    <td>For loop</td>
+                                    <td>3.2 milliseconds</td>
+                                    <td>336 milliseconds</td>
+                                </tr>
+                                <tr>
+                                    <td>Iterator</td>
+                                    <td>8.3 milliseconds</td>
+                                    <td>798 milliseconds</td>
+                                </tr>
+                            </tbody>
+                        </table>
+
+                        <p>Is that significant? 🤔</p>
+
+                        <p>We typically use a <code>for</code> loop unless we have a particular reason to use <code>next()</code>/<code>iter()</code>/<code>StopIteration</code>,
+                            since it is both easier to read and better optimized.</p>
+
+                        <p class="no-print" style="font-size:0.5em; margin-top:48px;">🕵🏼‍♂️ <a href="https://inst.eecs.berkeley.edu/~cs61a/sp21/assets/slides/15-Iterators_+_Generators.html#/bytecode-comparison">Click here to dig deeper...</a></p>
+                    </section>
+
+                    <section class="no-print future" data-visibility="uncounted" id="bytecode-comparison" aria-hidden="true" style="display: none;">
+
+                        <h3>Implementation comparison</h3>
+
+                        <p>We can use the <code>dis</code> module to see the difference in implementation for each approach.</p>
+
+                        <img src="./Iterators + Generators_files/FFSkEjY.png" alt="Bytecode comparison table">
+
+                        <p>The results will vary based on the Python engine.
+                        <a target="_blank" href="https://gist.githubusercontent.com/pamelafox/5a0ea6cf2b2bd391d1864e0369ac0f88/raw/c1cad7ee32003b2595718e47b2e2e038ccc7fa1f/gistfile1.txt">See code that produced that bytecode.</a>
+                        </p>
+
+                        <p style="font-size:0.5em; ">⬆️ <a href="https://inst.eecs.berkeley.edu/~cs61a/sp21/assets/slides/15-Iterators_+_Generators.html#/timing-comparison">Got it! Go back to the last slide</a></p>
+
+                    </section>
+
+                </section>
+
+                <section hidden="" aria-hidden="true" class="future" style="display: none;">
+                    <h3>Functions that return iterators</h3>
+
+                    <table style="font-size:0.7em;">
+                        <thead>
+                            <tr><th>Function</th>
+                            <th>Description</th>
+                        </tr></thead>
+                        <tbody>
+                            <tr>
+                                <td><code>reversed(sequence)</code></td>
+                                <td style="padding-bottom:24px;">Iterate over item in <code>sequence</code> in reverse order
+                                    <br>
+                                    <a style="font-size:0.8em" target="_blank" href="http://pythontutor.com/visualize.html#code=chocolate_bars%20%3D%20%28%2290%25%22,%20%2270%25%22,%20%2255%25%22%29%0A%0Aworst_first%20%3D%20reversed%28chocolate_bars%29%0A%0Afor%20chocolate%20in%20worst_first%3A%0A%20%20%20%20print%28chocolate%29&amp;cumulative=true&amp;curInstr=0&amp;heapPrimitives=nevernest&amp;mode=display&amp;origin=opt-frontend.js&amp;py=3&amp;rawInputLstJSON=%5B%5D&amp;textReferences=false">(See example in PythonTutor)</a>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td><code>zip(*iterables)</code></td>
+                                <td style="padding-bottom:24px;">Iterate over co-indexed tuples with elements from each of the <code>iterables</code>
+                                    <br>
+                                    <a style="font-size:0.8em" target="_blank" href="http://pythontutor.com/composingprograms.html#code=eng_nums%20%3D%20%5B%22one%22,%20%22two%22,%20%22three%22%5D%0Aesp_nums%20%3D%20%5B%22uno%22,%20%22dos%22,%20%22tres%22%5D%0A%0Azip_iter%20%3D%20zip%28eng_nums,%20esp_nums%29%0Aeng,%20esp%20%3D%20next%28zip_iter%29%0Aprint%28eng,%20esp%29%0A%0Afor%20eng,%20esp%20in%20zip%28eng_nums,%20esp_nums%29%3A%0A%20%20%20%20print%28eng,%20esp%29&amp;cumulative=true&amp;curInstr=0&amp;mode=display&amp;origin=composingprograms.js&amp;py=3&amp;rawInputLstJSON=%5B%5D">(See example in PythonTutor)</a>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td><code>map(func, iterable, ...)</code></td>
+                                <td style="padding-bottom:24px;">
+                                    Iterate over <code>func(x)</code> for <code>x</code> in <code>iterable</code>
+                                    <br>
+                                    <span class="fragment" data-fragment-index="0">Same as <code>[func(x) for x in iterable]</code></span>
+                                    <br>
+                                    <a style="font-size:0.8em" target="_blank" href="http://pythontutor.com/visualize.html#code=nums%20%3D%20%5B1,%202,%203,%204,%205%5D%0A%0A%23%20Map%20returns%20an%20iterator%0Asquares1%20%3D%20map%28lambda%20num%3A%20num%20**%202,%20nums%29%0A%0A%23%20Create%20a%20list%20of%20all%20the%20elements%20from%20the%20iterator%0Asquares1%20%3D%20list%28squares1%29%0A%0A%23%20Compare%20to...%0Asquares2%20%3D%20%5Bnum**2%20for%20num%20in%20nums%5D&amp;cumulative=true&amp;curInstr=0&amp;heapPrimitives=nevernest&amp;mode=display&amp;origin=opt-frontend.js&amp;py=3&amp;rawInputLstJSON=%5B%5D&amp;textReferences=false">(See example in PythonTutor)</a>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td><code>filter(func, iterable)</code></td>
+                                <td style="padding-bottom:24px;">Iterate over <code>x</code> in <code>iterable</code> if <code>func(x)</code>
+                                    <br>
+                                    <span class="fragment" data-fragment-index="1">Same as <code>[x for x in iterable if func(x)]</code></span>
+                                    <br>
+                                    <a style="font-size:0.8em;" target="_blank" href="http://pythontutor.com/visualize.html#code=nums%20%3D%20%5B1,%202,%203,%204,%205%5D%0A%0A%23%20Filter%20returns%20an%20iterator%0Aeven1%20%3D%20filter%28lambda%20num%3A%20num%20%25%202%20%3D%3D%200,%20nums%29%0A%0A%23%20Create%20a%20list%20of%20all%20the%20elements%20from%20the%20iterator%0Aeven1%20%3D%20list%28even1%29%0A%0A%23%20Compare%20to...%0Aeven2%20%3D%20%5Bnum%20for%20num%20in%20nums%20if%20num%20%25%202%20%3D%3D%200%5D&amp;cumulative=true&amp;curInstr=0&amp;heapPrimitives=nevernest&amp;mode=display&amp;origin=opt-frontend.js&amp;py=3&amp;rawInputLstJSON=%5B%5D&amp;textReferences=false">(See example in PythonTutor)</a>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+
+                </section>
+
+                <section hidden="" aria-hidden="true" class="future" style="display: none;">
+                    <h3>A useful detail</h3>
+
+                    <p>Calling <code>iter()</code> on an iterator just returns the iterator:</p>
+
+                    <pre style="font-size:0.8em;" class="code-badge-pre"><div class="code-badge">
+        <div class="code-badge-language">python</div>
+        <div title="Copy to clipboard">
+            <i class="fa fa-copy code-badge-copy-icon">📄</i>
+        </div>
+     </div><code data-trim="" data-noescape="" class="python hljs">numbers = [<span class="hljs-string">"一つ"</span>, <span class="hljs-string">"二つ"</span>, <span class="hljs-string">"三つ"</span>]
+num_iter = iter(numbers)
+num_iter2 = iter(num_iter)
+
+<span class="hljs-keyword">assert</span> num_iter <span class="hljs-keyword">is</span> num_iter2</code></pre>
+
+                    <p class="padded">That's why this works...</p>
+                    <pre style="font-size:0.8em;" class="code-badge-pre"><div class="code-badge">
+        <div class="code-badge-language">python</div>
+        <div title="Copy to clipboard">
+            <i class="fa fa-copy code-badge-copy-icon">📄</i>
+        </div>
+     </div><code data-trim="" data-noescape="" class="python hljs">nums = [<span class="hljs-number">1</span>, <span class="hljs-number">2</span>, <span class="hljs-number">3</span>, <span class="hljs-number">4</span>, <span class="hljs-number">5</span>, <span class="hljs-number">6</span>, <span class="hljs-number">7</span>, <span class="hljs-number">8</span>, <span class="hljs-number">9</span>, <span class="hljs-number">10</span>]
+
+<span class="hljs-keyword">for</span> num <span class="hljs-keyword">in</span> filter(<span class="hljs-keyword">lambda</span> x: x % <span class="hljs-number">2</span> == <span class="hljs-number">0</span>, nums):
+    print(num)</code></pre>
+                </section>
+
+                <section hidden="" aria-hidden="true" class="future" style="display: none;">
+                    <h3>Functions that return iterables</h3>
+
+                    <table style="font-size:0.7em;">
+                        <thead>
+                            <tr><th>Function</th>
+                            <th>Description</th>
+                        </tr></thead>
+                        <tbody>
+                            <tr>
+                                <td><code>list(iterable)</code></td>
+                                <td style="padding-bottom:24px;">Create a list containing all items in <code>iterable</code>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td><code>tuple(iterable)</code></td>
+                                <td style="padding-bottom:24px;">Create a tuples containing all items in <code>iterable</code>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td><code>sorted(iterable)</code></td>
+                                <td style="padding-bottom:24px;">Create a sorted list containing all items in <code>iterable</code>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+
+                    <aside class="notes"></aside>
+                </section>
+
+				<section class="heading-only future" hidden="" aria-hidden="true" style="display: none;">
+
+                    <h2>Generators</h2>
+
+                </section>
+
+                <section hidden="" aria-hidden="true" class="future" style="display: none;">
+                    <h3>Generators</h3>
+
+                    <p>A <strong>generator</strong> is a type of iterator that yields results from a generator function.</p>
+
+                    <p class="smaller">A <strong>generator function</strong> uses <code>yield</code> instead of <code>return</code>:</p>
+
+                    <pre style="font-size:0.6em" class="code-badge-pre"><div class="code-badge">
+        <div class="code-badge-language">python</div>
+        <div title="Copy to clipboard">
+            <i class="fa fa-copy code-badge-copy-icon">📄</i>
+        </div>
+     </div><code data-trim="" data-noescape="" class="python hljs"><span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">evens</span>():</span>
+    num = <span class="hljs-number">0</span>
+    <span class="hljs-keyword">while</span> num &lt; <span class="hljs-number">10</span>:
+        <span class="hljs-keyword">yield</span> num
+        num += <span class="hljs-number">2</span></code></pre>
+
+                    <p class="smaller">Just call the generator function to get back a generator:</p>
+                    <pre style="font-size:0.6em" class="code-badge-pre"><div class="code-badge">
+        <div class="code-badge-language">python</div>
+        <div title="Copy to clipboard">
+            <i class="fa fa-copy code-badge-copy-icon">📄</i>
+        </div>
+     </div><code data-trim="" data-noescape="" class="python hljs">evengen = evens()
+
+next(evengen)  <span class="fragment" data-fragment-index="0"><span class="hljs-comment"># 0</span></span>
+next(evengen)  <span class="fragment" data-fragment-index="0"><span class="hljs-comment"># 2</span></span>
+next(evengen)  <span class="fragment" data-fragment-index="0"><span class="hljs-comment"># 4</span></span>
+next(evengen)  <span class="fragment" data-fragment-index="0"><span class="hljs-comment"># 6</span></span>
+next(evengen)  <span class="fragment" data-fragment-index="0"><span class="hljs-comment"># 8</span></span>
+next(evengen)  <span class="fragment" data-fragment-index="0"><span class="hljs-comment"># ❌ StopIteration exception</span></span></code></pre>
+
+                    <aside class="notes">
+                        When will it stop? This is an infinite generator!
+                        Want to make your computer go whirr??? list()
+                    </aside>
+                </section>
+
+                <section hidden="" aria-hidden="true" class="future" style="display: none;">
+                    <h3>How generators work</h3>
+
+                    <pre style="font-size:0.6em" class="code-badge-pre"><div class="code-badge">
+        <div class="code-badge-language">python</div>
+        <div title="Copy to clipboard">
+            <i class="fa fa-copy code-badge-copy-icon">📄</i>
+        </div>
+     </div><code data-trim="" data-noescape="" class="python hljs"><span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">evens</span>():</span>
+    num = <span class="hljs-number">0</span>
+    <span class="hljs-keyword">while</span> num &lt; <span class="hljs-number">2</span>:
+        <span class="hljs-keyword">yield</span> num
+        num += <span class="hljs-number">2</span>
+
+gen = evens()
+
+next(gen)
+next(gen)</code></pre>
+
+                    <ul style="font-size:70%">
+                        <li>When the function is called, Python immediately returns an iterator without entering the function.</li>
+                        <li>When <code>next()</code>is called on the iterator, it executes the body of the generator
+                        from the last stopping point up to the next <code>yield</code> statement.
+                        </li>
+                        <li>If it finds a <code>yield</code> statement, it pauses on the next statement and returns the value of the
+                            yielded expression.
+                        </li>
+                        <li>If it doesn't reach a yield statement, it stops at the end of the function and raises a <code>StopIteration</code> exception.</li>
+                    </ul>
+
+                    <p class="no-print" style="font-size:0.5em;">
+                        <a target="_blank" href="http://pythontutor.com/composingprograms.html#code=def%20foo%28x%29%3A%0A%20%20%20%20yield%20x%0A%0Ay%20%3D%207%0Ag%20%3D%20foo%28y%29%0Ay%20%3D%200%0Aprint%28next%28g%29%29%0A&amp;cumulative=true&amp;curInstr=0&amp;mode=display&amp;origin=composingprograms.js&amp;py=3&amp;rawInputLstJSON=%5B%5D">
+                        🕵🏻‍♀️ Dig deeper: When are the function arguments evaluated?
+                        </a>
+                    </p>
+                </section>
+
+
+                <section hidden="" aria-hidden="true" class="future" style="display: none;">
+                    <h3>Looping over generators</h3>
+
+                    <p class="smaller">We can use for loops on generators, since generators are just special types of iterators.</p>
+
+                    <pre style="font-size:0.8em" class="code-badge-pre"><div class="code-badge">
+        <div class="code-badge-language">python</div>
+        <div title="Copy to clipboard">
+            <i class="fa fa-copy code-badge-copy-icon">📄</i>
+        </div>
+     </div><code data-trim="" data-noescape="" class="python hljs"><span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">evens</span>(<span class="hljs-params">start, end</span>):</span>
+    num = start + (start % <span class="hljs-number">2</span>)
+    <span class="hljs-keyword">while</span> num &lt; end:
+        <span class="hljs-keyword">yield</span> num
+        num += <span class="hljs-number">2</span>
+
+<span class="hljs-keyword">for</span> num <span class="hljs-keyword">in</span> evens(<span class="hljs-number">12</span>, <span class="hljs-number">60</span>):
+   print(num)</code></pre>
+
+                    <div class="fragment" data-fragment-index="0">
+                    <p class="smaller">Looks a lot like...</p>
+                    <pre style="font-size:0.8em" class="code-badge-pre"><div class="code-badge">
+        <div class="code-badge-language">python</div>
+        <div title="Copy to clipboard">
+            <i class="fa fa-copy code-badge-copy-icon">📄</i>
+        </div>
+     </div><code data-trim="" data-noescape="" class="python hljs">evens = [num <span class="hljs-keyword">for</span> num <span class="hljs-keyword">in</span> range(<span class="hljs-number">12</span>, <span class="hljs-number">60</span>) <span class="hljs-keyword">if</span> num % <span class="hljs-number">2</span> == <span class="hljs-number">0</span>]
+<span class="hljs-comment"># Or  = filter(lambda x: x % 2 == 0, range(12, 60))</span>
+<span class="hljs-keyword">for</span> num <span class="hljs-keyword">in</span> evens:
+    print(num)</code></pre>
+                    </div>
+
+                    <aside class="notes">
+                        What if it was infinite?
+                        You could use break to break out early.
+                    </aside>
+                </section>
+
+                <section hidden="" aria-hidden="true" class="future" style="display: none;">
+                    <h3>Why use generators?</h3>
+
+                    <p class="smaller">Generators are lazy: they only generate the next item when needed.</p>
+
+                    <p class="smaller">Why generate the whole sequence...</p>
+                    <pre style="font-size:0.45em" class="code-badge-pre"><div class="code-badge">
+        <div class="code-badge-language">python</div>
+        <div title="Copy to clipboard">
+            <i class="fa fa-copy code-badge-copy-icon">📄</i>
+        </div>
+     </div><code data-trim="" data-noescape="" class="python hljs"><span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">find_matches</span>(<span class="hljs-params">filename, match</span>):</span>
+    matched = []
+    <span class="hljs-keyword">for</span> line <span class="hljs-keyword">in</span> open(filename):
+        <span class="hljs-keyword">if</span> line.find(match) &gt; <span class="hljs-number">-1</span>:
+            matched.append(line)
+    <span class="hljs-keyword">return</span> matched
+
+matched_lines = find_matches(<span class="hljs-string">'frankenstein.txt'</span>, <span class="hljs-string">"!"</span>)
+matched_lines[<span class="hljs-number">0</span>]
+matched_lines[<span class="hljs-number">1</span>]</code></pre>
+
+                    <p class="smaller">...if you only want some elements?</p>
+                    <pre style="font-size:0.45em" class="code-badge-pre"><div class="code-badge">
+        <div class="code-badge-language">python</div>
+        <div title="Copy to clipboard">
+            <i class="fa fa-copy code-badge-copy-icon">📄</i>
+        </div>
+     </div><code data-trim="" data-noescape="" class="python hljs"><span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">find_matches</span>(<span class="hljs-params">filename, match</span>):</span>
+    <span class="hljs-keyword">for</span> line <span class="hljs-keyword">in</span> open(filename):
+        <span class="hljs-keyword">if</span> line.find(match) &gt; <span class="hljs-number">-1</span>:
+            <span class="hljs-keyword">yield</span> line
+
+line_iter = find_matches(<span class="hljs-string">'frankenstein.txt'</span>, <span class="hljs-string">"!"</span>)
+next(line_iter)
+next(line_iter)</code></pre>
+
+                    <p class="smaller">A large list can cause your program to run out of memory!</p>
+
+                    <aside class="notes">
+                        Also, infinite sequences!
+                    </aside>
+                </section>
+
+                <section hidden="" aria-hidden="true" class="future" style="display: none;">
+                    <h3>Yielding from iterables</h3>
+
+                    <p>A <code>yield from</code> statement yields the values from an iterator one at a time. 🍬</p>
+
+                    <p class="smaller">Instead of...</p>
+                    <pre style="font-size:0.6em" class="code-badge-pre"><div class="code-badge">
+        <div class="code-badge-language">python</div>
+        <div title="Copy to clipboard">
+            <i class="fa fa-copy code-badge-copy-icon">📄</i>
+        </div>
+     </div><code data-trim="" data-noescape="" class="python hljs"><span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">a_then_b</span>(<span class="hljs-params">a, b</span>):</span>
+    <span class="hljs-keyword">for</span> item <span class="hljs-keyword">in</span> a:
+        <span class="hljs-keyword">yield</span> item
+    <span class="hljs-keyword">for</span> item <span class="hljs-keyword">in</span> b:
+        <span class="hljs-keyword">yield</span> item
+
+list(a_then_b([<span class="hljs-string">"Apples"</span>, <span class="hljs-string">"Aardvarks"</span>], [<span class="hljs-string">"Bananas"</span>, <span class="hljs-string">"BEARS"</span>]))</code></pre>
+
+                    <p class="smaller padded">We can write...</p>
+
+                    <pre style="font-size:0.6em" class="code-badge-pre"><div class="code-badge">
+        <div class="code-badge-language">python</div>
+        <div title="Copy to clipboard">
+            <i class="fa fa-copy code-badge-copy-icon">📄</i>
+        </div>
+     </div><code data-trim="" data-noescape="" class="python hljs"><span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">a_then_b</span>(<span class="hljs-params">a, b</span>):</span>
+    <span class="hljs-keyword">yield</span> <span class="hljs-keyword">from</span> a
+    <span class="hljs-keyword">yield</span> <span class="hljs-keyword">from</span> b
+
+list(a_then_b([<span class="hljs-string">"Apples"</span>, <span class="hljs-string">"Aardvarks"</span>], [<span class="hljs-string">"Bananas"</span>, <span class="hljs-string">"BEARS"</span>]))</code></pre>
+
+                    <aside class="notes">its sugar, but more performant! (pg. 127 in EP)</aside>
+                </section>
+
+                <section hidden="" aria-hidden="true" class="future" style="display: none;">
+                    <h3>Recursive yield from</h3>
+
+                    <p class="smaller">A <code>yield from</code> can also yield the results of a generator function.</p>
+
+                    <p class="smaller">Instead of...</p>
+                    <pre style="font-size:0.6em" class="code-badge-pre"><div class="code-badge">
+        <div class="code-badge-language">python</div>
+        <div title="Copy to clipboard">
+            <i class="fa fa-copy code-badge-copy-icon">📄</i>
+        </div>
+     </div><code data-trim="" data-noescape="" class="python hljs"><span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">factorial</span>(<span class="hljs-params">n, accum</span>):</span>
+    <span class="hljs-keyword">if</span> n == <span class="hljs-number">0</span>:
+        <span class="hljs-keyword">yield</span> accum
+    <span class="hljs-keyword">else</span>:
+        <span class="hljs-keyword">for</span> result <span class="hljs-keyword">in</span> factorial(n - <span class="hljs-number">1</span>, n * accum):
+            <span class="hljs-keyword">yield</span> result
+
+<span class="hljs-keyword">for</span> num <span class="hljs-keyword">in</span> factorial(<span class="hljs-number">3</span>, <span class="hljs-number">1</span>):
+    print(num)</code></pre>
+
+                    <p class="smaller">We can write...</p>
+
+                    <pre style="font-size:0.6em" class="code-badge-pre"><div class="code-badge">
+        <div class="code-badge-language">python</div>
+        <div title="Copy to clipboard">
+            <i class="fa fa-copy code-badge-copy-icon">📄</i>
+        </div>
+     </div><code data-trim="" data-noescape="" class="python hljs"><span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">factorial</span>(<span class="hljs-params">n, accum</span>):</span>
+    <span class="hljs-keyword">if</span> n == <span class="hljs-number">0</span>:
+        <span class="hljs-keyword">yield</span> accum
+    <span class="hljs-keyword">else</span>:
+        <span class="hljs-keyword">yield</span> <span class="hljs-keyword">from</span> factorial(n - <span class="hljs-number">1</span>, n * accum)
+
+<span class="hljs-keyword">for</span> num <span class="hljs-keyword">in</span> factorial(<span class="hljs-number">3</span>, <span class="hljs-number">1</span>):
+    print(num)</code></pre>
+
+
+                </section>
+
+
+                <section style="display: none;" hidden="" aria-hidden="true" class="future">
+                    <h3>Recursive generators for trees</h3>
+
+                    <img src="./Iterators + Generators_files/cruE1N2.png" alt="Tree diagram" class="r-stretch" style="height: 360px; width: 960px;">
+
+                    <p class="smaller">A pre-order traversal of the tree leaves:</p>
+                    <pre class="code-badge-pre"><div class="code-badge">
+        <div class="code-badge-language">python</div>
+        <div title="Copy to clipboard">
+            <i class="fa fa-copy code-badge-copy-icon">📄</i>
+        </div>
+     </div><code data-trim="" data-noescape="" class="python hljs"><span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">leaves</span>(<span class="hljs-params">t</span>):</span>
+    <span class="hljs-keyword">yield</span> label(t)
+    <span class="hljs-keyword">for</span> c <span class="hljs-keyword">in</span> branches(t):
+        <span class="hljs-keyword">yield</span> <span class="hljs-keyword">from</span> leaves(c)
+
+t = tree(<span class="hljs-number">20</span>, [tree(<span class="hljs-number">12</span>,
+               [tree(<span class="hljs-number">9</span>,
+                  [tree(<span class="hljs-number">7</span>), tree(<span class="hljs-number">2</span>)]),
+                tree(<span class="hljs-number">3</span>)]),
+              tree(<span class="hljs-number">8</span>,
+               [tree(<span class="hljs-number">4</span>), tree(<span class="hljs-number">4</span>)])])
+
+leave_gen = leaves(t)
+next(leave_gen)</code></pre>
+
+                </section>
+
+
+			</div>
+		<div class="backgrounds"><div class="slide-background heading-only present" data-loaded="true" style="display: block;"><div class="slide-background-content"></div></div><div class="slide-background heading-only future" data-loaded="true" style="display: block;"><div class="slide-background-content"></div></div><div class="slide-background future" data-loaded="true" style="display: block;"><div class="slide-background-content"></div></div><div class="slide-background future" style="display: none;"><div class="slide-background-content"></div></div><div class="slide-background future" style="display: none;"><div class="slide-background-content"></div></div><div class="slide-background future" style="display: none;"><div class="slide-background-content"></div></div><div class="slide-background future" style="display: none;"><div class="slide-background-content"></div></div><div class="slide-background future" style="display: none;"><div class="slide-background-content"></div></div><div class="slide-background stack future" style="display: none;"><div class="slide-background-content"></div><div class="slide-background present" style="display: none;"><div class="slide-background-content"></div></div><div class="slide-background no-print future" style="display: none;"><div class="slide-background-content"></div></div></div><div class="slide-background future" style="display: none;"><div class="slide-background-content"></div></div><div class="slide-background stack future" style="display: none;"><div class="slide-background-content"></div><div class="slide-background present" style="display: none;"><div class="slide-background-content"></div></div><div class="slide-background no-print future" style="display: none;"><div class="slide-background-content"></div></div></div><div class="slide-background future" style="display: none;"><div class="slide-background-content"></div></div><div class="slide-background future" style="display: none;"><div class="slide-background-content"></div></div><div class="slide-background future" style="display: none;"><div class="slide-background-content"></div></div><div class="slide-background heading-only future" style="display: none;"><div class="slide-background-content"></div></div><div class="slide-background future" style="display: none;"><div class="slide-background-content"></div></div><div class="slide-background future" style="display: none;"><div class="slide-background-content"></div></div><div class="slide-background future" style="display: none;"><div class="slide-background-content"></div></div><div class="slide-background future" style="display: none;"><div class="slide-background-content"></div></div><div class="slide-background future" style="display: none;"><div class="slide-background-content"></div></div><div class="slide-background future" style="display: none;"><div class="slide-background-content"></div></div><div class="slide-background future" style="display: none;"><div class="slide-background-content"></div></div></div><div class="slide-number" style="display: block;"><a href="https://inst.eecs.berkeley.edu/~cs61a/sp21/assets/slides/15-Iterators_+_Generators.html#/">
+					<span class="slide-number-a">1</span>
+					</a></div><aside class="controls" data-controls-layout="bottom-right" data-controls-back-arrows="faded" style="display: block;"><button class="navigate-left" aria-label="previous slide" disabled="disabled"><div class="controls-arrow"></div></button>
+			<button class="navigate-right enabled highlight" aria-label="next slide"><div class="controls-arrow"></div></button>
+			<button class="navigate-up" aria-label="above slide" disabled="disabled"><div class="controls-arrow"></div></button>
+			<button class="navigate-down" aria-label="below slide" disabled="disabled"><div class="controls-arrow"></div></button></aside><div class="progress" style="display: block;"><span style="transform: scaleX(0);"></span></div><div class="speaker-notes" data-prevent-swipe="" tabindex="0"></div><div class="pause-overlay"><button class="resume-button">Resume presentation</button></div><div class="aria-status" aria-live="polite" aria-atomic="true" style="position: absolute; height: 1px; width: 1px; overflow: hidden; clip: rect(1px, 1px, 1px, 1px);">Iterators + Generators Tips for navigating the slides: Press O or Escape for overview mode. Visit this link for a nice printable version Press the copy icon on the upper right of code blocks to copy the code </div></div>
+
+		<script src="./Iterators + Generators_files/reveal.js.下载"></script>
+        <script src="./Iterators + Generators_files/highlight.js.下载"></script>
+        <script src="./Iterators + Generators_files/highlightjs-badge.min.js.下载"></script>
+		<script>
+			const srcUrlPrefix = "https://cdn.jsdelivr.net/npm/reveal.js@4.1.0/";
+			Reveal.initialize({
+				hash: true,
+				center: false,
+				slideNumber: true,
+				showNotes: false,
+				margin: 0.1,
+				preloadIframes: true,
+				plugins: [ RevealHighlight ],
+				pdfSeparateFragments: true
+			});
+
+            // add HighlightJS-badge (options are optional)
+            var options = {
+                copyIconContent: "📄",
+                checkIconContent: "✅"
+            };
+            window.highlightJsBadge(options);
+
+            if (window.location.search == "?print-pdf") {
+                var uncounted = document.querySelectorAll("[data-visibility='uncounted']");
+                uncounted.forEach(node => {
+                    node.parentNode.classList.add("no-print")
+                })
+            }
+		</script>
+	
+
+<style>
+@media print {
+   .code-badge { display: none; }
+}
+    .code-badge-pre {
+        position: relative;
+    }
+    .code-badge {
+        display: flex;
+        flex-direction: row;
+        white-space: normal;
+        background: transparent;
+        background: #333;
+        color: white;
+        font-size: 0.875em;
+        opacity: 0.5;
+        transition: opacity linear 0.5s;
+        border-radius: 0 0 0 7px;
+        padding: 5px 8px 5px 8px;
+        position: absolute;
+        right: 0;
+        top: 0;
+    }
+    .code-badge.active {
+        opacity: 0.8;
+    }
+
+    .code-badge:hover {
+        opacity: .95;
+    }
+
+    .code-badge a,
+    .code-badge a:hover {
+        text-decoration: none;
+    }
+
+    .code-badge-language {
+        margin-right: 10px;
+        font-weight: 600;
+        color: goldenrod;
+    }
+    .code-badge-copy-icon {
+        font-size: 1.2em;
+        cursor: pointer;
+        padding: 0 7px;
+        margin-top:2;
+    }
+    .fa.text-success:{ color: limegreen !important }
+</style><div id="CodeBadgeTemplate" style="display:none">
+    <div class="code-badge">
+        <div class="code-badge-language">{{language}}</div>
+        <div title="Copy to clipboard">
+            <i class="{{copyIconClass}} code-badge-copy-icon"></i>
+        </div>
+     </div>
+</div></body></html>

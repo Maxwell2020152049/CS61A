@@ -1,8 +1,12 @@
+[TOC]
+
 # CS61A
 
 ## 简介
 
 本仓库存放`CS61A Spring 2021`的`Homework`、`Lab`和`Project`的实现代码。
+
+以及存放课程相关的课件和笔者记录的笔记。
 
 项目目录如下：
 
@@ -11,10 +15,8 @@
 ├── HW					# Homework的实现代码
 ├── Lab					# Lab的实现代码
 ├── Project				# Project的实现代码
-└── README.md	        #说明文档
+└── README.md	        # 说明文档
 ```
-
-完成上述任务的具体过程详见：[Rex's CS61A Blog](https://maxwell2020152049.github.io/categories/cs61a/)
 
 ## 关于`.gitignore`
 

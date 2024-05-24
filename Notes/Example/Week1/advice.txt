@@ -1,0 +1,1732 @@
+"Watch lecture and do not fall behind."
+ Make sure to stay on top of the assigned work, and make use of all of the resources availble.
+"- *Do not think prior practical CS knowledge will help here!* Knowing how to ship a website to production had very little overlap with the skills you'll need to learn in this course
+- If you're still online, keep a healthy sleep schedule to stay sane. I'd even skip some discussion sections if they're at unfortunate times. In the long run, you'll perform better on the exam, even if it means losing a few points. Don't sacrifice your mental health for the wrong things
+- Be very careful of zoom fatigue. If you have a zoom call, it takes about 30 mins to get back to focusing. If you have three zoom calls during the morning, that's basically an entire morning of productive work gone.
+- None of the best practices of remote work apply to school. In remote work, nearly everything is async, and meetings are kept to a minumum. Keep this and other remote work tips in mind- if you're feeling miserable, it's probably not your fault."
+--
+"Fear not death for the hour of your doom is set and none may escape it" -Volsunga Saga c.5
+"Take" the class over the winter break by watching lecture videos and trying hw/lab problems. 
+"(note: this is mostly for non-EECS/CS majors/minors like me)
+Take it! If you find it difficult, P/NP it! I think the point of coming to Berkeley is to _learn_. CS61a is most definitely a course where you will do a lot of learning, and it's so well structured. It can be hard at times, but really the grade isn't important here if you're not getting a degree in EECS or CS. It's probably the best course I've taken at Cal."
+"1. learn basic python syntax (just the math stuff tbh)
+2. try to do all of the assignments up to midterm1 but don't worry too much because being in the actual class with staff support is very different from trying everything on your own
+3. take 5-7 practice tests (start studying 1-2 weeks in advance) before every exam and keep a correction log of all the mistakes you make so you don't make them again
+4. get every possible extra credit point
+5. start and finish projects as early as possible
+6. take advantage of the many many resources that the cs61a site offers"
+"1. Practice ALT-tabbing. It will come into handy a lot during exams.
+2. Do all the extra questions for labs and thoroughly go over discussion questions.
+3. Don't take notes during lecture. Instead pull up a python/scheme/SQL interpreter and try out what DeNero lectures about as you listen. "
+A very important piece of advice I would give to future CS61A students is to not focus on the letter grade. I really cannot stress this enough. Being an efficient programmer is more than just a letter grade and it something that unfortunately I struggled with a lot during my time in CS61A. So to future CS61A students, I just want to say that please do not focus on your letter grade, CS61A is hard enough as it is and that is one reason to feel proud as this course can be overwhelming so the fact that you are taking it speaks volume so please...don't let your letter grade define you. 
+Ace the homework, labs, assignments, projects, and do all of the extra credit. Only leave points to miss on the exams. 
+Although this course is pretty challenging, at the end of the day it's about you. If you want to try out CS then do it! It's about the skills you want to learn and not just about scores/GPA. I highly encourage stepping out of your comfort zone to explore something new :)
+Always do the homework and labs as if they were a test.
+Always do the projects with a partner. It generally takes longer to finish than an individual project. However, the experience working with another person is very, very valuable for future works.
+always read the book before lectures and have a study schedule. Also, form a study group.
+Always stay on top of the lectures. Go to discussions and labs because they are very important in order to learn and practice the content.
+An advice I would give to students considering on taking 61A is to repeatedly practice problems in order to prepare themselves for potential repeating problems. 
+Any programming knowledge would be beneficial, but not necessary. I took a beginner online course for python, it familiarized me with the syntax of python but did not teach any of the thought process of problem solving CS61A teaches. So all the best, and just try your best you'll be fine
+Apply yourself and you'll do great !!!
+As long as you set aside a sufficient amount of time, this course can be extremely fun. 
+Ask a lot of questions!
+Ask a lot of questions.
+Ask for advice from students who took this course before. Be prepared. There is no second chance at all in this course.
+Ask for help
+ask for help if you need it
+Ask for help whenever needed.
+Ask questions
+ask questions
+At the start of the course and when learning new concepts, try to follow through your code in a piece of paper.
+Attempt problem sets as early as possible. Piazza is a great way to share thoughts and perspectives on how to approach problems.
+Attempt the optional hw and lab questions.
+Attend all discussions and lab orientations, watch the lectures, and practice past exams before midterms. 
+Attend all lab and discussion orientations because they are helpful with reviewing lecture concepts and giving hints on how to tackle certain questions and you have the ability to ask the tutor questions. Lab and homework parties are also helpful when you have already tackled the problem or have an idea and just need to talk through your thought process with someone else. Join CSM if you need extra help because tutorials are super fast. Be sure to use Piazza.
+Attend all of the discussions
+Attend all the lectures, don't flake out even though doing school online is hard.
+attend all tutorials/live sessions
+Attend discussion sessions, watch all the lectures, and don't miss out on the tutorials.
+attend exam prep sections lol
+Attend lab sections
+Attend lecture and section, don't keep things till the last minute, get started on doing past exam papers as soon as possible, it's okay to ask for help
+Attend office hours and review sessions as much as you can! Even if you think you know a topic, these resources can solidify your understanding!
+Attend orientations!
+Attend the tutorial sessions (even if you've met the required number)!
+Attend tutoring and discussions, OH for help, do practice exams religiously
+Attending discussion sections and lab orientations will give you hints for how to start assignments.
+Attending discussion sessions and tutor sessions is significantly important. CSM resources are also very helpful.
+Attending exam prep really prepares you to tackle the exam level problems.
+attending tutorials! it is super helpful
+Audit the course ahead of time if you can, and do not fall behind
+base case is most often is_leaf()
+Be careful with the first midterm, it's very early in the semester and that can be dire for your grade.
+Be diligent in covering the course material on your own and try and stay ahead of the class at all times.
+Be on top and even ahead of the material so that you can start taking practice tests earlier. Additionally, look at and try all of the other resources when a new topic is being introduced.  
+be organized and watch lectures as soon as they come out 
+Be prepared for many time consuming assignments
+Be prepared for what's coming...
+be prepared to dedicate a lot of time to this course and make sure to practice previous tests 
+Be prepared to grind in this class, and don't be afraid to ask for help when you need it. 
+Be prepared to spend a lot of time working on projects. Be sure to keep an open mind when learning about new concepts.
+Be prepared to spend bunch of time, especially if you are over 23 years old. 
+Be prepared to work
+Be ready to commit to this class if you are taking it. It will be time consuming, demanding, and at some points frustrating, but you will learn so much and it is really interesting.
+Be ready to spend a decent amount of time
+Be ready to work!
+Be relentless with fixing your mistakes
+Be resilient throughout the course and always ask for help if you need it!
+Be sure to go to office hours and Q&As and ask questions! You can do the bare minimum and still pass but you won't build a strong foundation. Also, don't fall behind on lectures.
+Be sure to take as many past exams as you can for practice!
+Be sure to understand labs because it can be useful in the homeworks. 
+Be sure to watch the lectures and do practice tests
+Be willing to work hard and whenever you encounter a wall, be willing to talk to your peers
+before doing 61a , you have to learn some basic programming so that you have time to prepare your materials.
+Before starting classes use the class site to study as much as you can of the course. Once the semester has started you will be able to focus on the most challenging part of the material, and you will have time to do lots of practice for the tests (which are of great importance to succeed in CS61A). The course is challenging, but if you put on the work the learning experience will prove to be worth it.
+Being active on Piazza is super helpful--whether that's answering other people's questions (which helps build your own understanding) or even just looking at the questions there is really helpful.
+Being consistent is key to success
+Beware of cs boys in your tutorial section who cut you off and tell you you're wrong when you have more CS experience and a better understanding of the concepts at the center of the discussion
+Breath! It will click!
+Breathe and watch the lectures when they come out! You're not here for the A, you're here for your education, and this class contributes immensely to that education. 
+Buckle up and enjoy the ride
+buckle up, watch lectures on time, and do at 5 practice exams before every big test! 
+Carefully take previous exams and learn from the mistakes made on them
+Catch up on or at least learn about python if you have never programmed before. :)
+Class resources are available to support your learning: you can attend lab/discussion sessions, ask questions in Q&As and try working on optional questions on labs/homeworks. Join weekly CSM section and attend exam reviews are super helpful.
+Clear your schedule.
+code.cs61a.org is your best friend
+Collaborate with other students.
+Come in being ready to learn and don't be upset with yourself if you don't do well on a midterm, try harder for the next one.
+Comp sci is hard, but don't worry this course is designed so you can't fail.
+Complete all the assigments when they are assigned, and actually learn from them rather than just rush to submit. 
+Consider getting used to code.cs61a and python tutor before doing exams, really makes the time difference
+Consider taking the recommended courses if you have no experience
+Consider this course almost a 6-unit course with all the tutoring, discussion sections and plan your schedule accordingly!
+Consider watching some of Professor Denero's lecture videos prior to the start of the semester. Watching the first two lectures can be very helpful in understanding Python before the course starts.
+Constantly practice
+Contents get substantially harder after 1st midterm, do not procrastinate on the lecture videos.
+Creating an efficient online exam workflow is very helpful. I personally kept code.cs61a.org on the left hand side and my exam on the right hand side of my screen for Midterm 2. I also saved each question in a separate file on code.cs61a.org. This was much less stressful than Midterm 1, when I didn't know how to save files on code.cs61a.org and pasted the code several times while switching between windows. In addition, the time lapse was a much easier proctoring method than the computer based screen and camera recording, which crashed my computer on Midterm 1. If you have a another laptop in the house (like a family member's), keep it ready and logged in to the exam portal so you can resume working quickly in case of computer failure.
+"CS 61A is definitely the most well organized course I have ever taken, and there are  a TON of resources made available to students. My biggest piece of advice would be to make use of these resources because they can be extremely helpful.
+
+Another tip I would give is that the midterm questions are more difficult than the labs/homework/projects, so the best way to prepare for midterms are to do past midterm questions."
+Data 8
+Dedicate a lot of time to this class, not necessarily because you must to get a good grade, but rather because you can learn so much if you really focus on the course content! 
+Dedicate the time. Watch lecture. Do readings. Mostly dedicate time.
+Definitely consider taking CS10 if you want your first exposure to programming and have an idea of how many hours you might spend on the class trying to problem solve, watch lectures, understand concepts, attend lab, discussion, tutorial etc. 
+Definitely don't get behind on your work and lectures or it will be hard to catch back up.
+Despite being an intro class, do not underestimate the difficulty! You'll learn a lot and come out stronger as a result. Make sure to study up on those higher order functions!
+Do a lot of past exams
+Do a lot of practice exams !! Practice makes perfect :)) 
+Do a ton of practice tests. 
+Do all of the projects, homework, and labs, and study 5 past midterms before each midterm.
+Do all of the work. It is extremely helpful.
+Do all the assignments in time and study ahead of time. 
+Do all the homework completely. 
+Do all the optional homework and lab questions, make sure to attempt and struggle with the exam prep before attending/watching the video.
+Do all the past papers... ALL OF THEM
+Do all the work by yourself and don't worry if you struggle because that will actually make you better.
+Do all the work, do the practice exams to study
+Do all work assigned and start studying early for the tests. Practice practice practice.
+Do all your assignments, give yourself a couple of days before the midterm to study, and get good sleep the night before the midterm and don't work too hard the day of.
+Do alot of practice problems.
+Do as many coding problems as possible, so you can get used to thinking about how to solve them. Looking over past midterms is also super helpful. And get familiar with the resources you're allowed to have if you're taking the course online.
+Do as many practice problems and exams as possible.
+Do as many practice tests as possible when preparing for midterms and to stay ahead of the course calendar( Projects, hws, labs)
+Do at least a couple of previous-year exams a few days before the tests.
+Do every single assignment, including lab, HW, project, extra problems, and discussion, and make sure you can do it on your own even if you worked with someone else for some parts. If you get stuck or need help, go to OH (they are open throughout the week so start early! plenty of time to get help and they are EXTREMELY helpful and don't give away answers, making sure you actually learn). If you are struggling, that means you are LEARNING. EMBRACE THE STRUGGLE! Also, take ~3-6 practice exams before each test minimum (and score yourself after each time) and make sure you understand which questions you got wrong. You will never get every question right, and that's fine and that's how it's designed. Don't beat yourself up if you suck at first or if you are completely clueless, WE ALL FEEL THE SAME WAY! Even if you fail miserably on a test, it's still extremely doable to pass! Just need about ~200 points out of 300 to pass. And remember: declaring CS isn't the most important thing in the world, even if it feels like that sometimes. Even if you have to major in something else (like data science) you can still get a SWE job after college! You can still take the same classes as other CS-declared students, you still go to a top tech school, and you still are an extremely intelligent, young and amazing student! YOU GOT THIS!
+Do Everything 
+Do exam problems ahead of time
+Do it, it's a great course, you will learn a lot
+Do it!
+Do it!
+Do it! 
+Do it! Go to section! Do the extra homework and lab problems! 
+Do it! Pay attention, work hard, and don't underestimate what you can learn when you focus on developing your intuition vs automatically understanding something. 
+DO IT! YOU WILL NOT REGRET IT! It's honestly a really fun course and 
+DO IT!!!
+Do it!!!! Even if you're not going into CS, the skills are still valuable.
+Do it!!!!!
+Do lots of practice exams!! Practice is really the best thing for exams. But also, try to think about the bigger picture of what you're learning; 61A is really just the beginning. Also, don't be afraid to ask for help on Piazza or during OH! Just ask the question and don't waste time struggling by yourself.
+Do lots of practice midterms before your real midterms
+Do lots of practice problems and don't feel stupid even when they don't make sense after the 50th time.
+Do lots of practice problems and the concepts will begin to stick eventually!
+Do lots of practice problems!
+Do many practice exams to prepare for the tests
+DO NOT COMARE yourself to other students. Many of the students in this course will have various exposure to programming and problem solving. Surround yourself with people at a similar skill level. The only way to truly be successful is going to be to have patience, to practice, and to persevere when you struggle. And don't burn out! Seriously, take some time for yourself. You'll be more motivated when you come back! It actually works. You're not alone in this journey and all of the instructors have fantastic advice so take advantage of all of the resources that 61a provides. 
+Do not compare yourself to other students, take the course at your own pace. Do not be afraid to ask for help. Make sure you are learning :)
+Do not compare yourself to others. Also do past midterm problems early.
+Do not devote your whole life to it. Yes it is hard and you should put in the time to study for the class, but don’t let it be the center of your world. Make sure you are still keeping up in all of your other classes as well because they matter just as much as this one. 
+Do not fall behind and start doing practice finals day one
+Do not fall behind in this class. Make sure you are on top of labs, homework, and especially projects since they can take a lot of time for someone who has little experience in programming. I would even say to look at the CS61A resources and maybe even audit the class before taking it, which is what I did. That was probably the key to my success even though I had little experience going in.
+Do not fall behind on any of the lectures, lab or homework; always do the extra practice if you have time and regardless it they are optional. 
+Do not fall behind on lectures and projects. Be sure to start your work early so that you can ask for help from course staff and peers before it is too late!
+Do not fall behind on lectures. Do practice quizzes and exams as they come out. Do not be afraid of making mistakes and/or not grasping a concept straight away. When working on projects or homework, take breaks to go for a walk (or something chill) to cool your brain down. For me, my best ideas came when I was not sitting at my computer staring at a console screen.
+Do not fall behind on lectures/course content. It is easy to accumulate a backlog in the class (speaking from experience). Additionally, try solving a few papers as you go through the course material, instead of leaving them for a week before your exam. That way, you can gauge your progress through the course.
+Do not fall behind on the material! If you watch the lectures on time, attend lab and discussion sections regularly, do the labs and homework, you WILL BE FINE!
+Do not fall behind on work
+DO NOT FALL BEHIND,  I feel that thinking an assignment would only take you 20 minutes because it has only 3 questions is what destroyed me at the beginning of the semester. Also to make coding a hobby rather than working on it solely to work on it. I found that this helped me understand topics I did not fully understand while learning it.
+Do not get complacent! Even if you have experience, pretend like this is your first course. 
+Do not procrastinate ever and try not to stress about the grade too much because that definitely takes away from enjoying the learning process. 
+do not skip tutoring 
+Do not slack on the readings; if you don't have any programming skills before taking the class, you shouldn't let that hold you back from taking the course; try joining CS scholars if you're a beginner 
+"Do not take CS 61A if you have no programming experience. I had programming experience and still found this course challenging. It's a very rewarding and well-structured course, but take another computer science course before CS 61A 
+unless you have exceptional problem-solving abilities and can dedicate many extra hours to this course."
+Do not underestimate this class
+Do not wait to finish work, always try to split work up into sections and follow a schedule, and don't be afraid to be a little creative.
+do office hours!
+Do past exams
+Do past exams to study. Ask on piazza if you have any questions.
+Do past midterms
+Do personal projects in Python, especially using the knowledge learned in class! A lot of the learning in CS happens when you're debugging and trying out new algorithms!
+Do practice exam problems.
+Do practice exams
+Do practice exams 
+Do practice exams!
+Do practice exams. Homework, labs, and projects are really easy but exams are not.
+do practice problems
+Do practice problems + exam-level problems AT THE SAME TIME as learning the concepts in lecture. This will save you so much time down the lane as well as just makes you a better programmer! Now if only I could follow my own advice...
+Do practice problems regularly!
+Do practice problems! And don't give up! 
+Do practice problems.
+Do practice tests
+Do practices!
+Do previous exams.
+Do some practice on your own for at least an hour a day. If you commit to learning overtime, studying will not be as stressful.
+Do stuff early!
+Do the Exam Prep problems! They're the best practice you'll get.
+Do the Exam Preps and Practice Tests before taking any exam!
+Do the extra credit problems, or really understand what you're programming. 
+Do the extra practice problems
+Do the extra problems in the homework, and don't brute force solutions (for any assignment) using the Okpy grader. Give the problem your best shot, learn how to work through your code, and then check the answer. Working through your code makes you a more efficient and effective programmer – you understand certain patterns in the mistakes you make and you understand better what the code is doing so it's great!
+Do the homework and you'll be fine.
+Do the homeworks and labs as early as you possibly can. Never letting yourself fall behind is crucial, especially when it's all online.
+Do the HW and labs!! Practicing is how you get better, not just studying the lecture.
+do the labs and homework, don't copy from others. The labs and homework truly prepare you well for the exam.
+Do the optional part of lab & hw
+Do the optional questions
+Do the pass exams and exam preps! And do not stress yourselves out in the exam, it can hinder your performances!
+Do the past exams
+do the past midterms
+Do the previous semester's material over break. It is very helpful prep. 
+Do the work! It might be frustrating and you might struggle a lot, but do the work! 
+Do well in the first (easy) midterm and get all points in homework, lab and projects.
+do your best
+Do your best to go to what you can (office hours, tutorial, discussion), even if it isn't required! Following along really helped me regularly review concepts and I didn't have to study very hard because of all the practice I was already getting.
+Do your best!
+Do your projects on the weekend that you get them if you can. If you do that, you pretty much get a free week for work from other classes.
+DO YOUR STUFF (HOMEWORK AND PROJECTS) IN ADVANCE BECAUSE YOU NEED TIME TO THINK THROUGH EACH PROBLEM
+doing a lot of past exam questions helped me the most in preparing for exams
+Doing labs, homework, past midterms + finals, staying on top of materials
+Don't afraid to ask questions!
+Don't be afraid to ask questions if you get stuck! Everyone gets stuck on questions eventually, so ask for hints or advice on Piazza.
+Don't be afraid to ask questions!
+Don't be afraid to fail absolutely horribly. It is the best spark for personal growth. 
+Don't be afraid to go to office hours or ask for help on Piazza! No questions are dumb if they help you learn, and it feels like everyone knows a lot more than you do but there are always going to be people smarter than you, and you can't let that discourage your own pursuit of success. The CS61A staff are all super amazing and an extraordinary resources for these extraordinary times.
+Don't be afraid to put in the time – this information is essential and is an amazing foundation to becoming a great programmer
+Don't be afraid to reach out for help when you need it and use friends/study groups to increase accountability
+Don't be arrogant and enroll in CSM. 
+Don't be intimated by a lack of experience. They course staff, and work make it easy to gain more and more confidence in the subject. 
+Don't be intimidated, just keep pushing through one assignment at a time, and you will find yourself thinking about problems in a different perspective. Even someone with no prior experience can keep up in this way, taking things one step at a time and starting things early and going to office hours. It is worth it. 
+Don't be lazy and keep up with labs and discussions and it won't be bad!:)
+Don't be so scared of jumping into CS61a without any prior programming experience. The class is a lot of fun and you have enough time to learn  a lot of the material pretty well. And if you do ever feel stuck, the course staff and office hours will always be there tp help. Despite how competitive the  atmosphere at Berkeley may seem, you receive the help you need in this class and will do well. If you make an effort to do well in this class, there's no way you can fail it. Just make sure to study for exams and do enough questions similar to those you'd see on exams. 
+Don't be too stressed when you start learning tree recursion. 
+Don't compare.
+Don't delay projects until the last minute
+Don't die
+Don't doubt yourself, it's not something you memorize. You use your skills and then one day you'll realize you don't need to reference your notes... you just know it.
+Don't engage with the large body of students who make this out to be something to suffer through. Just do your thing, work through your problems and clear your mind of any preconceptions you have of this course. If you can do logic you can do CS, it's not magic. Also being frustrated beyond belief is to be expected, find a reward to keep you going motivated through those problems, most times you just need to read everything carefully again eventhough that's the last thing you feel like doing.
+Don't ever be overwhelmed if you don't understand something or are falling behind - there are SOO many resources to help! 
+Don't fall behind
+Don't fall behind
+Don't fall behind and focus on recursion. 
+Don't fall behind and make sure you really understand everything before exams
+Don't fall behind and practice a lot.
+Don't fall behind and study a lot
+Don't fall behind in lecture :)
+Don't fall behind in lectures and use the past exams to study!
+Don't fall behind in lectures, go to discussion and lab orientation
+Don't fall behind on lectures
+Don't fall behind on lectures otherwise nothing will make sense to you. And ask for help if you need it; staff, students, and past students all want to help you!
+Don't fall behind on lectures, HW, labs, and other classwork! It can be hard on Zoom, but pacing yourself through the class will help you properly learn the skills and knowledge.
+Don't fall behind on lectures!
+Don't fall behind on the assignments and try to do them as soon as they are released. It's not great to stress over a question a few hours before the deadline.
+Don't fall behind on the lectures
+Don't fall behind on watching lectures, especially after midterm 1.
+don't fall behind, do good on midterm 1
+Don't fall behind: make sure to keep up with watching lecture videos.
+Don't fall behind!
+Don't feel bad if its too difficult as your first programming course because this is undoubtedly a challenging course for your first time programming.
+Don't feel rushed to start writing code while solving problems
+Don't focus on anyone else's performance but your own
+Don't get behind, stay caught up!
+Don't get too behind the workload.
+Don't get too scared before you even take the class yourself! You'll get more support than you think you would, and be able to succeed!
+Don't get your head wrapped around one question for too long. Set a time limit and once it passed, move on to another question whether you could solve it or not. 
+Don't give up; make friends and collaborate with one another. You can make it through with hard work. Take it one step at a time: that's all there is to it. 
+Don't hesitate to go to OH if you have any questions. No question is a dumb question.
+Don't hesitate. Passion, inspiration, art, love and labor are waiting within 61A.
+Don't ignore problems just because they're optional. You should at least give it a shot and then try to understand the answer if you don't get the answer yourself. Always try to understand answers fully instead of just brushing mistakes off and convincing yourself that you "get it" or "would've got the answer."
+Don't just aim for A/A+ but really enjoy the course!
+Don't leave anything to the last minute.
+Don't let people scare you into thinking its an impossible class. Yes it is difficult and yes there's gonna be smarter kids than you, but the Class is for you to LEARN.
+Don't let your previous experience fool you into thinking this class will be easy or that you can slide by.
+Don't let yourself fall behind, do optional homework and lab questions, and do the exam prep.
+Don't look at the study guides. They were way too hard and were not reflective of the actual midterm in terms of the midterms. They just destroyed my confidence more than anything.
+don't lose motivation in the second half. Try to work with people and do practice problems from tests after you learn the concepts over time. Second midterm is super packed with content so that is going to be the main challenge of the course.
+Don't mess around and study up!
+don't miss any classes
+don't overload yourself with CS work.
+don't panic
+Don't panic and focus on learning — midterms are, for the most part fair (though the difference in difficulty between midterms and homework/labs is questionable) and can be studied for by starting to do past exams a week in advance. I'm sure you feel the pressure of declaring your major, and it does matter for things like getting into the upper divisions you want, but remember: no matter what, if you put the work in, you'll leave a better programmer than you came.
+don't panic, B+ is a good grade
+Don't procrastinate
+don't procrastinate
+"Don't procrastinate
+Stay ahead of lectures
+Do extra credit problems even when you think you don't need them
+Always have a study buddy or group
+Take advantage of office hours, piazza, and other helpful resources the course offers
+Do well on the exams"
+Don't procrastinate on studying
+Don't procrastinate--start working on projects early! Don't be afraid to ask questions, and don't be ashamed to ask for help if you get stuck. Prepare for exams at least two weeks in advance and find opportunities to teach people CS concepts :)
+Don't procrastinate, even though it's easy to do so since classes are online. And watch all of the lecture videos and attend sections because they're very helpful! Also join a cs group chat!
+Don't procrastinate, try to get started on assignments and projects early and stick to a schedule of keeping up with lecture.
+don't procrastinate.
+Don't procrastinate.
+Don't procrastinate. Attend live q&a's if you can, even if you have simple questions. Take advantage of the office hours.
+Don't rely only on the HW,  and labs.
+Don't shirk any work. Do every single bit of work given to you, because you'll need the knowledge from it to succeed.
+Don't skip any tree problem
+Don't skip out on lectures even though its online
+Don't slack
+don't slack off ever
+Don't slack, study hard, find a good tutor + study resources
+Don't stop trying
+Don't stress out about the exams, try to have fun and most importantly learn as much as you can.
+Don't stress too much about grades. Do your best and ask for help when you get stuck.
+Don't take a heavy workload!
+Don't take it alone, find people you can study with.
+Don't take it as your first CS course!
+Don't take too many classes at once.
+Don't take too many technical courses while takign CS 61A. I am taking three upper division econ course while takign CS61A, and it is really stressful. 
+Don't underestimate the level of difficulty of the exams!! (Especially the first one... doing well on that first exam will give you a much needed boost for the rest of the class.) WATCH LECTURES when they are released!! Don't wait until the weekend to catch up on them. 
+Don't underestimate the midterms! Regardless of their difficulty, they make or break your grade.
+Don't wait to do assignments. Start early! Study for your exams early!
+Don't worry about how fast everyone else seems to pick up the material or be able to solve problems, just work at your own pace and focus on improving your own skills! Don't compare yourself to anyone else. You are fine as you are. Good luck!
+Don't worry about others who know more CS than you going in. You're not alone in this and just have confidence in yourself.
+Don't worry if you dont understand the material at first. This material is dense! Its okay if you need to spend a lot of time to understand it. Spend that time it will be very good for you in the long run.
+Don't worry too much about the work, enjoy the course, projects, and community!
+don’t fall behind 
+Don’t fall behind attend preps 
+Don’t stress about how you will perform, just enjoy the course and learn the material to the best of your ability!
+Dont cram! Study everyday! Go to office hours, they're super helpful! Grind those practice exams!!
+Dont procrastinate
+Dont stress
+Double check exam answers.
+During winter break, let's start studying and watching the lectures in advance. 
+During winter break, look up guides like Python Like You Mean It and Take an online course before you get started with 61A, or perhaps watch Denero's videos early! Get started ASAP because the first midterm comes at you quick, as do the second and third ones. When the professors do something that you didn't even think of, read through that solution constantly and add it to your arsenal for future exams.
+Enjoy and get ready to work
+Enjoy it haha
+Enjoy it while it lasts! On a serious note, the HW and Labs are excellent check points to keep up with the course content.
+ENJOY the material! Stay organized from the beginning and have fun doing projects on the side. Try to remember why you are taking a computer science course in the first place. The more effort you put in, the more you get!
+enjoy the problems
+Enjoy this course, and pay close attention as it molds your mind! This is a fantastic course that teaches you not only how to code, but how to critically think like a coder.
+Even choose PNP, you kind of have to finish all the labs, homework and projects, because you may not devote a lot of time and have a bad grades in exams. The PNP line is actually C-, not too low.
+Even if online semester is hard given the circumstances, please try your best to not fall back in the course. One fall back early on in the course, and it might be difficult to get back up especially in this remote learning environment. 
+Even if you have never done coding before, don't hesitate to take this class because you have a lot of support to guide you to become a programmer.
+Even though it will be an online format, watching all the lectures and complete all assignments are crucial to success.
+Exam prep is helpful, but understanding the concepts clearly in lab/discussion will help keep exam prep helpful.
+Exams are a lot harder than other materials offered in the course, so make sure to practice A LOT. 
+Exams are the hardest part, every small mistake in exams heavily impacts your grade so practice taking those
+expose yourself to practice exams early, never miss a lab hw or project, and have fun!
+Few makes it through 61A alone. And those that do are liable to further complications down the road. Find a friend, maybe two, and get through it together.
+Figuring out everything on your own helps significantly more than looking at finished code.
+Find a good partner and discuss problems a lot
+Find a good person to study with.
+Find a good study group, try not to work alone, ask questions whenever you have them.
+Find a good study group. When approaching a problem, study the doctests religiously.
+Find a great programming buddy for all the projects early on
+Find a partner for projects early
+Find a study group
+Find a study group immediately. It doesn't even really matter what their skill level is like; whether they're better, equal, or worse programmers than you are, anything helps.
+Find a study group! Don't compare yourself to other people (It's hard not to, but it'll keep you sane)
+Find a tutor.
+find friends who will help you learn
+Find friends who you can talk about work and studying with!
+Find others who are also taking the class to discuss content and ask questions.
+find someone to work with for when youre stuck
+Finding a small group of peers with a similar work ethic who, where you can feel vulnerable around is really beneficial to building a support system in this class. The curriculum and lectures are phenomenal, but it is definitely a bit difficult to obtain a 1-on-1 experience from the lecture/discussion sections. This is where your study group comes in. Having 2-3 friends to meetup with each day and check in with each other makes a huge impact in resonating with the course content. There will be days when you're feeling discouraged and struggling in the course, and vice versa. By having a strong support system, you'll be able to teach other throughout the semester and keep each other motivated. Having that space to feel comfortable asking any question is really priceless. And for the topics that you do feel confident on, teaching those concepts to your friends is by far the best way to really solidify your own understanding.
+Finish assignments as soon as possible. Office hours are your best friend.
+Finish you hw, and do the past practice exams.
+Finsish all projects and hw early
+Firstly, you're a bit too late to take a class in Spring 2020. Assuming you mean Spring 2021, I would say that practice tests are the best way to study for the actual tests, and make sure you take several of them to study.
+Focus on exam practice since its the main part of your grade.
+Focus on having fun and learning the material. If you spend the entire time concerned with grades you will quickly burn out. 
+Focus on learning how to problem solve rather than memorizing Python syntax.
+Focus on learning the materials early to leave enough time for application practice.
+Focus on the methodologies they use to teach and try to relate that to the type of content you learn. That way, you can understand it in a way that allows you to rephrase and apply it in any future scenario.
+Follow good conventions and you need to know you are doing a lot in CS 61A as an introductory class. 
+follow what the course staff gives you and you will be fine
+For this course, the content isn’t difficult; it’s more about problem solving skills. For exams, do lots of practice exams to build intuition for detecting patterns in how the question might be presented and how to solve them. For practice exams, start with no time limit and allow yourself to peek at the solution guide if you get stuck. Over time, start giving yourself a time limit and stop looking at the solution. Otherwise, trust your instructors and the recursive leap of faith. Good luck!
+Form study groups and work with a partner even if you dont need one for the social aspect. 
+Form study groups, be active on Piazza, keep up with the lectures (finish them on the day and don't procrastinate them), go to office hours if you're really stuck on a topic
+Fully prepared before exam and chilling when take the exam.
+Gain some basic programming experience before taking this class (ex. high school cs course, Data 8, independently using online resources) because the course moves very fast through the basics.
+Get a study group that you can bounce around questions with! The class is really big and it's hard to feel heard.
+Get ahead of the class, and do it quickly. Every second that you fall behind will take three days to make up. Do all the projects alone. 
+Get ahead. Even when you think you are ahead, you aren't :) 
+Get as much practice as you can and leave plenty of time (at least a couple of weeks) to get started on studying before exams. Become familiar with syntax before attempting problems, so that way you can focus on problem-solving strategies instead of being stuck on how to implement something in code.
+Get ready to grind exam problems.
+Get Ready.
+Get started on assignments early.
+Get started on work as soon as it's assigned. Take your time and analyze the code thoroughly.
+Get started working on the projects early!
+Get the conceptual understanding of the code down first 
+give effort; that's all you need
+Give yourself reasonable time to start working on labs, hw, projects, and watch lectures
+Go for it; take time to write code well/don't rush it
+Go over as many past exams as possible when studying for midterms/finals.
+Go through first 2-4 weeks of class during winter break
+Go to all the tutorials
+Go to CSM sections
+Go to discussion groups and if you get stuck on the homework it is probably because you are making it more difficult than it is. Just watch the videos and check Piazza.
+Go to discussion, watch lecture, and utilize the resources the course has available. Practice a lot too, so use the worksheets and extra problems on assignments. 
+"go to exam prep! 
+Find a good project partner that you genuinely like :) "
+GO TO OFFICE HOURS
+Go to office hours if your stuck 
+Go to office hours. Please. Having someone else talk you through the problems is incredibly helpful. Don't feel dumb for doing it, feel proud that you are taking the necessary steps to learn. The smartest people take all the help they can get.
+Go to queue, office hours, go to exam prep, keep up with the lectures
+Go to tutorial even when you don’t have to! Everyone is there to help! And go to discussion orientation :)
+Go to your tutorials and don't get behind in lectures.
+Going over past homework problems and labs helps a lot, also develop good exam-taking strategies so you don't get overwhelmed by initial difficulty or time limits
+Good Luck
+good luck
+Good luck
+Good luck
+good luck 
+Good luck ;;
+Good luck, do more past exams before tests.
+Good luck, have fun
+Good luck, try to stay up to date with lecture/reading (very helpful) and if you aren't getting anything, office hours are great!
+good luck!
+Good luck.
+GRIND
+GRIND EXAMS
+grind exams, I guess
+Grind out past exams when studying and make sure you completely understand the solutions; make sure to watch lectures
+Grind out practice exams and watch the videos going over the practice exams. 
+Grind practice exams if you want a good score
+Hands-on practice, make sure you understand why your code works the way it does
+Hang in there! You're going to love CS major after this class!
+Have a schedule to keep track of all your assignments and don’t keep anything till the last minute. 
+Have continual practice when coding. coming back from a one week break will make you feel like it's the beginning of the year.
+Have good time management and do not procrastinate
+Have good time management, this course has very interesting and applicable material, make sure to do practice exams to prepare for the midterms and final. 
+Have some knowledge on Python before. 
+Having fear in not understanding will hold you back more than not understanding and asking questions.
+Having previous experience is immensely helpful
+Helps you to understand the mindset required for computer science classes at Berkeley, but be prepared for challenging topics which might not really connect to anything you’d use in the real world for projects depending on what you want to go into (such as web design/development, or involvement in higher-level application design and development).
+honestly just study and really try to get the logic behind the code
+I don't know.
+I hope you're ready to fail because CS61A is as hard as they said it to be. Try to do a lot of practice problems before exam and always try to do all of your assignments.
+I learned C++ before the class, and it proved very helpful for concepts even if the syntax was different. Make sure to have the fundamentals of C++ or Python down before CS61A to give yourself a chance at an A.
+"I really felt like looking over much of the course material beforehand helped me, but I also understand that not everyone has a summer during lockdown to burn doing cs questions for fun (and that most people wouldn't find watch cs lectures and doings cs HW fun).
+
+More achievable though: do all of the extra questions on assignments and do the exam prep questions"
+I recommend taking the class when one's ready. I understood certain things, but it was challenging especially to how the class is setup and the whole COVID-19 pandemic.
+I recommend the class to everyone. 
+I recommend to not procrastinate and make sure every lecture is being understood completely. 
+I think going through each question's logic(without thinking about the syntax) before and after doing the actual coding part really helped me to understand. If you're stuck, pythontutor is very helpful. 
+I think I have a lot of regrets with how I could have done in the course if I had built better study habits so my advice would be to start assignments (labs/hw/projects) early so you have enough time to struggle through problems and learn instead of perhaps stressing about finishing before the deadline and brute coding it. Also study early for midterms! It can be as simple as doing a few problems on a past exams rather than like completing a whole practice exam which can be very overwhelming and might make it even more scary(?) to start early. I feel like I learned a lot regardless of my grade or regrets over studying, so my final advice is to focus on and enjoy what you learn in the class and not stress too much about the grade (especially when there is already so much going on in the world).  :) 
+I think it becomes fun when you look at everything like puzzles that you have to solve instead of just assignments. I would tell a new student to figure out if they like staring at code until it clicks or would rather have more guided help because there are so many ways to do things in this class. Also, biggest piece of advice is find people you enjoy spending time with to work on stuff together--that's when things become really fun.
+I think the most important thing with CS 61A is time management. The class is very well-structured and the professors do a great job of making it so that you can follow along easily, but it is important to follow these guidelines and keep up with the content at the appropriate time. Personally, the course load I took along with CS 61A worsened my time management, and I did not perform in this class as well as I would have if I chose to keep a more strict schedule.
+I would advise the student to really try to absorb the material rather than taking it just for the grade/requirement.
+I would advise them to attend all lectures on time, take notes to make sure they understand all concepts and to do regular practice exam-style problems (on the course website). 
+I would advise them to take advantage of ALL the resources and start assignments (especially projects) on time! Also to hang in there, you get somewhat used to the pace with time and you will be so proud of yourself at the end :)
+I would advise they do at least a couple practice tests before exams, if they want to do more then even better. I'd also advise they try to do every lab and homework assignment, and that they join a CSM session if they are able to.
+I would advise to reconsider taking if they have not prepared fully by taking an online course or CS10
+I would definitely recommend it overall. I found the material pretty interesting and never really felt overwhelmed - though I have an interest and a reasonable background in CS, so I understand that might vary for whoever I'm recommending it to.
+I would definitely take this class just because it teaches you fundamental skills in an enjoyable way with amazing course staff.
+I would recommend staying caught up in lecture.  I also recommend going to exam prep and attempting the problems.
+"I would recommend them a 2-5 hour python tutorial (plenty on youtube) just to get familiarized with how python works. This will allow for the material to be even more digestible from day 1.
+Stay on top of lectures and assignments as it will allow you to be more participant in the piazza post and tutorials."
+I would say that it is important to keep up with the course in terms of watching lectures and doing the homework and labs because the course can pile up on you quite quickly. The homework, labs, and projects are also amazing ways to keep practicing what you learned on a consistent basis. 
+I would say that the student should be diligent in addressing the tasks in their course and make sure to make space for doing the assignments, and to do them as they are assigned; otherwise, they might find themselves with an increasingly insurmountable workload. Also, try and challenge yourself by doing the optional or extra credit problems (and try the Scheme Challenge Project)! 
+I would say to do loads of practice problems.
+I would say to stay on top of all of the material and ask for help. All of the course staff wants to see you succeed.
+I would say to stay on top of things and when you get a question wrong, really understand why your solution doesn't work, as it helps tremendously in increasing your understanding of the concepts.
+I would suggest students to come in with the mindset to learn and focus less on getting perfect scores on the assignments. I recommend preparing ahead before the semester starts, coding/designing the algorithms from scratch, and start early on every project. Get plenty of sleep and have a balanced diet.
+I would suggest to study at least a week in advance. It takes a while to absorb concepts, so time is necessary.
+I would tell any students taking CS 61A in the spring to make sure that they stay on top of the lecture content, make sure you retain all the information well, get assignments done as soon as possible, and most importantly, remember that you will get through everything!! 
+I would tell them that the class is generally difficult if they are a beginner programmer, but they'll get better over time. 
+I would tell them to complete every single points opportunity as points are so rare in this class.
+If computer science is a passion and/or skill, take the class. If you're not sure but might want to try CS, take a class like CS10 or DATA8.
+If I didn't take E7 during the summer, I would struggle a lot in this semester. If you don't have any previous experience with coding, please be ready to work HARD!
+If this is your first programming class, do not take it now. Take at least one programming class before taking this one.
+If you are a transfer, do not underestimate the difficulty of exams. You are prepared but you need to do the work still.
+If you are new to programming, please try to follow the course material carefully at the beginning, if you fall behind it is very hard to catch up. Also, the textbook helps a lot, especially in the beginning of the course.
+If you came from a noncompetitive, sleazy environment like I did -- you're in for more work than you've ever done before in your life.
+If you didn't have any programming experience, the first few weeks will suck. i think after MT1 is when you start getting the hang of it. best advice is to get a solid group of friends who are willing to guide you.
+If you don't have any prior experience, take an online course first over the break (I took CS50x over the summer and it was very helpful)
+If you don't have prior experience programming then don't, in either case you probably shouldn't
+If you don't understand something, spend the time to practice that concept and look for similar problems. 
+If you genuinely like CS, then this class will be an amazing experience. Otherwise, it may be kinda difficult. Still an amazing experience. DeNero is our god.
+If you get stuck, take the time to really figure things out. Don't give up and hard code or anything like that. Just step through your code and really understand what it's supposed to do and why your code isn't doing that. Part of being a programmer is learning to solve problems. Also, piazza is your friend. Theres thousands of kids in this class... there's bound to be a hundred of them having the same issue as you and best believe one of them has figured it out and would be willing to give you some hints if you just ask on piazza. Better yet, most of the time someone has already posted and the answers are there if you just look. Also... pay attention on tests. Ya boi got like 15 points off just cuz he didn't read directions :)
+If you have a basic understanding of the basics of programming, cs61a is doable
+If you have never been exposed to CS, I would highly recommend taking an online course (like Codeacademy or etc) on Python. This will greatly supplement the material in CS61A and even provide you an advantage!
+If you have never taken a programming class, you will probably suffer. 
+If you have no coding experience, it will be fairly difficult, at least to get an A-.
+If you have no experience in cs, look over some basic python tutorials to get started
+If you have no experience, STUDY.
+If you have no experience, you can still take this class and do well, but you HAVE to be on top of everything. 
+If you have NPE, go through the previous year's cs61a assignments to get a taste of what to expect. 
+If you have the time, always do the optional questions and discussions. The most useful skill, at least in my opinion, for any problem is the ability to remain neither anxious nor frustrated while working on a difficult program. It certainly isn't always possible, but keep that in mind as a goal.
+If you have time, prepare during the semester break and start on assignments early.
+If you just put in the hours, you'll do well.
+If you need help, there will always be someone you can reach out to. Don't be ashamed of being confused by something other people seem to get. CS is hard, but the course staff and people taking the course are extremely supportive and want to see you succeed. 
+If you truly want to declare CS then lighten your courseload so that you can dedicate all your time to studying 61a material
+If you want a good grade, dedicate time for coursework!!!!
+If you want to just dabble in CS for a bit and you have a heavy course workload, don't take this class. 
+If you're a beginner to Computer Science, definitely take CS 10 before this class. Otherwise, if you think you have the basic knowledge of programming, take this class.
+If you're new to programming, take cs10/data8 first
+If you're stuck for more than 20mins. take a break and after an hour, relook at it with fresh eyes.
+Instead of focusing on getting perfect scores on the exams or getting an A+, focusing on learning as much as you can. Whether it's the technical details of Scheme or figuring out how to return the sum of all the elements from the label of a tree to its deepest leaf, make sure you get something useful out of it.
+It is a difficult yet rewarding experience where you will be surrounded by the very best staff and professors!
+It is a really hard class. Please do not take more than two technicals including this one.
+It is a very challenging class and it is infamous as being extremely hard, especially the exams. However, I went in with no programming experience at all and after the initial struggle of adopting an engineering mindset, it was completely doable. You just need to put in a lot of time and effort.
+It is a very good class to take if you want to a take a more in-depth step into what computer science is and to develop your problem solving skills.
+It is far more satisfying than I thought it would be
+It is hard.
+It is hard. Ignore the people who laugh about it being easy--they are probably lying. It is hard, but that makes you powerful, because you can do it. 
+It is important to watch lectures on a timely basis and take notes while you do so! When working on the programming problems, it is helpful to some to draw out the scenario to get a better visualization. When preparing for the exam, if you get stuck on a problem, try to code it without the framework or fill in pieces and then try to fix the outline. 
+It moves at a very fast pace, and if you aren't comfortable at coding well, take CS 10 first
+It requires a lot of time to do well. If taking it as an elective like me, you can definitely keep up by using all the resources.
+It was amazing how CS 61A was able to accommodate to online learning so smoothly! My only advice for Sp20 students would be to attend all tutorials and practice, practice, practice!
+It will be a big work load so plan ahead. Very important to find a partner for projects. 
+It will be a great experience.
+It will seem very overwhelming if you have no experience, and you will have to give up a lot of your time to really work through the homework and lab, despite them only being worth a few points each, but this is where the true learning occurs. Power through these and ask as many questions as possible.
+It would greatly help taking CS10
+It's a 6 unit class!
+It's a great experience!
+It's a hard course as an online class, so if you have the opportunity take it until classes are in-person again. 
+It's a lot of work, but it's definitely worth it. I've put so much effort into this class and I believe I have improved drastically as a programmer. The class is very rewarding. 
+It's a tough course. There's no doubt about it. However
+It's a very interesting course. To learn the most out of it, you can try to allocate a little more time for this course, where you spend the time to really understand the concepts. The projects, labs, and homework certainly help, but remember it is also very important to master the materials and do some studying on your own.
+It's definitely a hard class and you will probably encounter failure if you have not had a lot of coding experience before. But that's okay cause most of us are failing together, and there are more than enough resources and office hours to succeed if you really want to.
+It's difficult but if you have friends in the class, that always helps.
+It's easier if you do assignments the day they are assigned.
+It's intense but prepare in advance for the topics after the first midterm really pick up.
+It's is extremely easy to fall behind and no amount of last minute studying can save you. You must be looking for helpful resources every day so that when the final comes, you know exactly how to master the content. Oh how I didn't do this!
+It's not as difficult as so many think it is. If you put in the work then you'll do fine. Don't worry about how others are doing compared to you. Just work to be the best and you will get there.
+It's not going to be easy but the staff is amazing and they are always there to help
+It's ok to fail at first, just get up and try harder the next time.
+It's ok. We all think that "the 2 people in your study group who have been coding since they were born are gonna be make it and I'm not". Chill. Do your labs and homeworks on time, do your projects asap, always ask for help and always try your best to get EC points
+It's one of the few classes that's kind of okay online, I guess.
+It's really easy to get behind especially while everything is online, so try and keep yourself accountable!
+It’s work-heavy but amazing. Denero is perfect
+Its a lot of work but you get some good intuitions
+Its hard.
+its pretty good, just make sure you understand everything, that's what is important
+Join a study group and/or make friends with other students taking CS 61A.
+Join CSM and start studying for the midterms long before you think you need to.
+Join the tutoring session more often
+Just attending lectures, discussions, and labs as well as doing all of the homeworks and projects was not enough for me as a programmer with no prior experience. I think if I were to take this class again, I would have invested more time in practicing topics outside of the assigned classwork more.
+Just because there is a light week in terms of assignments does not mean there is a lack of opportunity to learn. The class has basically an infinite amount of practice problems which you should work on. Not necessarily to score well on the exam, but for you to get more experience.
+Just do your best and explore your interests, don't get too fazed by things you dont get right away.
+Just do your best and it'll turn out alright.
+Just enjoy. Nothing unreasonable whatsoever.
+Just give it a try! It can seem intimidating but you learn a lot and it goes by fast. 
+just grind the past-exams but try not to look at the answers too quickly
+Just have fun, it's not that bad
+just learn the material well and do practice questions early.
+just practice and continue to practice. allow yourself to struggle with problems before getting help
+Just take it! It is a very rewarding and fun class that teaches you an important skill. Remember to take each problem one at a time. The class is not hard at all off you do that.
+Just take it.
+Just try your best, there are many others just like you who ended up doing well.
+Just watch lecture and study hard for midterms
+Keep doing practice problems
+Keep doing problems and looking at examples to stay on top of topics throughout the course. 
+Keep on top of everything and study in advance of the class, learn how console works.
+Keep on top of the lectures and homeworks and everything and you'll be fine! The content is fascinating and it's only stressful if you fall behind, so try not to do that!
+Keep practicing!
+Keep pushing, it's going to be hard and really confusing, but as long as you can complete each assignment, don't stress about the tests and you'll be okay.
+Keep up to date with the lectures and make sure you make most of office hours and discussion sections!
+Keep up with all assignments and try to avoid mixing any outside problems with your ability to work effectively.
+Keep up with all lecture content and complete all problems and extra problems in homeworks and labs. There is no substitute for practice and remember to have fun with it too, try extending assignments. If your stuck, go to course staff, I could have saved a lot of time had I gone to them earlier when I was struggling with concepts (especially after taking some past exams).
+Keep up with all the labs, projects, homework, and exam prep worksheets, and you won't be stressed when it comes to midterms and finals. Taking a few practice exams before each midterm/final is also very helpful.
+Keep up with everything! Make sure you do the practice problems, labs, and attend discussions because it helps tie together everything you learn in lecture.
+Keep up with lecture and giving yourself a break after the midterms is important. But don't give yourself too long with a break because I found myself falling behind and getting less motivated. Probably start homework and projects earlier because office hours lines get too long.
+Keep up with lecture and start projects early. 
+Keep up with lectures
+Keep up with lectures and reach out for help when you don't understand a concept
+Keep up with lectures, read the textbook when you need to, and use office hours!
+Keep up with lectures: never let yourself fall behind by more than a week, otherwise you'll struggle with the assignments as well. And go to office hours as early as possible, it gets crowded right before deadlines!
+Keep up with the course and practice even when you think you don't have to 
+keep up with the lectures
+Keep up with the lectures and quality is better than quantity when doing practice questions
+Keep up with the lectures and try to complete assignments as early as possible. 
+Keep up with the lectures, make a real effort to understand the material and do all the assignments, and don't be afraid to ask for help
+Keep up with the lectures!
+Keep up with the pace!
+Know some cs before taking it
+Learn all the thing first
+Learn at least one programming language beforehand (ie take CS 10)
+Learn basic coding early
+Learn for exams in advance, work as much as you can on every course material.
+Learn how to debug and identify where errors in your program appear
+Learn Python Basics over winter break
+Learn Python syntax beforehand since the course is very fast paced and it's one thing that you won't have to stress over. Also, try to learn some core structures of programs like if/else, loops, functions, etc. so that you won't be overwhelmed by them during the course.
+Learn Python/OOP concepts beforehand if you have no prior programming experience
+Learn the basics of python and programming before the course, either self taught or take an easier course like CS 10 or one in high school.
+learn to draw diagrams and map out questions on paper before coding
+Learn to enjoy the material early on and then take advantage of all opportunities to practice through assignments.
+Learn to love recursion
+Learn to program in python before the course, and maybe go as far as learn the basic data abstractions (trees, linked lists etc). where are several online tutorials, I did once at code academy and it helped me prepare well for this class. Also join a discord or make one! The best help comes from your own peers. Also watch lectures as soon as they are posted on that day and go to all lab discussions and especially exam prep. You can subscribe to the class calendar to make it easier to figure out when things are happening.
+Leave a lot of time for the projects
+Look at some of the content beforehand as to not be completely shocked by the difficulty.
+Look at the lectures
+Look for help and form study groups. 
+Lots of practice tests
+Love the material you are learning. Implement it in side projects to understand the power of different concepts.
+"Make a strong effort to complete assignments early. The homework and lab parties are wonderful ways to get help on the questions you were stuck on, so you can get your questions answered and submit the assignment that day, which is a couple of days before the deadline usually. This is also the way to get a faster place in the queue. Go to lab and discussion orientations and ask all the questions you have; you can send your question directly to the panelists if you are shy about asking questions, but if you are unable to ask questions for this class you will not do good. Asking questions are what will help you succeed, and there various ways to ask them anonymously. This class is challenging and very difficult, but it is not impossible and the challenge of the class is what makes it so useful and wonderful. There are sooooo many resources for the course, and you will need to be okay reaching out for those resources to succeed. Also, review the worksheets you are given to complete them all for useful practice.
+ALSO, a big point to make: this course is very doable for those with limited programming experiences. I think people with no programming experience prior to this course (like me), tend to doubt themselves greatly and see this course as a huge monster. However in the advice Gireeja Ranade gave me over the summer, it is better to challenge yourself and try the course, and if it comes off too difficult, we have the ability to step back and take another course that fits our current abilities better. We doubt ourselves too much, and this course affords people the chance to try it out no strings attatched."
+MAKE FRIENDS EARLY BY ANY MEANS NECESSARY
+make friends in the class!
+Make friends in your classes so you have people to go to when you are struggling with a topic.
+Make friends with people who are also taking this class! It really helps to have someone else to bounce questions and ideas off of.
+Make notes
+Make sure the only place you allow for possible points loss are exams ie. get full ec, hw, labs, discussion, projects, to maximize score. 
+Make sure to attend all discussions, participate the best you can, and practice a lot.
+Make sure to attend as many components of the course as you can. Try to keep up with the material: given a small consistent effort, you will be able to achieve an enormous success at the end of the semester. Cramming on the other hand works terribly in the long term.
+Make sure to attend the CSM or HKN review sessions.
+Make sure to attend tutorials regularly, they are really helpful
+Make sure to avoid procrastinating, and try to interact with other students as much as you can. Because of the online learning, it might be hard to meet people but it feels a bit depressing to just take the class without collaborating with others.
+Make sure to do all of the optional questions on homework and lab because they're very helpful!
+Make sure to do all your labs and homework assignments. Do not be afraid to ask for help no matter how dumb your questions may sound in your own head. Although virtual school is not ideal, the staff does try their best. OH are worth it even if the wait time is lengthy. It is okay to feel defeated, but don't let it stop you from learning the content. It is really hard to focus and enjoy it considering everything going on right now, but it really is interesting stuff. I personally did not ace the class, but learned a lot and value this course despite the load and how time consuming it was. If you underperform just know there are opportunities to keep learning and growing. The scores and letter grades are so insignificant when it comes to this class! I really did fail, bomb, and trip up on the exams and assignments, but I really just tried my absolute best and I was able to gain the experience and skills I have now. 
+Make sure to do past exams and practice a lot of different types of questions
+make sure to do some reviewing every week
+Make sure to go to all the discussions even if they are not part of your grade. Also, review start studying for the midterms, 3 weeks in advance. 
+Make sure to go to the exam prep sessions because they'll remind you how much harder midterms and finals will be compared to assignments 
+Make sure to grind past exams to prepare for midterms and the final
+Make sure to have some prior exposure to OOP because the class moves relatively fast if you are a complete beginner.
+Make sure to keep up 
+Make sure to keep up with course material as it moves very fast and practice everyday.
+Make sure to keep up with lectures and homework and really seek to deeply understand the material. You'll find CS is actually an amazingly fun field.
+Make sure to keep up with the first few weeks of the course, where the learning curve is steep and the mental gymnastics are the hardest, but after overcoming those, the pacing and material gradually become more comfortable.
+Make sure to keep up with the lectures, and CS is all about practice and experience
+Make sure to learn recursion really well
+Make sure to prepare for tests very early, you don't want to be cramming information right before the test.
+Make sure to really set aside time to understand the lecture content and PRACTICE what you are learning. TAKE ADVANTAGE OF THE RESOURCES!!! Computer science is very collaborative 
+Make sure to start projects early so that you have enough time to work on them
+Make sure to stay caught up with all of the coursework because this is a heavy-work course.
+Make sure to stay on pace and study hard for the midterms.
+Make sure to take many practice exams before the midterms and keep up with the lectures!
+Make sure to take your time doing the homework, labs, and projects (especially) as that is where you will learn the most! Also, take practice tests to prepare yourself for the format and questions. Even if you don't do well on them, the familiarity helps a lot. The class is difficult but very rewarding, and there is a lot you will learn!
+Make sure to understand how the code works not just get the right answer and move on.
+Make sure to understand how to solve the problems because I feel like this course is based on your understanding of problems and how to solve them
+Make sure to utilize all extra credit opportunities because they also help with learning the material.
+Make sure to watch all the lecture videos, attend discussions live, if possible, and do not procrastinate on any of the labs/hw/projects.
+Make sure to watch the lectures on schedule because it is easy to fall behind.
+Make sure to work on homework/projects as early as possible and to sufficiently study for tests.
+Make sure you ask questions!
+Make sure you dedicate a lot of time towards this class. Ask questions early on if you don't understand a concept. Take advantage of all the resources given to you. Throughout the semester, acknowledge that you have learned a lot, and are still in the process of learning. Remember to have fun!
+Make sure you do the homework. Based on my final and midterms, I should be on track for an A/A+, but I skipped some of the homeworks...
+Make sure you find friends you are comfortable with collaborating with! I regret being unable to find more people to work on projects with, but even the kids that spam "pog" in zoom chats could be cool people!
+Make sure you have a considerably strong background in CS.
+"Make sure you know some basic programming especially in Python. There are tons of online courses for a basic introduction to how to think like a programmer. The course is difficult enough even with a lot of experience.
+
+Learn how to study. Learn what it means to get used a concept and test on it. If in high school you skipped the part about learning how to study this class will teach you how.
+
+Join the discords, or talk to people in person. Tough courses make people more likely to reach out. These friends are your best and more often than not only emotional support vehicle. This class is not fun alone and it really isn't meant to be alone. It's huge!
+
+Value your teachers, TAs, and mentors. They're both funny and caring and do their damn best to help. Go out to their sessions and try to learn the material as fast and comprehensively as they can give. 
+
+Listen to all lectures the day they are released. Start on work as soon as possible This class will punish you for falling behind, even if you know you can finish it a few hours before it's due the time you save will be time you sorely need to use to study.
+
+If you're in L&S and wanting to do CS, the next classes and the requirements won't be kind. But don't let it keep you down. Enjoy and value the content, detest the system.
+
+Feel free to make memes and ask meme questions. Don't worry the professors and TA's have a sense of humor. This is more than a method you keep you sane I swear."
+Make sure you look through some of the content that's covered in the first few weeks before starting the class. Especially if you are new to CS and programming, I would highly recommend going through the concepts covered up to midterm 1 so it doesn't feel super rushed since it's only 2.5 weeks in.
+Make sure you spend time in the beginning getting used to all the resources available, there are many
+Make sure you start studying for exams far in advance.
+Make sure you study for exams.
+Make sure you take an introductory CS course. Not knowing any computer science will be brutal as you try to catch up to the course material.
+Make sure you're willing to put the time commitment into the class—it is an amazing class that you can only fully appreciate if you're willing to put a lot of time into it.
+Make sure your foundations are well-established! Try to have a solid grip on all the info up to MT1, even if you don't do too well on the exam at the time. 
+Manage time well, focus on understanding core concepts.
+Manage your time
+Manage your time well and complete all the assignments with plenty of time to spare so that you can afford to take breaks when you blank.
+Managing time and assignments, get started early, class has alot of information for someone who is new to all the material
+Maximize your resources, and keep the material fresh. You should look at something CS related everyday. Whether that be reading the text, attending office hours, watching the videos, or something else programming related.
+Maybe try other easy courses if you don't have any experience yet.
+midterm 1 is not representative of what the rest of the class is like
+More important than the grade is to enjoy the learning.
+My advice is to expect this to be a challenging class which will require a lot of effort—particularly, the exams are based mostly on skills and not really at all on memorization, so its essential to do exam-level practice for at least a week prior to the exam (ideally weeks) in my view. I would also give the advice to stay in the moment when working on the assignments and studying—if you worry to much about grading and such, it will kill your joy in it. 
+My advice is to try to practice every day if you can. Do everything possible to not fall behind, but don't be afraid to ask for help when you get stuck. 
+My advice would be to stay on top of lecture and don't procrastinate. 
+My biggest piece of advice is to really understand what each line of code is doing in a program. That is the only way a person can be a great programmer. When looking at the solutions to assignment problems, don't just skim the solution or be tired of the CS assignments. They are grueling, no doubt. BUT, it is SO SO important to internalize how a program is being executed. That is key!
+n/a
+n/a
+NA
+never get behind. if you do, catch up as soon as possible. practice often. take a personal interest in the assignments and material. practice often. never get behind. 
+Not to stress too much about your grades as long as you are putting in your best effort. It's also not worth comparing yourself with others as everyone learns information differently and has different levels of experiences coming into the class.
+not worry too much about tests. work hard on projects and assignments.
+Obviously "don't compare" in the wise words of Professor DeNero. Also take practice tests and breathe. Even if you're not experienced, now you will be eventually. At least more than you started off. 
+Office Hours are helpful, use it when you need help instead of struggling and crying all alone. However, don't over use it either, try yourself and try to understand the reason behind your errors before giving up to finish an assignment. 
+On the first day, spend at least an hour fully going through all the available resources in this class. There are so many tools that the staff has set up to help you succeed, and your best bet is to take full advantage of everything offered. 
+One of the most useful courses I've ever taken!! Take it even if your major is not remotely to CS!
+Only take it if you have some CS experience, and work hard because its worth it
+p/np the class
+pace yourself
+Partner up for projects!!! Go to office hours!!!
+Past exams are the best way to prepare for exams.
+Past midterms are your best friend! They give you a very good idea of the pacing, the content, and your weaknesses.
+Pay attention and listen to your tutors, teachers, and TA's. Work hard and don't let yourself fall behind. Take it one step/idea at a time
+Pay attention to lectures and just don't slack off as work builds up fast!
+Pay attention to practice exams. You may lose lots of points.
+Pay attention to the past exams. Those are really helpful tools to prepare for the real exams.
+Pay attention, go to lab/hw parties, don't be afraid to reach out for help, especially among your fellow students. It seems a lot harder online. Do extra credit so that even if your test scores are not ideal, you can pass. Your mental health is important, and good luck.
+persistence and go on your own pace
+Piazza is really helpful especially during remote learning. The workload can be quite overwhelming if you don't have a lot of CS experience. I recommend taking another CS class before you take 61A in order to really enjoy and appreciate the course. 
+Plan ahead and make time to study! Pace picks up rapidly after Midterm 1
+Please be ready to feel frustrated :) It's reallllllly normal to stuck in various bugs in your code.
+Please don't slack off :(
+Please look at the cs61a.org website, and if you don't understand a thing, either learn python well, or take a more introductory class.
+Please make sure this is not your first intro course to programming. 
+Please pay great attention to the lectures. They are really helpful.
+Please practice past exams
+Please practice your coding skills and review 61A topics before taking the class
+Please, please, 死なないでください
+Plz watch lectures more
+Power through, it's worth the knowledge
+Practice
+Practice
+Practice
+practice a lot
+Practice a lot
+Practice a lot
+Practice A lot
+Practice a lot for the tests cause they are nothing like hw or projects.
+Practice a lot!
+Practice actually coding!
+Practice and actual coding is key
+practice and practice more
+Practice and start early!
+Practice builds your intuition, do extra problems to get a better grade.
+practice coding as much as possible
+Practice coding as much as you can :)
+Practice coding problems everyday
+Practice early
+Practice early & don't compare.
+Practice Exams. Take them all, and make sure that you get some sleep before the exam starts.
+Practice logic and theory on algorithms. It helps a lot with knowing what to do right away, and you can spend time fixing the small details in your code rather than being stuck on how to construct it as a whole
+Practice makes better!
+Practice makes perfect
+practice more
+practice practice practice
+Practice Practice Practice
+Practice practice practice!
+Practice practice practice.
+Practice regularly, put efforts into homework & lab 
+PRACTICE TESTS
+Practice the material and exams!
+Practice the midterms, get used to the problems and understand the thought process in solving them.
+practice with past exams
+Practice, discuss, and listen!
+practice, practice, practice
+Practice, Practice, Practice everything that they teach you
+Practice, practice, practice!
+Practice, practice, practice! You can understand the material 100%, but you can't truly understand how to apply the material until you practice and see how to put the concepts into action.
+"Practice, practice, practice!!! Do every single optional problem on labs, homework assignments, and projects. At the beginning of this course, I thought that computer science was all about intuition and that I wouldn't be able to succeed because, compared to other students, I didn't just get something right away. By doing a bunch of problems, you start to see reoccurring patterns that soon become muscle memory to you (ex: x%10, then x//10 or for branch in t.branches). 
+
+Another tip I would give is to attend as many lab and tutorial orientations and tutorial sections as you can, even though for orientations, attendance is not required and you only have to attend 6/10 of tutorial sections. These are where you'll make connections with people, which is important in a 2000+ student class, and learn tips/tricks on problems. Also, they're just fun! "
+Practice, Practice, Practice. And if you don't understand it one way, there's tons of online resources that may help explain it differently.
+Practice, practice, practice. Don't cram for exams the night before -- take 10 to 20 minutes each day to review the concepts. Don't let a single grade get you down. 
+Practice, practice!
+Practice. You'll learn more by doing more.
+Practicing questions is the only way to get better at solving problems
+Prepare early and do practice problems!
+Prepare for exams ahead of time! Definitely one of my biggest regrets as it really reflected in my grades, but CS61A is a good class to learn what really works for you and what doesn't. 
+Prepare for exams in advance, and try to be relaxed/not too stressed during them. 61A is a great course and you’ll have fun while learning! :)
+Prepare for MIDTERMS throughout the semester!
+prepare for recursion and scheme -- they're tough concepts!
+Prepare in advance and take lighter courses with 61A.
+Prepare well for exams
+Prepare Yourself 
+"preview if you don't have prior experience! 
+use scratch paper to work out examples from lectures
+try to befriend some people in the class to collab and study together"
+Preview the material/lectures beforehand! It is a great way to get a head start on the class.
+Previous midterms are the best tool to study for midterms. 
+Prior coding experience is only really helpful during the first 4 weeks of class so don't feel discourage if you're new to programming. I recommend watching lectures and checking Piazza for help on assignments and projects.
+Projects are worth a lot of points and they're a relatively easy way to improve your grade in the class. As long as you complete all the projects and do your best on the exams you should be fine.
+put everything into python tutor and don't take any shortcuts
+Put in regular effort. It was difficult for me to do so during the pandemic and my personal situation, but I think this class is very doable if sufficient effort is but in on a weekly basis. Complete all the labs and hws and do past exams diligently. You won't need to P/NP the class. Even if you do, it will be a very fun experience to learn!
+Put in the time/work and you'll be fine!
+Put in the work. If you have no prior experience in coding, it's vital that you spend those grueling nights figuring out something that otherwise might have taken a few minutes in order to really progress as a programmer.
+put into work
+Put time and effort into it. 
+Put time into it and study hard
+Python Tutor is your best friend
+Quality > Quantity on practice tests
+Read ahead, and don't forget to do the assignments.
+Read policies clearly and don't forget to go to tutorials... Also make some memes of Prof. DeNero
+read the textbook
+Read the textbook!
+Read the textbook! If Professor Denero glossed over something, read the textbook and then if you're still stuck, definitely attend Q and A!
+Really Really practice a bunch of types of problems. Not just the past exams and worksheets. Experience with a lot of models of problems will help you get the exceptional problem solving skill that's needed for this class.  And on another note, study to learn and not for the grade. I did terrible on exams in this class no matter how much I studied but at the end of the day I learned a lot of subtle concepts that I wish to take with me going forward.
+Really stay on top of lectures and get stuff done early if possible! Make friends to work with, because it's impossible to get help during office hours, but a ton of your peers are super smart and can help you out a ton:)
+Really stay on top of the work and make sure you understand the projects in-depth whenever you do them!
+Really study for the midterms and exams because they weigh a lot
+Recognizing patterns does not work, you have to understand why the functions work the way they do. If you are re-doing many practice exams, and your scores aren't improving, reach out to a TA or Instructor and ask for help. If your old study habits are not getting the grades you want, be open to changing them. Go to OH and study with a friend or a group. Do not spend more than an hour staring at the same problem, if it is stumping you, write a piazza post, email a friend for some tips, or email your TA, you have to accept at some point that the answer will not magically appear to you. Do not compare yourself to others! Many people in this class have been writing code long before this class. This class is challenging but extremely rewarding. There is nothing like seeing all of your tests pass on a problem that has been stumping you for a while, it really is exhilarating. 
+Recursion is fun. Practice. 
+recursive leap of faith
+Remember to attend tutorials. 
+Review lectures/worksheets a little before starting the course, if you have no prior CS experience.
+RUN. Haha just kidding. It can be frustrating at times (or a lot) but the natural high of finishing a working code is *chefs kiss*.
+Schedule time to watch lectures, start hw and projects when they are released so you can take advantage of piazza and OH for a couple days.
+Schedule your assignments
+self study a bit of the course before taking the class
+set a time every week to watch lecture videos
+set aside time
+Showing up to lab orientations can really help in understanding the content of the class.
+Sign up for CSM and attend tutorials! They're the best way to really internalize the material and apply it to real problems.
+Solve a lot of practice questions
+Solve a lot of problems to get better (make sure not to look at the answers!!)
+Solving problems is the best way to practice, try to understand each concept thoroughly so you can apply it in different contexts
+Some concepts may not click immediately; just keep hammering them in until they do. And make sure what you're understanding is concepts, not specific problems. This way, you can apply your understanding much more generally and have a lot more in your toolbox.
+Spend as much time as possible practice solving problems rather than studying in other ways like reading or re watching lectures
+Spend as much time as you need on the homeworks, labs, and projects to get full grades on them. Not only will this help you understand the material better, but it will give you a comfortable margin should you do badly on any of the exams, which are very difficult
+Spend as much time as you need to understand the concepts, do practice questions, go to office hours/reach out to course staff if you need help, and have fun
+Spend more time understanding why the solutions works a certain way. Code in a way that is logically comprehendible. Making convoluted solutions that work won't be optimal for exams.
+Spend most of the time doing past exams. Lectures are helpful but the bulk of time and effort should be spent on past exams. Discussion is also really helpful. Don't fall behind. Use Piazza!!
+spend time on it
+Spend time with optional homework problems to gain a more solid understanding.
+Spring 2021 maybe... Read the website everyday! Don't miss any deadline!
+Star the homework early
+Start assignments early, do past exams at least a week before the exam, and review past homework, labs, and discussion
+Start doing practice exams EARLY. On day 1, when you're getting introduced to course staff and logistics, use the afternoon to try a past Midterm 1. Just copy down the answers/explanations, word for word, and don't get frustrated about what you do or do not understand. Getting familiar with the terminology and concepts as early as possible will be invaluable. Don't stress too hard and you'll do great!
+start doing practice midterms early
+Start doing the projects and homeworks early, and do a lot of practice! 
+Start each assignment early and ask for help
+Start early and grind for the tests
+start early and make sure you understand stuff completely, not just 90%
+Start early and start often
+Start early and take your time processing the ideas and concept.
+Start early on EVERYTHING
+Start early, I myself had to deal with a lot of issues outside of school given the tumultuous year and starting assignments early was key to surviving the semester, otherwise I would've missed a lot of assignments.
+Start everything as soon as you get it– it makes you much less anxious. Go to office hours!!!!!!!!!!!!!!!!
+Start everything early!!!
+Start homework and projects as early as possible and do as many practice exams as possible before the test.
+start hw/projects in advance
+Start on labs on homework early in case you get stuck on problems so that you can take your time to work through it or ask for help.
+Start on projects and study for tests early, take practice exams to study, and try to enjoy the material. The class can be really fun.
+Start projects and HW early so you have time to ask for help on piazza/office hours if you need to
+Start projects early, don't procrastinate. Start taking practice midterms early on and  do a couple every week to keep up the practice.
+start projects early!
+Start projects on the day they're assigned.
+Start revision early, get projects done some time before the due date
+Start running through old exams ASAP.
+Start study/preparing for the first midterm before the semester starts, the three week midterm is super unreasonable and definitely caught me off guard. Study recursion, especially if your high school course didn't get to it. 
+Start studying as early as possible. You learn a lot of interesting things in this class.
+Start studying for the tests ahead of time and really force yourself to try on practice questions, not just look at answers.
+Start the assignment asap. If you get stuck on a question, take a day break and start the problem from scratch. The class is really accommodating for this type of working schedule!
+Start the homework early.
+Start the homeworks/labs the same day they open and help explain problems to others to advance your learning.
+Start the project early. It can take more time than you anticipate.
+Start working on assignments as soon as they are assigned, and start studying for exams at least a week before. 
+Start working on homework and projects EARLY!
+Start your projects early. Begin practicing for midterms and finals AT LEAST two weeks before. For questions you missed or didn't understand, go to office hours for help.
+Start your work early and don't procrastinate. Completing old tests is the best way to study
+Stay ahead of assignments
+Stay ahead of the ball to maximize the potency of each lecture, lab, and discussion as it occurs.
+Stay ahead on your work, look for a reliable project partner, don't be afraid to ask for help with office hours and Piazza when needed.
+Stay calm, we're all in the same boat. You're smarter than you think you are.
+stay caught up on lectures, get a firm understanding of the concepts, and practice before the midterms/final
+Stay disciplined and don't miss lectures.
+Stay focused and don't panic! Hard work pays off even if it isn't easy
+Stay focused.
+Stay on the ball and don't let yourself get behind in lectures or content. Really take the time to understand the material for every new concept so you don't get left behind!
+stay on the top of your game, don't fall behind 
+Stay on top of all assignments and genuinely do them to understand the problems. Doing so will make the midterms a lot more easy to digest. 
+Stay on top of all of your lectures and assignments, and don't be afraid to go to Homework/Lab parties. They are life-savers!
+Stay on top of assignments and lecture.
+Stay on top of homework and labs, do them as soon as they are assigned, and if there's anything you don't understand, try to do as much practice as you can on that topic.
+Stay on top of homework and lectures. Dedicate a week or week and a half to studying past midterms and problems.
+Stay on top of it! 
+Stay on top of lectures and announcements, because a lot happens in this class, and very quick, which becomes easy to miss due to online instruction.
+Stay on top of lectures and establish a routine
+Stay on top of lectures and manage your time well and you'll be fine!
+Stay on top of lectures and start the projects early! Also, don't get frustrated when taking practice exams for midterms, if you keep working at it you will improve!
+stay on top of lectures and study past exams. also, use code.cs61a for the exams. it will help.
+stay on top of lectures, be active in projects, do as much practice as possible to get good at it
+Stay on top of lectures, don't fall behind, find a reliable partner for the projects.
+Stay on top of projects and homeworks to reduce stress.
+Stay on top of the lectures and assignments and attend the tutorial/lab/discussion/exam prep sessions you can! It's very easy to get behind in this class with so much going on, so if you stay on top of things and ask for help when you need it, you'll do fine in the class. There are a lot of resources available to help us get through the semester including the amazing staff and your other peers (when applicable). 
+Stay on top of the lectures, follow the schedule, and do a lot of practice exams. Start practicing earlier. (although I should probably start studying for the final myself hahaha)
+Stay on top of the lectures, it can be overwhelming to try and catch up on lectures before tests and such.
+Stay on top of the material and study with others as often as possible.
+Stay on top of things and take advantage of every single one of the resources offered
+Stay on top of things, and don't let it consume all your time. Getting help when your stuck is really recommended and be patient with yourself.
+Stay on top of things, do the work and make sure that you *understand* the concepts, rather than just memorizing things.
+Stay on top of things! Don't be intimidated, and take things one by one.
+Stay on top of watching lectures and set a schedule for when you'll watch them! Also take a second at the end to reflect on how much you've learned -- sounds cliche but it really is a lot :)
+Stay on top of your work and find a buddy to keep you accountable :) Good luck <3
+Stay on top of your work and reach out to others for help! You are not alone! 
+Stay on top of your work and really understand the concepts behind the questions.
+Stay on top of your workload!
+Stay on track and don't get behind on lectures. If you need help go to office hours they are really helpful!
+Stay on track at the very start! Don't wait to mess up on the first midterm to get it together, start early with practice because this course heavily relies on it.
+Stay on track. Schedule a time for yourself to watch lectures
+Stay organized and work extremely hard at the start of the course to build a strong foundation for the rest of the course. 
+Stay resilient because even the hardest questions become easy after you fully understand that question type.
+Stay up to date on assignments
+Stay up to date on content and try to find people to work with 
+Stay up to date on lectures, which I understand is hard sometimes, so if you fall behind at least go to all the lab and discussion orientations as they are VERY helpful. Do the extra credit problems and get the early submission bonus points. It may seem like a struggle at the time, but it's worth it and you won't regret it.
+stay up to date with course material. 
+Stay up to dates on lectures and don’t be afraid to ask for help. Csm is very helpful. 
+Stay updated with the announcements on the website and in the lecture videos! Even if you can't watch all the lecture videos for that day, at least watch the announcement video to stay updated.
+Staying engaged with all the work is key to doing well. This class isn't just about memorizing strategies, but about actually learning the concepts
+Study
+Study
+Study
+Study
+study a lot
+Study a lot 
+Study a lot and stay on top of your work and you should be fine. Also work with other people whenever you have the chance.
+Study a lot!
+Study a ton!
+Study ahead of time. Be ahead in the work.
+study and understand the discussions / problem examples gradually over the course of the semester
+study basic python beforehand
+Study beforehand. Keep up with the material. Enjoy it.
+Study dont slack lol 
+Study early
+study early and frequently
+Study early for exams. On average, they are significantly harder than HW/Discussion/Lab problems.
+Study early for your exams!
+Study early, do not fall behind. Also, "what you can do matters more than your score" (Denero, 2018).
+Study Hard
+Study hard
+Study hard
+Study hard
+Study Hard
+Study hard and have fun!
+Study hard and stay on top of lectures even though they're online.
+Study hard exam problems for at least 1 hour every week
+Study hard for the exams!
+Study hard for the midterms.
+Study material as you learn it. Don't wait for exams to start studying
+Study past exams and midterms outside of homework, lab, and projects because you will not be prepared for the exams by simply doing those assignments.
+Study study study
+Study the materials weeks or days before the midterm rather than cram.
+Study throughout the year
+study up
+Study, you can't get by on exams just with homeworks and labs
+Study!
+Study!
+Study! Look at practice problems and familiarize yourself with course material.
+take a bunch of practice midterms! do all the extra problems! don't fall behind!
+Take a lot of practice exams
+Take a lot of practice test before the midterms.
+Take a programming class like Data 8 before so you at least know how computer science works at a base level. This class really isn't for complete beginners. 
+Take advantage of all of the great resources offered through the course. Go to Office Hours if you have questions, and pay attention during Discussion. 
+Take advantage of all the resources available to you and practice before the class begins. 
+Take advantage of all the resources. Work in a step by step manner, and make sure you work out enough time for you to truly understand the problem. Half doing the problem will bite you later. 
+take advantage of OH, piazza, & old exams on cs61a website
+Take advantage of the many resources that are there to support you, specifically for this class. If you need help ask someone on piazza or in OH queue. There are so many ways to find help.
+Take all the extra credit wherever you can, and do not settle for anything less than full on the projects, hw and lab because exams are not the easiest to put it nicely. 
+Take an intro to programming course beforehand because 61a is very challenging! If you're a beginner like me (who's also a transfer student amidst this pandemic), be proud of everything you've learned in this course, even if you don't get the grade you desire.
+Take an introductory course before enrolling 
+Take as many of the past midterms/finals etc as you can!
+Take as many past exams as you can to prepare for midterms
+Take as many practice tests as possible and make that your first priority in the class. Those are the hardest points to get back.
+Take CS10 first
+Take cs10 first if you don't have experience! You won't fall behind, it will make everything easier.
+Take data 8 before taking cs61a
+Take every EC opportunity available to you; study hard for the midterms many days in advance.
+Take every lab and discussion
+Take every point you can from Projects/Labs/Homework/Tutorials, if you put the effort in there's really no reason to miss points. As for the Midterms/Final well, try your best, practice a lot of problems and besides your understanding of the material, try to get an understanding of how the exams want you to think.
+Take in the material slow and steady
+take it 
+Take it it's fun
+take it, but be prepared for a very large time commitment compared to other 4 unit courses
+Take it! It's a lot of fun, and great mind-exercise
+Take it. It's fun, you learn a lot of helpful programming knowledge, and it's not as scary as you might think it is.
+Take it. You'll regret taking it in the thick of it, but you'll regret it even more if you decide not to take it at all. 
+Take lots of practice tests before the exams, but more importantly, consider all the real life applications of all the problems you're assigned; this is a really cool class!
+Take lots of practice tests before the midterms/final.
+Take many practice exams.
+Take old exams to study for the weeks leading up to your midterms. Really practice problem solving on a variety of problems to get better at critical thinking.
+Take past exams for practice!
+Take practice exams! Don't procrastinate studying
+Take practice test and continue doing problems! Even if you don't know where to begin, write down your thought process and see where your understanding becomes cloudy. Take time and look at the problems but don't worry about getting it in one sitting. Good time management is key.
+Take Practice Tests and review your mistakes
+Take the class in stride, there's a lot of opportunities to grow and learn & don't get discouraged! 
+Take the Codecademy Python module before the semester starts to get a grip of Python Syntax. When you get to class, start assignments and exam review very early. Don't be discouraged if you aren't doing well on practice exams- just make sure you understand the right answer and how to get there. Pattern recognition is really important for 61A exams. Also, if you can, do the projects alone. I felt like I learned more when I worked alone rather than with a partner. If you do need a partner, try to find someone who has a similar programming experience as you so it is not just one person solving all the problems. 
+Take the midterms before you take the class to prepare yourself, go through the class page and do the homeworks/labs before taking the class as well. Prior preparation will help a lot.
+Take the previous exams to prepare
+Take this class over the summer, therefore you'll come in more prepared; it moves extremely fast. 
+Take this class! It's awesome!
+Take time studying
+Take your time with all the course content and make sure you understand everything. Have fun with the projects, do a lot of previous years exams in preparation for the exams. Its a fun class.
+Taking 61A means you have to stay on top of the work in this class and all your other classes, because when midterms come you will have to drop everything and only study CS for 2 weeks to even have a chance at an ok grade, and you will inevitably fall behind on your other classes so you need to already be caught up or ahead there so you can spend time on CS and not fall too behind on everything else. Office hour queues are like 4 hours long so like 2 weeks before midterm 2 compile every question you could possibly have or any advice you might need or anything and go to one office hour and get it all out of the way.
+Taking classes online is no fun 
+Taking past exams is very helpful for studying
+Taking practice tests before the exams is the best way to prepare. Start projects as soon as possible because they might take longer than expected. 
+Talk with your classmates
+teach yourself python over the summer so the only thing you'll have to deal with is problem solving
+Tests are hard.
+The best thing to do is previous exam problems
+The best way to learn is by actually typing the code with your own fingers.
+The class is extremely fast paced, so try your best to keep up. Also, the staff offer so many resources that you can use for help, so don't be afraid to utilize them. Practice past midterms, they help a lot.
+The class is fairly fast, so stay on track and don't fall behind. It will be very helpful to learn how to code a little before taking this class.
+The concepts are all pretty abstract. Best way to understand them is to try to explain them in your own words. Also, find a good project partner.
+the course staff and cs61a community provides so many resources to attain help and support. please make use of office hours and reach out if you feel lost. i didn't seek help until a good ways into the course and felt extremely isolated and overwhelmed especially when working on the first project.
+The cs61a website has a million resources and you should take advantage of that. Also, google.
+The exam preps were extremely useful; if you can understand the exam prep questions then you will do well on the tests
+The first few weeks a lot worse than the rest of the class. Don't let the name and reputation of the class overwhelm you. 
+The homework and projects are not representative of how the exams are going to be. So, do past tests to study.
+The HW, Labs arent anywhere near as hard as the exams
+The key to this class is attending all office hours and/or parties for when you're really stuck on a problem.
+The main advice I would give incoming students is to study for the midterms and final weeks in advance. Start early and go through as many old practice tests as possible. Once doing a practice test, go through each problem and truly understand why you got it wrong and what you could do better. The video walkthroughs are a great place to start if you are completely lost about how to approach a problem.
+The midterms are a lot harder than the homework and projects, make sure you do a lot of practice midterms to actually get a sense of the level of difficulty
+the online format leaves you feeling as if you are teaching yourself which is hard when you are taking 4 classes. No matter how well you do on homeworks and labs you have not been properly educated to take the tests and no matter how perfect your homework, labs, and projects are you can still fail the class just because the tests catch you off guard. my advice: don't even take the class until you have a chance to do it in person
+The only way to really become familiar with the material is to do tons of practice problems. You may not and probably won't fully understand the material the first time but doing a bunch of practice problems over and over again can really help in understanding how the programming language works. 
+The practice exams will help you the most. This class will teach you to think in unconventional ways, so focus less on studying the concepts and more on learning how to approach a problem that does not have an obvious solution.
+The reason having so many assignments and deadlines is important is because that's how people expect you as a programmer to operate in industry.
+The resources to do well in this course are there--it is up to you to make use of them. Course staff, previous exams, study guides, and your peers will not make this class any more easier, but they will make it a lot more fun and reasonable, so take advantage of the fact that they are there to help you.
+The TAs are right. The problems are tricky and you need to think outside of the box. Always consider the answers that seem "wrong" first then move into answers that are "right". You may be surprised.
+There are many resources available. Use them.
+There is ample support from instructors, course staff, and other organizations for you, so you should definitely take advantage of them. Also, make sure to spend enough time beforehand prepping for exams.
+They should go for it, it's a fun class.
+They should make friends and do study groups which help in learning.
+Things get easier.
+Think of CS classes as teaching you better tools to solve particular types of puzzles, focus on learning and seeing the patterns to apply those tools to solve problems. 
+Think out of the box
+This class is challenging-- but it's also extremely fun and interesting. It feels like a problem-solving class with real world applications. Try to find a group of friends who you can call and work together with-- this class is so much fun when you have a group of friends to relate with you about this class. 
+This class is difficult for everyone, I've been doing python for years and I thought this class was very hard. Don't get discouraged, and keep trying. Especially in this class, you are not alone!
+This course is difficult, but very worthwhile. It's the most fulfilling and practical course that I've taken at Cal so far.  Don't be scared to take it -- exams are really the only daunting part. Having some prior experience (as little as Data8 or CS10) is really helpful since the first few weeks go by in a blur.
+This course is superduper fast, I'd truly recommend CS10 if you feel like this class is too much :).
+This course is very difficult, especially for first time programmers. Seriously consider taking CS 10, a free online Python course, or reviewing the material for this course over break in preparation. Take advantage of office hours, NPE sections, and NPE CSM sections. They fill up fast so be on the lookout. 
+This course is very manageable as long as you are genuinely interested in  the foundations of coding and is willing to put in the effort to keep up with assignments and sections (lectures, tutorials, orientations, etc.). Additionally, take the initiative to reach out to resources when you are stuck on problems. You can ask friends, TAs, and Piazza for help. There is also plenty of extra credit that you can capitalize on. As long as you can handle the exams well, the rest of the course is in your favor.
+This is a class that requires a lot of effort and focus if you want to thrive, not a good idea if you have other hard courses to worry about. But, I think this class is totally doable if you are on top of lectures and work. It is a demanding class, but a class that isn't impossible
+This is a hard class. There is nothing wrong with you! 
+This is said a lot, but if you're struggling, don't worry about it -- this class doesn't have too much of a correlation to your strength as a programmer, and you'll probably do better in 61B (I don't have any experience with this, but everyone says this). A lot of the answers can be found by taking a methodical approach. When you see a hard problem that you can't seem to solve, take a deep breath. Relax. Think of what to begin with. Also, attend the exam prep sessions and stuff like CSM if you want to be extra prepared! Very helpful :)
+This was my third time "trying" to learn programming (I had taken a 3-week crash course in high school, as well as CS10). This was the class that increased my interest in CS the most, and made me believe I could actually do it. But I also wanted to emphasize that it took me three tries to actually get into it, so taking CS61A without much prior experience is definitely worth it. And even if you don't do as well as you expect, that is not the end of your relationship with programming, you can consider continuing with other courses. At least, I am glad I didn't give up!
+Time manage and always ask for help
+Time management is key, as well as finding a reliable partner.
+Time management is your biggest enemy if you are taking CS61A along other courses in a different timezone.
+Time management isn't just cutting out blocks of time to do work, it's also using those blocks of time efficiently. Code writing is only efficient for a few hours before the depression and impending doom begins to overwhelm you. Make sure you're taking care of yourself first, it'll help your schoolwork.
+To a student considering taking CS 61A, I would advise them to definitely stay on top of the lectures and material. It is a very fast paced class, and it is definitely necessary to put the effort in to see your desired results.
+To do a lot of practice problems.
+To do the extra/optional questions
+To learn or review how to code in python.
+To never miss lecture, and try to finish all the homeworks and labs as early as possible.
+To not be afraid to ask questions.
+To not get discouraged and to just keep trying, it'll get tough but it will all be worth it! If you're not struggling, you're not doing it right.
+To not slack off
+To practice the concepts outside of homework and classwork by creating their own examples and implementing functional code.
+To start studying NOW, this course is very difficult without any prior knowledge of programming.
+To stay on top of lectures as much as possible :,)
+To work through as many practice problems as possible for each topic
+Treat each lecture as a pocket of pure information. Missing one will seriously come back to bite you; a single missed lecture might mean missing one of the questions on the final. Projects are invaluable. They will teach you the critical thinking for other hard problems. 
+try and get some experience in python beforehand and definitely dont feel pressured by the expectations of the course or the grade you recieve in the end.
+Try as much problems as possible
+Try auditing the course beforehand.
+try hard
+Try Hard :$
+Try learning some programming first,, this class moves very quickly! Although I learned a LOT in this class, I felt like I was drowning the entire semester and managed to do really poorly on exams even though I was doing well on the projects and homework assignments (which is very discouraging).Ya kinda just gotta keep your head up and study hard for this class.
+Try not to fall too behind in lectures and homeworks
+Try not to procrastinate on projects and get started on exam reviews early!
+Try to augment your brain, not your grades. If you focus on that, the grades you want will come. 
+Try to do all of the optional problems and put in extra work to study for the exams.
+try to enjoy it, because both the course content and the instructor will make it very enjoyable 
+Try to get any extra credit points that are possible! Every point is helpful! Also do not give up. Writing code can be mentally draining but the end result is so worth it!
+Try to get hw and projects for other classes done a week before your cs midterms so you have the whole week to study for the exams.
+Try to just focus on the concepts and not let the class or tricky problems stress you out. It's an interesting class enjoy it!
+try to learn as much as you can prioritize. Don't worry about the grades
+Try to learn as much beforehand, I would imagine this class is very difficult to do with no prior experience 
+Try to learn it before you take the course!
+Try to learn the fundamentals of programming - for loops, if statements, etc before hand for a little bit of time to get used to the rigor of 61a. 
+Try to make sure you understand a concept, and don't skip over something and assume you will magically understand it later.
+Try to utilize all of the resources given to you, especially the tutors.
+Try your best to watch the lectures when they come out and to attend as many live things as you can! Farid + Denero are incredible professors, and even though it's a huge class, there are still plenty of ways to meaningfully engage with them.
+Understand that asking for help is okay and encouraged!! If you don't understand a concept or a homework problem, there's a *really* good chance that others don't get it as well.
+Understand the lectures and practice a lot to experience different types of problems.
+Understand why you get each problem you solve wrong or right. 
+Upgrade your equipment! Print out exams! Don't trust online exam service, that will make you waste too much time on just scrolling and lagging. 
+Use a lot of online help
+use all of the available resources as much as possible
+Use all the available resources and never get complacent! 
+Use all the resources given
+Use every resource you are given!! All discussions, labs, lectures, etc. – everything is so useful! This class is amazing and you get what you put into it :)
+Use old test problems to study
+Use past exams as review and try to do as many as you can until you feel comfortable seeing any type of question
+Use piazza and attend lab/discussion orientations
+Use resources and study everyday
+Use the breakdown of topics for past exams. That way you can gauge how well you understand each topic. Then watch lectures and make notes for your weak points. Don't be afraid to ask questions, and take breaks. 
+Use the HW and labs to practice programming + don't give up after the first try!
+Use the resources provided by staff
+Use the resources!
+use the resources!! 61A staff have been some of the friendliest and helpful I've encountered during my 4 years... don't be afraid to go to office hours and seek help :) that makes a HUGE difference
+Use your resources.
+Use your resources. Take those prior midterms available to you on the course website for practice.
+Utilize office hours!! I would be in a much worse position if I didn't go to them and ask help. Engage in the material as much as you can, and practice exams are your friend.
+Utilize the resources. there are alot available ,but you have to dig around to find most of them. If you don't understand a concept, try to get on it during the weekends so work doesn't pile up
+Very doable. Don't compare yourself with others. Work hard, do as many optional questions as you can on the assignments. There is a huge gap between everything else and the exam, so study for the exam by taking past exams. 
+Very good intro course to the world of programming.
+Watch all lectures and make sure to do all hw's and lab's before their due date so you have enough time to complete it. Basically, don't procrastinate.
+Watch all lectures, attend all tutorials and discussions that's the easiest way to learn, otherwise you won't have as much time to study and learn the content. Don't be afraid to ask for help, especially among students, and lastly use your resources.
+Watch all the lectures and do environmental diagrams.
+Watch discussion and lab intros
+Watch each lecture twice and jot down key concepts that are important. Put all those key concepts on one paper as your exam "cheat sheet". It will naturally become a cumulative sheet, and excellent resource to master concepts.
+Watch every lecture the same day it is assigned. Go to as many Office Hours as you need.
+Watch lecture on time, use piazza, study tests early
+watch lectures
+Watch lectures a day early and download the files to interact with yourself.
+Watch lectures ahead of time, look at tests and extra resources ahead of time
+Watch lectures as they come out.
+Watch lectures in the mornings, when you'll absorb the material best.
+Watch Lectures. They're helpful and funny too!
+watch more lectures
+Watch some of the lectures and do some of the labs and homework before the semester starts.
+Watch the lecture from the past semesters ahead of time and do as many past exam as you can to prepare for the exams.
+Watch the lecture video and work on all the homework, labs, and projects, attending exam review, and office hours. 
+Watch the lectures and do the homework in a timely manner. If you have no programming experience, then you could consider another course. Practice coding often, especially outside of class. 
+Watch the lectures and read the textbook! The concepts and examples reinforce each other.
+Watch the lectures and take advantage of OH's!!! Also make sure you are constantly reviewing the topics and start the assignments early. At the beginning of the semester, CS 61A was the class that I spent most time on and put efforts in, and I was able to understand what was going on. Know what you don't understand and the amazing professors and TA's can help you out!!
+watch the videos 
+Watch the videos and attend the exam-prep sections.
+Watch the videos on time.
+Watch videos
+watch videos.
+Watched lecture videos from this semester instead of incoming Hilfiger's bc I've taken 61B with him this past spring and I, like many people, prefer this style.  I doubt students will actually read this, so I feel kind of mean, but I would honestly advise someone with that.
+When studying for the exams, what is really helpful is doing as many practice exams as possible. 
+When this class starts to feel monotonous and overly difficult for no reason, take a day off and do no work for this class. It may seem like you've fallen behind, but you will come back the next day loving CS again.
+When you study be willing to consider a solution to a difficult problem for a longer period of time prior to looking at the solution. Also after looking at the solution ensure that you understand the solution thoroughly before continuing. Also return to problems days later, can help reiterate the idea. 
+When you're doing problems, try to solve it completely on your own for at least one hour before you consult any external help. And always try to use as few hints as possible when solving the problem. Additionally, go back and read the solutions carefully and make sure you understand every part of it. If you don't get it, ask someone to explain it to you because reading and understanding good code is an essential part of becoming a better programmer. Always try to understand the main ideas from the problems you do and what kind of problem solving technique they're trying to get you to learn. Don't just do the problems but reflect on how the things you learned from this problem can help you solve other ones. Also if you can, try to prestudy over the break with old course websites, it will help a lot. 
+Whenever you program, just consider abstraction first.
+While the homework and projects are good platforms for learning, the tests are genuinely meant to challenge, and it's more effective way to prepare for them by going over more difficult problems from past exams.
+With strong commitment, there are tons of resources available that will allow you to achieve your goal grade.
+Wonderful class, you get as much as you put in
+Work hard
+work hard
+Work hard
+Work hard
+Work hard
+Work hard and continue learning!
+Work hard and have fun! It's a great class.
+Work hard to try to understand every code that you write and submit. Don't let any mistakes just pass without truly understanding what you did wrong, because concepts that you don't solidify now will come back in much more complex ways later on.
+Work hard very early in the semester to get ahead (if possible!)
+Work hard, do practice tests to better understand the content and good luck!
+Work hard, take breaks.
+Work hard!
+Work harder
+Work super hard and do all kinds of wack problems because the online format makes exam problems extremely weird.
+Work through the many practice exams, even if things seem tough the more practice you get the better. 
+Working on the optional problems on the homeworks is very useful
+you can do it! its hard but you will learn a lot
+you got this, just ask for help if you are stuck. REMEMBER that a whole group of students got through the class in the Fall during COVID, so you could do it as well
+You need to put a lot of energy into CS 61A so don’t overload yourself with a crazy course load 
+you should find a solid "friend tutor group" to work with on shareable assignments --- this singlehandedly saved me because i ALWAYS had someone to go to for conceptual questions without needing to wait in OH
+You will be taught how to fish, but then tested on how well you run a mass seafood corporation.
+You will learn a lot
+You will need a lot of time for this course and will learn a lot after finishing it.
+You'd need a time machine, but do it. Very helpful class in learning how to strengthen your programming skills. It can be challenging class, but programming and problem solving is supposed to challenge you.
+You'll see results if you put in effort. 
+You've got this. Go to office hours. Put in the time. Go Bears
+Your grade doesn't define how good at coding you are!
+Your outcome of this class is heavily based on what you put into the course. 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

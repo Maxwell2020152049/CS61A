@@ -1,0 +1,698 @@
+<!DOCTYPE html>
+<!-- saved from url=(0077)https://inst.eecs.berkeley.edu/~cs61a/sp21/assets/slides/35-Intro_to_SQL.html -->
+<html class="reveal-full-page"><head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+		
+		<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+		<title>Intro to SQL</title>
+		<link rel="stylesheet" href="./Intro to SQL_files/reset.css">
+		<link rel="stylesheet" href="./Intro to SQL_files/reveal.css">
+		<link rel="stylesheet" href="./Intro to SQL_files/simple.css" id="theme">
+		<link rel="stylesheet" href="./Intro to SQL_files/mono-blue.css">
+		<link rel="stylesheet" href="./Intro to SQL_files/css">
+		<style>
+			.reveal {
+				font-family: "Work Sans", sans-serif;
+			}
+
+			.reveal .slides section {
+				text-align: left;
+				font-size: smaller;
+			}
+
+			.reveal pre {
+				background-color: #f5f5f5;
+				width: 100%;
+				border: 1px solid #ccc;
+				border-radius: 4px;
+				box-shadow: none;
+			}
+
+			.reveal h1, .reveal h2, .reveal h3, .reveal h4, .reveal h5, .reveal h6 {
+				font-family: "Roboto", sans-serif;
+				color: #0072c1;
+			}
+
+			.reveal section.heading-only {
+				text-align:center;
+				padding-top:20%;
+			}
+
+            .column .no-code-badge .code-badge {
+                display: none;
+            }
+
+            .code-badge-language {
+                display: none;
+            }
+
+			.python-tutor-link {
+				font-size: smaller;
+			}
+
+			.python-tutor-link:before {
+				content: "";
+				display: block;
+				background: url("http://pythontutor.com/favicon.ico") no-repeat;
+				width: 48px;
+				height: 48px;
+				float: left;
+				margin: 0 6px 0 0;
+			}
+
+			.reveal h3 {
+				margin-bottom: 40px;
+			}
+
+            .smaller {
+                font-size: smaller;
+            }
+
+            code {
+                padding: 2px 4px;
+                font-size: 90%;
+                color: #0072c1;
+                background-color: #f9f2f4;
+                border-radius: 4px;
+            }
+
+            p.padded {
+                margin-top: 32px;
+            }
+
+            section .row {
+                display: flex;
+            }
+
+            section .column {
+                flex: 48%;
+                margin: 10px;
+            }
+
+			@media print
+			{
+				.no-print, .no-print *
+				{
+					display: none !important;
+				}
+			}
+
+
+            .regex-input {
+                border:1px solid rgb(204, 204, 204);
+                background: rgb(245, 245, 245);
+                padding: 8px;
+            }
+
+            .regex-input input {
+                font-size: inherit;
+            }
+
+            .regex-input input[type=text]:invalid {
+                background-color: pink;
+            }
+
+		</style>
+	<style type="text/css">.hljs-ln{border-collapse:collapse}.hljs-ln td{padding:0}.hljs-ln-n:before{content:attr(data-line-number)}</style></head>
+	<body class="reveal-viewport" style="--slide-width: 960px; --slide-height: 700px;">
+		<div class="reveal slide focused has-horizontal-slides ready" role="application" data-transition-speed="default" data-background-transition="fade">
+			<div class="slides" style="width: 960px; height: 700px; inset: 50% auto auto 50%; transform: translate(-50%, -50%) scale(0.919286);">
+				<section class="heading-only present" style="display: block;">
+                    <h1 class="smaller">Intro to SQL</h1>
+
+					<div class="no-print" style="text-align: left; margin-top: 100px; font-size: 70%;">
+						Tips for navigating the slides:
+						<ul>
+							<li>Press O or Escape for overview mode.</li>
+							<li>Visit <a href="https://inst.eecs.berkeley.edu/~cs61a/sp21/assets/slides/35-Intro_to_SQL.html?print-pdf" target="_blank">this link</a> for a nice printable version</li>
+							<li>Press the copy icon on the upper right of code blocks to copy the code</li>
+						</ul>
+					</div>
+				</section>
+
+
+                <section class="heading-only future" hidden="" aria-hidden="true" style="display: block;">
+                    <h2>Databases</h2>
+                </section>
+
+                <section hidden="" aria-hidden="true" class="future" style="display: block;">
+                    <h3>Databases</h3>
+
+                    <p>Data can be stored in a database,
+                    a program that knows how to store, modify, and retrieve data.
+                    </p>
+
+                    <p>A <strong>relational</strong> database
+                        stores each kind of data in a table.
+                        Each table has columns and rows.
+                    </p>
+
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>Column 1
+                                </th><th>Column 2
+                                </th><th>Column 3
+                        </th></tr></thead><tbody>
+                            <tr>
+                                <td>Row 1
+                                </td><td>...
+                                </td><td>...
+                            </td></tr><tr>
+                                <td>Row 2
+                                </td><td>...
+                                </td><td>...
+                            </td></tr><tr>
+                                <td>Row 3
+                                </td><td>...
+                                </td><td>...
+                        </td></tr></tbody>
+                    </table>
+
+                </section>
+
+                <section hidden="" aria-hidden="true" class="future" style="display: none;">
+                    <h3>Example tables</h3>
+
+                    <div style="text-align: left;">
+                    users:
+                    <table style="margin:0;">
+                        <thead>
+                            <tr>
+                                <th>id
+                                </th><th>nickname
+                                </th><th>location
+                        </th></tr></thead><tbody>
+                            <tr>
+                                <td>1
+                                </td><td>Sal
+                                </td><td>California
+                            </td></tr><tr>
+                                <td>2
+                                </td><td>John
+                                </td><td>New York
+                            </td></tr><tr>
+                                <td>3
+                                </td><td>MayLi
+                                </td><td>Washington
+                        </td></tr></tbody>
+                    </table>
+                    <br>
+                    badges:
+                    <table style="margin:0;">
+                        <thead>
+                            <tr>
+                                <th>id
+                                </th><th>name
+                                </th><th>points
+                        </th></tr></thead><tbody>
+                            <tr>
+                                <td>1
+                                </td><td>Guru
+                                </td><td>1000
+                            </td></tr><tr>
+                                <td>2
+                                </td><td>Oracle
+                                </td><td>2000
+                            </td></tr><tr>
+                                <td>3
+                                </td><td>Wizard
+                                </td><td>500
+                        </td></tr></tbody>
+                    </table>
+                    </div>
+
+                </section>
+
+                <section hidden="" aria-hidden="true" class="future" style="display: none;">
+                    <h3>Relating Tables</h3>
+
+                    <div class="row">
+                        <div class="column">
+                        users:
+                        <table style="margin:0;">
+                            <thead>
+                                <tr>
+                                    <th>id
+                                    </th><th>nickname
+                                    </th><th>location
+                            </th></tr></thead><tbody>
+                                <tr>
+                                    <td>1
+                                    </td><td>Sal
+                                    </td><td>California
+                                </td></tr><tr>
+                                    <td>2
+                                    </td><td>John
+                                    </td><td>New York
+                                </td></tr><tr>
+                                    <td>3
+                                    </td><td>MayLi
+                                    </td><td>Washington
+                            </td></tr></tbody>
+                        </table>
+                        <br>
+                        badges:
+                        <table style="margin:0;">
+                            <thead>
+                                <tr>
+                                    <th>id
+                                    </th><th>name
+                                    </th><th>points
+                            </th></tr></thead><tbody>
+                                <tr>
+                                    <td>1
+                                    </td><td>Guru
+                                    </td><td>1000
+                                </td></tr><tr>
+                                    <td>2
+                                    </td><td>Oracle
+                                    </td><td>2000
+                                </td></tr><tr>
+                                    <td>3
+                                    </td><td>Wizard
+                                    </td><td>500
+                            </td></tr></tbody>
+                        </table>
+                        </div>
+                        <div class="column">
+                            user_badges:
+                        <table>
+                            <thead>
+                                <tr>
+                                    <th>user_id
+                                    </th><th>badge_id
+                            </th></tr></thead><tbody>
+                                <tr>
+                                    <td>1
+                                    </td><td>1
+                                </td></tr><tr>
+                                    <td>1
+                                    </td><td>2
+                                </td></tr><tr>
+                                    <td>2
+                                    </td><td>3
+                                </td></tr><tr>
+                                    <td>3
+                                    </td><td>3
+                            </td></tr></tbody>
+                        </table>
+                        </div>
+                    </div>
+
+                </section>
+
+
+                <section class="heading-only future" hidden="" aria-hidden="true" style="display: none;">
+                    <h2>SQL</h2>
+                </section>
+
+                <section hidden="" aria-hidden="true" class="future" style="display: none;">
+                    <h3>Structured Query Language</h3>
+
+                    <p>Originally called SEQUEL!<br>
+                    (Structured English QUEry Language)</p>
+
+                    <p>The most popular language for interacting with relational databases. Commands like...</p>
+
+                    <ul>
+                        <li><code>CREATE TABLE ...</code>
+                        </li><li><code>INSERT INTO ...</code>
+                        </li><li><code>UPDATE ...</code>
+                        </li><li><code>SELECT * FROM ...</code>
+                    </li></ul>
+
+                </section>
+
+                <section hidden="" aria-hidden="true" class="future" style="display: none;">
+                    <h3>CREATE &amp; INSERT</h3>
+
+                    <pre style="font-size:0.9em" class="code-badge-pre"><div class="code-badge">
+        <div class="code-badge-language">sql</div>
+        <div title="Copy to clipboard">
+            <i class="fa fa-copy code-badge-copy-icon">📄</i>
+        </div>
+     </div><code data-trim="" data-noescape="" class="sql hljs"><span class="hljs-keyword">CREATE</span> <span class="hljs-keyword">TABLE</span> <span class="hljs-keyword">users</span> (<span class="hljs-keyword">id</span> <span class="hljs-built_in">INTEGER</span> PRIMARY <span class="hljs-keyword">KEY</span>,
+    nickname <span class="hljs-built_in">TEXT</span>, location <span class="hljs-built_in">TEXT</span>);
+
+<span class="hljs-keyword">INSERT</span> <span class="hljs-keyword">INTO</span> <span class="hljs-keyword">users</span> <span class="hljs-keyword">VALUES</span> (<span class="hljs-number">1</span>, <span class="hljs-string">"Sal"</span>, <span class="hljs-string">"California"</span>);
+<span class="hljs-keyword">INSERT</span> <span class="hljs-keyword">INTO</span> <span class="hljs-keyword">users</span> <span class="hljs-keyword">VALUES</span> (<span class="hljs-number">2</span>, <span class="hljs-string">"John"</span>, <span class="hljs-string">"New York"</span>);
+<span class="hljs-keyword">INSERT</span> <span class="hljs-keyword">INTO</span> <span class="hljs-keyword">users</span> <span class="hljs-keyword">VALUES</span> (<span class="hljs-number">3</span>, <span class="hljs-string">"MayLi"</span>, <span class="hljs-string">"Indonesia"</span>);
+
+<span class="hljs-keyword">SELECT</span> * <span class="hljs-keyword">FROM</span> <span class="hljs-keyword">users</span>;</code></pre>
+
+                    <p>Try it on <a href="http://code.cs61a.org/" target="_blank">code.cs61a.org</a>
+                        or <a href="https://www.khanacademy.org/cs/new/sql" target="_blank">khanacademy.org</a>
+                    </p>
+                    <br>
+                    <p>Documentation:
+                        <a href="https://sqlite.org/lang_createtable.html" target="_blank">SQLite.org: CREATE TABLE</a>,
+                        <a href="https://www.sqlite.org/lang_insert.html" target="_blank">SQLite.org: INSERT</a>,
+                        <a href="https://www.khanacademy.org/computer-programming/sql-create-table-with-multiple-data-types/5945065256124416" target="_blank">KA: CREATE TABLE</a>,
+                        <a href="https://www.khanacademy.org/computer-programming/sql-inserting-values-in-tables/5382515271532544" target="_blank">KA: INSERT</a>
+                    </p>
+                </section>
+
+
+
+                <section hidden="" aria-hidden="true" class="future" style="display: none;">
+                    <h3>UPDATE</h3>
+
+                    <p>Update column values of existing rows</p>
+                    <pre style="font-size:0.9em" class="code-badge-pre"><div class="code-badge">
+        <div class="code-badge-language">sql</div>
+        <div title="Copy to clipboard">
+            <i class="fa fa-copy code-badge-copy-icon">📄</i>
+        </div>
+     </div><code data-trim="" data-noescape="" class="sql hljs"><span class="hljs-keyword">CREATE</span> <span class="hljs-keyword">TABLE</span> <span class="hljs-keyword">users</span> (<span class="hljs-keyword">id</span> <span class="hljs-built_in">INTEGER</span> PRIMARY <span class="hljs-keyword">KEY</span>,
+    nickname <span class="hljs-built_in">TEXT</span>, location <span class="hljs-built_in">TEXT</span>);
+
+<span class="hljs-keyword">INSERT</span> <span class="hljs-keyword">INTO</span> <span class="hljs-keyword">users</span> <span class="hljs-keyword">VALUES</span> (<span class="hljs-number">1</span>, <span class="hljs-string">"Sal"</span>, <span class="hljs-string">"California"</span>);
+<span class="hljs-keyword">INSERT</span> <span class="hljs-keyword">INTO</span> <span class="hljs-keyword">users</span> <span class="hljs-keyword">VALUES</span> (<span class="hljs-number">2</span>, <span class="hljs-string">"John"</span>, <span class="hljs-string">"New York"</span>);
+<span class="hljs-keyword">INSERT</span> <span class="hljs-keyword">INTO</span> <span class="hljs-keyword">users</span> <span class="hljs-keyword">VALUES</span> (<span class="hljs-number">3</span>, <span class="hljs-string">"MayLi"</span>, <span class="hljs-string">"Indonesia"</span>);
+
+<span class="hljs-keyword">UPDATE</span> <span class="hljs-keyword">users</span> <span class="hljs-keyword">SET</span> nickname = <span class="hljs-string">"Joan"</span> <span class="hljs-keyword">WHERE</span> <span class="hljs-keyword">id</span> = <span class="hljs-number">2</span>;</code></pre>
+
+                    <br>
+                    <p>Documentation:
+                        <a href="https://www.khanacademy.org/computer-programming/sql-update-and-delete/5559819222253568" target="_blank">KA: UPDATE</a>
+                    </p>
+                </section>
+
+
+                <section hidden="" aria-hidden="true" class="future" style="display: none;">
+                    <h3>DELETE</h3>
+
+                    <p>Delete entire rows that match criteria</p>
+
+                    <pre style="font-size:0.9em" class="code-badge-pre"><div class="code-badge">
+        <div class="code-badge-language">sql</div>
+        <div title="Copy to clipboard">
+            <i class="fa fa-copy code-badge-copy-icon">📄</i>
+        </div>
+     </div><code data-trim="" data-noescape="" class="sql hljs"><span class="hljs-keyword">CREATE</span> <span class="hljs-keyword">TABLE</span> <span class="hljs-keyword">users</span> (<span class="hljs-keyword">id</span> <span class="hljs-built_in">INTEGER</span> PRIMARY <span class="hljs-keyword">KEY</span>,
+    nickname <span class="hljs-built_in">TEXT</span>, location <span class="hljs-built_in">TEXT</span>);
+
+<span class="hljs-keyword">INSERT</span> <span class="hljs-keyword">INTO</span> <span class="hljs-keyword">users</span> <span class="hljs-keyword">VALUES</span> (<span class="hljs-number">1</span>, <span class="hljs-string">"Sal"</span>, <span class="hljs-string">"California"</span>);
+<span class="hljs-keyword">INSERT</span> <span class="hljs-keyword">INTO</span> <span class="hljs-keyword">users</span> <span class="hljs-keyword">VALUES</span> (<span class="hljs-number">2</span>, <span class="hljs-string">"John"</span>, <span class="hljs-string">"New York"</span>);
+<span class="hljs-keyword">INSERT</span> <span class="hljs-keyword">INTO</span> <span class="hljs-keyword">users</span> <span class="hljs-keyword">VALUES</span> (<span class="hljs-number">3</span>, <span class="hljs-string">"MayLi"</span>, <span class="hljs-string">"Indonesia"</span>);
+
+<span class="hljs-keyword">DELETE</span> <span class="hljs-keyword">FROM</span> <span class="hljs-keyword">users</span> <span class="hljs-keyword">WHERE</span> <span class="hljs-keyword">id</span> = <span class="hljs-number">3</span>;</code></pre>
+
+                    <br>
+                    <p>Documentation:
+                        <a href="https://www.khanacademy.org/computer-programming/sql-update-and-delete/5559819222253568" target="_blank">KA: DELETE</a>
+                    </p>
+                </section>
+
+                <section hidden="" aria-hidden="true" class="future" style="display: none;">
+                    <h3>SELECT</h3>
+
+                    <p class="smaller">Most of the complexity and power of SQL is in the <code>SELECT</code> statement.</p>
+
+                    <pre style="font-size:0.9em" class="code-badge-pre"><div class="code-badge">
+        <div class="code-badge-language">sql</div>
+        <div title="Copy to clipboard">
+            <i class="fa fa-copy code-badge-copy-icon">📄</i>
+        </div>
+     </div><code data-trim="" data-noescape="" class="sql hljs"><span class="hljs-keyword">SELECT</span> nickname <span class="hljs-keyword">FROM</span> <span class="hljs-keyword">users</span>;
+
+<span class="hljs-keyword">SELECT</span> nickname, location <span class="hljs-keyword">FROM</span> <span class="hljs-keyword">users</span>;
+
+<span class="hljs-keyword">SELECT</span> nickname, location <span class="hljs-keyword">FROM</span> <span class="hljs-keyword">users</span> <span class="hljs-keyword">ORDER</span> <span class="hljs-keyword">BY</span> nickname;
+
+<span class="hljs-keyword">SELECT</span> nickname <span class="hljs-keyword">FROM</span> <span class="hljs-keyword">users</span> <span class="hljs-keyword">WHERE</span> location = <span class="hljs-string">"California"</span>;</code></pre>
+                    <br>
+                    <p>Documentation:
+                        <a href="https://www.sqlite.org/lang_select.html" target="_blank">SQLite.org: SELECT</a>,<br>
+                        <a href="https://www.khanacademy.org/computer-programming/sql-selecting-rows/5163767537205248" target="_blank">KA: SELECT</a>,
+                        <a href="https://www.khanacademy.org/computer-programming/sql-selecting-with-where-conditions/6216095996444672" target="_blank">KA: SELECT WHERE</a>,
+                        <a href="https://www.khanacademy.org/computer-programming/sql-select-with-order-by/6218182226477056" target="_blank">KA: ORDER BY</a>,
+                    </p>
+                </section>
+
+                <section hidden="" aria-hidden="true" class="future" style="display: none;">
+                    <h3>Aggregate functions</h3>
+
+                    <p>Aggregates column values in some way:<br>
+                      <code>MAX</code>/<code>MIN</code>, <code>SUM</code>, <code>AVG</code>, <code>COUNT</code></p>
+
+                    <pre style="font-size:0.8em" class="code-badge-pre"><div class="code-badge">
+        <div class="code-badge-language">sql</div>
+        <div title="Copy to clipboard">
+            <i class="fa fa-copy code-badge-copy-icon">📄</i>
+        </div>
+     </div><code data-trim="" data-noescape="" class="sql hljs"><span class="hljs-keyword">CREATE</span> <span class="hljs-keyword">TABLE</span> groceries (<span class="hljs-keyword">id</span> <span class="hljs-built_in">INTEGER</span> PRIMARY <span class="hljs-keyword">KEY</span>,
+    <span class="hljs-keyword">name</span> <span class="hljs-built_in">TEXT</span>, quantity <span class="hljs-built_in">INTEGER</span>, aisle <span class="hljs-built_in">INTEGER</span>);
+<span class="hljs-keyword">INSERT</span> <span class="hljs-keyword">INTO</span> groceries <span class="hljs-keyword">VALUES</span> (<span class="hljs-number">1</span>, <span class="hljs-string">"Bananas"</span>, <span class="hljs-number">56</span>, <span class="hljs-number">7</span>);
+<span class="hljs-keyword">INSERT</span> <span class="hljs-keyword">INTO</span> groceries <span class="hljs-keyword">VALUES</span>(<span class="hljs-number">2</span>, <span class="hljs-string">"Peanut Butter"</span>, <span class="hljs-number">1</span>, <span class="hljs-number">2</span>);
+<span class="hljs-keyword">INSERT</span> <span class="hljs-keyword">INTO</span> groceries <span class="hljs-keyword">VALUES</span>(<span class="hljs-number">3</span>, <span class="hljs-string">"Dark Chocolate Bars"</span>, <span class="hljs-number">2</span>, <span class="hljs-number">2</span>);
+<span class="hljs-keyword">INSERT</span> <span class="hljs-keyword">INTO</span> groceries <span class="hljs-keyword">VALUES</span>(<span class="hljs-number">4</span>, <span class="hljs-string">"Ice cream"</span>, <span class="hljs-number">1</span>, <span class="hljs-number">12</span>);
+<span class="hljs-keyword">INSERT</span> <span class="hljs-keyword">INTO</span> groceries <span class="hljs-keyword">VALUES</span>(<span class="hljs-number">5</span>, <span class="hljs-string">"Cherries"</span>, <span class="hljs-number">6</span>, <span class="hljs-number">2</span>);
+<span class="hljs-keyword">INSERT</span> <span class="hljs-keyword">INTO</span> groceries <span class="hljs-keyword">VALUES</span>(<span class="hljs-number">6</span>, <span class="hljs-string">"Chocolate syrup"</span>, <span class="hljs-number">1</span>, <span class="hljs-number">4</span>);
+
+<span class="hljs-keyword">SELECT</span> <span class="hljs-keyword">MAX</span>(quantity) <span class="hljs-keyword">FROM</span> groceries;</code></pre>
+                    <br>
+                    <p>Documentation:
+                        <a href="https://www.sqlite.org/lang_aggfunc.html" target="_blank">SQLite.org: Aggregate functions</a>,<br>
+                        <a href="https://www.khanacademy.org/computer-programming/sql-select-with-aggregate-functions/4797964233080832" target="_blank">KA: SELECT with aggregate</a>
+                    </p>
+                </section>
+
+                <section hidden="" aria-hidden="true" class="future" style="display: none;">
+                    <h3>GROUP BY</h3>
+
+                    <p>Groups rows that share the same column value</p>
+
+                    <pre style="font-size:0.8em" class="code-badge-pre"><div class="code-badge">
+        <div class="code-badge-language">sql</div>
+        <div title="Copy to clipboard">
+            <i class="fa fa-copy code-badge-copy-icon">📄</i>
+        </div>
+     </div><code data-trim="" data-noescape="" class="sql hljs"><span class="hljs-keyword">CREATE</span> <span class="hljs-keyword">TABLE</span> groceries (<span class="hljs-keyword">id</span> <span class="hljs-built_in">INTEGER</span> PRIMARY <span class="hljs-keyword">KEY</span>,
+    <span class="hljs-keyword">name</span> <span class="hljs-built_in">TEXT</span>, quantity <span class="hljs-built_in">INTEGER</span>, aisle <span class="hljs-built_in">INTEGER</span>);
+<span class="hljs-keyword">INSERT</span> <span class="hljs-keyword">INTO</span> groceries <span class="hljs-keyword">VALUES</span> (<span class="hljs-number">1</span>, <span class="hljs-string">"Bananas"</span>, <span class="hljs-number">56</span>, <span class="hljs-number">7</span>);
+<span class="hljs-keyword">INSERT</span> <span class="hljs-keyword">INTO</span> groceries <span class="hljs-keyword">VALUES</span>(<span class="hljs-number">2</span>, <span class="hljs-string">"Peanut Butter"</span>, <span class="hljs-number">1</span>, <span class="hljs-number">2</span>);
+<span class="hljs-keyword">INSERT</span> <span class="hljs-keyword">INTO</span> groceries <span class="hljs-keyword">VALUES</span>(<span class="hljs-number">3</span>, <span class="hljs-string">"Dark Chocolate Bars"</span>, <span class="hljs-number">2</span>, <span class="hljs-number">2</span>);
+<span class="hljs-keyword">INSERT</span> <span class="hljs-keyword">INTO</span> groceries <span class="hljs-keyword">VALUES</span>(<span class="hljs-number">4</span>, <span class="hljs-string">"Ice cream"</span>, <span class="hljs-number">1</span>, <span class="hljs-number">12</span>);
+<span class="hljs-keyword">INSERT</span> <span class="hljs-keyword">INTO</span> groceries <span class="hljs-keyword">VALUES</span>(<span class="hljs-number">5</span>, <span class="hljs-string">"Cherries"</span>, <span class="hljs-number">6</span>, <span class="hljs-number">2</span>);
+<span class="hljs-keyword">INSERT</span> <span class="hljs-keyword">INTO</span> groceries <span class="hljs-keyword">VALUES</span>(<span class="hljs-number">6</span>, <span class="hljs-string">"Chocolate syrup"</span>, <span class="hljs-number">1</span>, <span class="hljs-number">4</span>);
+
+<span class="hljs-keyword">SELECT</span> aisle, <span class="hljs-keyword">SUM</span>(quantity) <span class="hljs-keyword">FROM</span> groceries <span class="hljs-keyword">GROUP</span> <span class="hljs-keyword">BY</span> aisle;</code></pre>
+                    <br>
+                    <p>Documentation:
+                        <a href="https://www.sqlite.org/lang_select.html#resultset" target="_blank">SQLite.org: Generating results</a>,<br>
+                        <a href="https://www.khanacademy.org/computer-programming/sql-grouping-select-results-with-group-by/5520132919132160" target="_blank">KA: SELECT with GROUP BY</a>
+                    </p>
+                </section>
+
+                <section hidden="" aria-hidden="true" class="future" style="display: none;">
+                    <h3>JOIN</h3>
+
+                    <p class="smaller">Generates results from two related tables that share a column.</p>
+                    <pre style="font-size:0.5em" class="code-badge-pre"><div class="code-badge">
+        <div class="code-badge-language">sql</div>
+        <div title="Copy to clipboard">
+            <i class="fa fa-copy code-badge-copy-icon">📄</i>
+        </div>
+     </div><code data-trim="" data-noescape="" class="sql hljs"><span class="hljs-keyword">CREATE</span> <span class="hljs-keyword">TABLE</span> students (<span class="hljs-keyword">id</span> <span class="hljs-built_in">INTEGER</span> PRIMARY <span class="hljs-keyword">KEY</span>, first_name <span class="hljs-built_in">TEXT</span>,
+    last_name <span class="hljs-built_in">TEXT</span>, email <span class="hljs-built_in">TEXT</span>, phone <span class="hljs-built_in">TEXT</span>, birthdate <span class="hljs-built_in">TEXT</span>);
+
+<span class="hljs-keyword">INSERT</span> <span class="hljs-keyword">INTO</span> students (first_name, last_name, email, phone, birthdate)
+    <span class="hljs-keyword">VALUES</span> (<span class="hljs-string">"Peter"</span>, <span class="hljs-string">"Rabbit"</span>, <span class="hljs-string">"peter@rabbit.com"</span>, <span class="hljs-string">"555-6666"</span>, <span class="hljs-string">"2002-06-24"</span>);
+<span class="hljs-keyword">INSERT</span> <span class="hljs-keyword">INTO</span> students (first_name, last_name, email, phone, birthdate)
+    <span class="hljs-keyword">VALUES</span> (<span class="hljs-string">"Alice"</span>, <span class="hljs-string">"Wonderland"</span>, <span class="hljs-string">"alice@wonderland.com"</span>, <span class="hljs-string">"555-4444"</span>, <span class="hljs-string">"2002-07-04"</span>);
+
+<span class="hljs-keyword">CREATE</span> <span class="hljs-keyword">TABLE</span> student_projects (<span class="hljs-keyword">id</span> <span class="hljs-built_in">INTEGER</span> PRIMARY <span class="hljs-keyword">KEY</span>,
+    student_id <span class="hljs-built_in">INTEGER</span>, title <span class="hljs-built_in">TEXT</span>);
+
+<span class="hljs-keyword">INSERT</span> <span class="hljs-keyword">INTO</span> student_projects (student_id, title) <span class="hljs-keyword">VALUES</span> (<span class="hljs-number">1</span>, <span class="hljs-string">"Carrotapault"</span>);
+
+<span class="hljs-keyword">SELECT</span> students.first_name, students.last_name, student_projects.title
+    <span class="hljs-keyword">FROM</span> students
+    <span class="hljs-keyword">JOIN</span> student_projects
+    <span class="hljs-keyword">ON</span> students.id = student_projects.student_id;</code></pre>
+
+                    <br>
+                    <p>Documentation:
+                        <a href="https://www.khanacademy.org/computer-programming/sql-join-on-tables/5409956539006976" target="_blank">KA: JOIN</a>
+                    </p>
+                </section>
+
+
+                <section hidden="" aria-hidden="true" class="future" style="display: none;">
+                    <h3>Where is SQL used?</h3>
+
+                    <p>1) Application data storage and 2) data analysis</p>
+                    <img src="./Intro to SQL_files/saWrqSL.png" alt="Diagram of SQL usage in web application">
+
+                </section>
+
+
+                <section hidden="" aria-hidden="true" class="future" style="display: none;">
+                    <h3>Demo App: Native or Not?</h3>
+
+                    <p>
+                        <a href="https://flask-db-example.pamelafox2.repl.co/" target="_blank">flask-db-example.pamelafox2.repl.co</a>
+                    </p>
+
+                    <p>
+                        View the code by clicking the "Code" tab at
+                        <a href="https://replit.com/@PamelaFox2/flask-db-example" target="_blank">https://replit.com/@PamelaFox2/flask-db-example</a>
+                    </p>
+
+                </section>
+
+                <section hidden="" aria-hidden="true" class="future" style="display: none;">
+                    <h3>Demo App: 61A Merch</h3>
+
+                    <p>
+                        <a href="https://flask-db-example-1.pamelafox2.repl.co/" target="_blank">flask-db-example-1.pamelafox2.repl.co/</a>
+                    </p>
+
+                    <p>
+                        View the code by clicking the "Code" tab at
+                        <a href="https://replit.com/@PamelaFox2/61AMerchWithTransactions" target="_blank">https://replit.com/@PamelaFox2/61AMerchWithTransactions</a>
+                    </p>
+
+                    <p>Includes a transaction:</p>
+
+                    <pre style="font-size:0.9em" class="code-badge-pre"><div class="code-badge">
+        <div class="code-badge-language">sql</div>
+        <div title="Copy to clipboard">
+            <i class="fa fa-copy code-badge-copy-icon">📄</i>
+        </div>
+     </div><code data-trim="" data-noescape="" class="sql hljs"><span class="hljs-keyword">BEGIN</span>;
+
+<span class="hljs-keyword">UPDATE</span> products <span class="hljs-keyword">SET</span> quantity = quantity - <span class="hljs-number">1</span>
+    <span class="hljs-keyword">WHERE</span> <span class="hljs-keyword">id</span> = <span class="hljs-number">1</span>;
+
+<span class="hljs-keyword">INSERT</span> <span class="hljs-keyword">INTO</span> orders (customer, product_id)
+    <span class="hljs-keyword">VALUES</span> (<span class="hljs-string">"Animesh"</span>, <span class="hljs-number">1</span>);
+
+<span class="hljs-keyword">COMMIT</span>;</code></pre>
+
+                </section>
+
+                <section hidden="" aria-hidden="true" class="future" style="display: none;">
+                    <h3>Further learning</h3>
+
+                    <p>There's lots we didn't cover today! <code>IN</code>, <code>HAVING</code>, <code>CASE</code>,  <code>ALTER TABLE</code>, more <code>JOIN</code>s,
+                        transactions, security, etc.
+                    </p>
+
+                    <p>Online learning:
+                        </p><ul>
+                            <li><a href="https://www.khanacademy.org/computing/computer-programming/sql" target="_blank">Khan Academy SQL course</a>
+                            </li><li><a href="https://www.kaggle.com/learn/intro-to-sql" target="_blank">Kaggle: Intro to SQL</a>
+                            </li><li><a href="https://cs.stanford.edu/people/widom/" target="_blank">Stanford's Database courses</a>
+                            </li><li><a href="https://www.coursera.org/learn/gcp-exploring-preparing-data-bigquery" target="_blank">Coursera: Exploring data with BigQuery</a>
+                        </li></ul>
+                    <p></p>
+
+                    <p>Berkeley classes:
+                        </p><ul>
+                            <li><a href="https://www2.eecs.berkeley.edu/Courses/CS186/" target="_blank">CS 186: Intro to Database Systems</a>
+                            </li><li><a href="https://ds100.org/" target="_blank">Data 100: Principles and Techniques of Data Science</a>
+                            </li><li><a href="https://cal-data-eng.github.io/" target="_blank">CS194/INFO290: Data Engineering</a>
+                    <p></p>
+                </li></ul></section>
+
+
+
+			</div>
+		<div class="backgrounds"><div class="slide-background heading-only present" data-loaded="true" style="display: block;"><div class="slide-background-content"></div></div><div class="slide-background heading-only future" data-loaded="true" style="display: block;"><div class="slide-background-content"></div></div><div class="slide-background future" data-loaded="true" style="display: block;"><div class="slide-background-content"></div></div><div class="slide-background future" style="display: none;"><div class="slide-background-content"></div></div><div class="slide-background future" style="display: none;"><div class="slide-background-content"></div></div><div class="slide-background heading-only future" style="display: none;"><div class="slide-background-content"></div></div><div class="slide-background future" style="display: none;"><div class="slide-background-content"></div></div><div class="slide-background future" style="display: none;"><div class="slide-background-content"></div></div><div class="slide-background future" style="display: none;"><div class="slide-background-content"></div></div><div class="slide-background future" style="display: none;"><div class="slide-background-content"></div></div><div class="slide-background future" style="display: none;"><div class="slide-background-content"></div></div><div class="slide-background future" style="display: none;"><div class="slide-background-content"></div></div><div class="slide-background future" style="display: none;"><div class="slide-background-content"></div></div><div class="slide-background future" style="display: none;"><div class="slide-background-content"></div></div><div class="slide-background future" style="display: none;"><div class="slide-background-content"></div></div><div class="slide-background future" style="display: none;"><div class="slide-background-content"></div></div><div class="slide-background future" style="display: none;"><div class="slide-background-content"></div></div><div class="slide-background future" style="display: none;"><div class="slide-background-content"></div></div></div><div class="slide-number" style="display: block;"><a href="https://inst.eecs.berkeley.edu/~cs61a/sp21/assets/slides/35-Intro_to_SQL.html#/">
+					<span class="slide-number-a">1</span>
+					</a></div><aside class="controls" data-controls-layout="bottom-right" data-controls-back-arrows="faded" style="display: block;"><button class="navigate-left" aria-label="previous slide" disabled="disabled"><div class="controls-arrow"></div></button>
+			<button class="navigate-right enabled highlight" aria-label="next slide"><div class="controls-arrow"></div></button>
+			<button class="navigate-up" aria-label="above slide" disabled="disabled"><div class="controls-arrow"></div></button>
+			<button class="navigate-down" aria-label="below slide" disabled="disabled"><div class="controls-arrow"></div></button></aside><div class="progress" style="display: block;"><span style="transform: scaleX(0);"></span></div><div class="speaker-notes" data-prevent-swipe="" tabindex="0"></div><div class="pause-overlay"><button class="resume-button">Resume presentation</button></div><div class="aria-status" aria-live="polite" aria-atomic="true" style="position: absolute; height: 1px; width: 1px; overflow: hidden; clip: rect(1px, 1px, 1px, 1px);">Intro to SQL Tips for navigating the slides: Press O or Escape for overview mode. Visit this link for a nice printable version Press the copy icon on the upper right of code blocks to copy the code </div></div>
+
+		<script src="./Intro to SQL_files/reveal.js.下载"></script>
+        <script src="./Intro to SQL_files/highlight.js.下载"></script>
+        <script src="./Intro to SQL_files/highlightjs-badge.min.js.下载"></script>
+        <script src="./Intro to SQL_files/jsplumb.min.js.下载"></script>
+		<script>
+			const srcUrlPrefix = "https://cdn.jsdelivr.net/npm/reveal.js@4.1.0/";
+			Reveal.initialize({
+				hash: true,
+				center: false,
+				slideNumber: true,
+				showNotes: false,
+				margin: 0.1,
+				preloadIframes: true,
+				plugins: [ RevealHighlight ],
+				pdfSeparateFragments: true
+			});
+
+            // add HighlightJS-badge (options are optional)
+            var options = {
+                copyIconContent: "📄",
+                checkIconContent: "✅"
+            };
+            window.highlightJsBadge(options);
+
+            if (window.location.search == "?print-pdf") {
+                var uncounted = document.querySelectorAll("[data-visibility='uncounted']");
+                uncounted.forEach(node => {
+                    node.parentNode.classList.add("no-print")
+                })
+            }
+		</script>
+	
+
+<style>
+@media print {
+   .code-badge { display: none; }
+}
+    .code-badge-pre {
+        position: relative;
+    }
+    .code-badge {
+        display: flex;
+        flex-direction: row;
+        white-space: normal;
+        background: transparent;
+        background: #333;
+        color: white;
+        font-size: 0.875em;
+        opacity: 0.5;
+        transition: opacity linear 0.5s;
+        border-radius: 0 0 0 7px;
+        padding: 5px 8px 5px 8px;
+        position: absolute;
+        right: 0;
+        top: 0;
+    }
+    .code-badge.active {
+        opacity: 0.8;
+    }
+
+    .code-badge:hover {
+        opacity: .95;
+    }
+
+    .code-badge a,
+    .code-badge a:hover {
+        text-decoration: none;
+    }
+
+    .code-badge-language {
+        margin-right: 10px;
+        font-weight: 600;
+        color: goldenrod;
+    }
+    .code-badge-copy-icon {
+        font-size: 1.2em;
+        cursor: pointer;
+        padding: 0 7px;
+        margin-top:2;
+    }
+    .fa.text-success:{ color: limegreen !important }
+</style><div id="CodeBadgeTemplate" style="display:none">
+    <div class="code-badge">
+        <div class="code-badge-language">{{language}}</div>
+        <div title="Copy to clipboard">
+            <i class="{{copyIconClass}} code-badge-copy-icon"></i>
+        </div>
+     </div>
+</div></body></html>

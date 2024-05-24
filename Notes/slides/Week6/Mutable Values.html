@@ -1,0 +1,976 @@
+<!DOCTYPE html>
+<!-- saved from url=(0079)https://inst.eecs.berkeley.edu/~cs61a/sp21/assets/slides/13-Mutable_Values.html -->
+<html class="reveal-full-page"><head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+		
+		<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+		<title>Mutable Values</title>
+		<link rel="stylesheet" href="./Mutable Values_files/reset.css">
+		<link rel="stylesheet" href="./Mutable Values_files/reveal.css">
+		<link rel="stylesheet" href="./Mutable Values_files/simple.css" id="theme">
+		<link rel="stylesheet" href="./Mutable Values_files/mono-blue.css">
+		<link rel="stylesheet" href="./Mutable Values_files/css">
+		<style>
+			.reveal {
+				font-family: "Work Sans", sans-serif;
+			}
+
+			.reveal .slides section {
+				text-align: left;
+				font-size: smaller;
+			}
+
+			.reveal pre {
+				background-color: #f5f5f5;
+				width: 100%;
+				border: 1px solid #ccc;
+				border-radius: 4px;
+				box-shadow: none;
+			}
+
+			.reveal h1, .reveal h2, .reveal h3, .reveal h4, .reveal h5, .reveal h6 {
+				font-family: "Roboto", sans-serif;
+				color: #0072c1;
+			}
+
+			.reveal section.heading-only {
+				text-align:center;
+				padding-top:20%;
+			}
+
+            .code-badge-language {
+                display: none;
+            }
+
+			.python-tutor-link {
+				font-size: smaller;
+			}
+
+			.python-tutor-link:before {
+				content: "";
+				display: block;
+				background: url("http://pythontutor.com/favicon.ico") no-repeat;
+				width: 48px;
+				height: 48px;
+				float: left;
+				margin: 0 6px 0 0;
+			}
+
+			.reveal h3 {
+				margin-bottom: 40px;
+			}
+
+			@media print
+			{
+				.no-print, .no-print *
+				{
+					display: none !important;
+				}
+			}
+		</style>
+	<style type="text/css">.hljs-ln{border-collapse:collapse}.hljs-ln td{padding:0}.hljs-ln-n:before{content:attr(data-line-number)}</style></head>
+	<body class="reveal-viewport" style="--slide-width: 960px; --slide-height: 700px;">
+		<div class="reveal slide focused has-horizontal-slides ready" role="application" data-transition-speed="default" data-background-transition="fade" style="">
+			<div class="slides" style="width: 960px; height: 700px; zoom: 1.08771;">
+				<section class="heading-only present" style="display: block;">
+					<h2>Mutable Values</h2>
+
+
+					<div class="no-print" style="text-align: left; margin-top: 200px; font-size: 70%;">
+						Tips for navigating the slides:
+						<ul>
+							<li>Press O or Escape for overview mode.</li>
+							<li>Visit <a href="https://inst.eecs.berkeley.edu/~cs61a/sp21/assets/slides/13-Mutable_Values.html?print-pdf" target="_blank">this link</a> for a nice printable version</li>
+							<li>Press the copy icon on the upper right of code blocks to copy the code</li>
+						</ul>
+					</div>
+				</section>
+
+				<section hidden="" aria-hidden="true" class="future" style="display: block;">
+					<h3>Today we'll cover...</h3>
+					<ul>
+						<li>Tree creation algorithms</li>
+						<li>Mutability vs. Immutability</li>
+						<li>Mutable trees</li>
+						<li>List mutations</li>
+						<li>Identity and Equality</li>
+					</ul>
+				</section>
+
+				<section class="heading-only future" hidden="" aria-hidden="true" style="display: block;">
+					<h3>Trees</h3>
+				</section>
+
+                <section hidden="" aria-hidden="true" class="future" style="display: none;">
+					<h3>Tree: Layers of abstraction</h3>
+					<table>
+						<tbody><tr>
+							<td style="font-weight:bold;">Primitive Representation</td>
+							<td><code>1 2 3</code> <code>True False</code><br><code>(..,..)</code> <code>[..,..]</code> <code>{...}</code></td>
+						</tr>
+						<tr>
+							<td style="font-weight:bold;" rowspan="2">Data abstraction</td>
+							<td style="border-bottom: 1px dashed;"><code>tree()</code> <code>children()</code> <code>label()</code></td>
+						</tr>
+						<tr>
+							<td><code>is_leaf()</code></td>
+						</tr>
+						<tr>
+							<td style="font-weight:bold;">User program</td>
+							<td><code>count_leaves(t)</code> <code>double(t)</code></td>
+						</tr>
+					</tbody></table>
+					<p>
+						Each layer only uses the layer above it.
+					</p>
+				</section>
+
+				<section hidden="" aria-hidden="true" class="future" style="display: none;">
+					<h3>Abstractions involve choices</h3>
+
+					<ul>
+						<li>What operations should be exposed?</li>
+						<li>What should those operations be named?</li>
+						<li>What are the parameters and return values?</li>
+					</ul>
+
+					<p>Two possible <code>tree()</code> abstractions (of many):</p>
+					<table>
+						<thead>
+							<tr>
+								<th>This lecture</th>
+								<th>Your assignments</th>
+							</tr>
+						</thead>
+						<tbody><tr>
+							<td>
+								<code style="font-size:smaller;">tree(label, children=None)</code>
+							</td>
+							<td>
+								<code style="font-size:smaller;">tree(label, branches=[])</code>
+							</td>
+						</tr>
+						<tr>
+							<td>
+								<code style="font-size:smaller;">label(tree)</code>
+							</td>
+							<td>
+								<code style="font-size:smaller;">label(tree)</code>
+							</td>
+						</tr>
+						<tr>
+							<td>
+								<code style="font-size:smaller;">children(tree)</code>
+							</td>
+							<td>
+								<code style="font-size:smaller;">branches(tree)</code>
+							</td>
+						</tr>
+					</tbody></table>
+
+
+					<p>👀 Can you spot the differences?</p>
+				</section>
+
+				<section hidden="" aria-hidden="true" class="future" style="display: none;">
+					<h3>A tree() implementation</h3>
+
+					<p>A number-list tuple for each tree/subtree:</p>
+					<code style="font-size:70%">(20,[(12,[(9,[(7,[]),(2, [])]),(3, [])]),(8,[(4,[]),(4,[])])])</code>
+
+					<pre class="code-badge-pre"><div class="code-badge">
+        <div class="code-badge-language">python</div>
+        <div title="Copy to clipboard">
+            <i class="fa fa-copy code-badge-copy-icon">📄</i>
+        </div>
+     </div><code data-trim="" data-noescape="" class="python hljs"><span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">tree</span>(<span class="hljs-params">label, children=None</span>):</span>
+    <span class="hljs-string">""" Creates a tree whose root node is labeled LABEL and
+        optionally has CHILDREN, a list of trees."""</span>
+    <span class="hljs-keyword">return</span> (label, list(children <span class="hljs-keyword">or</span> []))
+
+<span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">label</span>(<span class="hljs-params">tree</span>):</span>&nbsp;&nbsp;&nbsp;
+    <span class="hljs-string">""" Returns the label of the root node of TREE. """</span>
+    <span class="hljs-keyword">return</span> tree[<span class="hljs-number">0</span>]
+
+<span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">children</span>(<span class="hljs-params">tree</span>):</span>&nbsp;&nbsp;&nbsp;
+    <span class="hljs-string">""" Returns a list of children of TREE. """</span>
+    <span class="hljs-keyword">return</span> tree[<span class="hljs-number">1</span>]</code></pre>
+
+					<pre class="code-badge-pre"><div class="code-badge">
+        <div class="code-badge-language">python</div>
+        <div title="Copy to clipboard">
+            <i class="fa fa-copy code-badge-copy-icon">📄</i>
+        </div>
+     </div><code data-trim="" data-noescape="" class="python hljs">t = tree(<span class="hljs-number">20</span>, [tree(<span class="hljs-number">12</span>,
+               [tree(<span class="hljs-number">9</span>,
+                 [tree(<span class="hljs-number">7</span>), tree(<span class="hljs-number">2</span>)]),
+                tree(<span class="hljs-number">3</span>)]),
+              tree(<span class="hljs-number">8</span>,
+               [tree(<span class="hljs-number">4</span>), tree(<span class="hljs-number">4</span>)])])</code></pre>
+				</section>
+
+				<section hidden="" aria-hidden="true" class="future" style="display: none;">
+					<h3>Tree creation algorithms</h3>
+
+					<p>A function that creates a tree from another tree is also often recursive.</p>
+
+					<img src="./Mutable Values_files/oGLyaQD.png" alt="Doubling trees diagram">
+				</section>
+
+
+				<section hidden="" aria-hidden="true" class="future" style="display: none;">
+					<h3>Tree creation: Doubling labels</h3>
+
+					<img src="./Mutable Values_files/oGLyaQD.png" alt="Doubling trees diagram">
+
+					<pre class="code-badge-pre"><div class="code-badge">
+        <div class="code-badge-language">python</div>
+        <div title="Copy to clipboard">
+            <i class="fa fa-copy code-badge-copy-icon">📄</i>
+        </div>
+     </div><code data-trim="" data-noescape="" class="python hljs"><span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">double</span>(<span class="hljs-params">t</span>):</span>
+    <span class="hljs-string">"""Returns a tree identical to T, but with all labels doubled."""</span>
+    <span class="hljs-keyword">if</span> <span class="fragment" data-fragment-index="0">is_leaf(t):</span>
+        <span class="fragment" data-fragment-index="1"><span class="hljs-keyword">return</span> tree(label(t) * <span class="hljs-number">2</span>)</span>
+    <span class="hljs-keyword">else</span>:
+        <span class="fragment" data-fragment-index="2">doubled_children = []
+        <span class="hljs-keyword">for</span> c <span class="hljs-keyword">in</span> children(t):
+            doubled_children += [double(c)]
+        <span class="hljs-keyword">return</span> tree(label(t) * <span class="hljs-number">2</span>, doubled_children)</span></code></pre>
+
+					<p>What's the base case? What's the recursive call?</p>
+
+				</section>
+
+				<section hidden="" aria-hidden="true" class="future" style="display: none;">
+					<h3>Creating trees: Doubling labels</h3>
+
+                    <p>How can we shorten this?</p>
+                    <pre class="code-badge-pre"><div class="code-badge">
+        <div class="code-badge-language">python</div>
+        <div title="Copy to clipboard">
+            <i class="fa fa-copy code-badge-copy-icon">📄</i>
+        </div>
+     </div><code data-trim="" data-noescape="" class="python hljs">doubled_children = []
+<span class="hljs-keyword">for</span> c <span class="hljs-keyword">in</span> children(t):
+    doubled_children += [double(c)]</code></pre>
+
+                    <div class="fragment" data-fragment-index="0">
+					<p>List comprehension!</p>
+					<pre class="code-badge-pre"><div class="code-badge">
+        <div class="code-badge-language">python</div>
+        <div title="Copy to clipboard">
+            <i class="fa fa-copy code-badge-copy-icon">📄</i>
+        </div>
+     </div><code data-trim="" data-noescape="" class="python hljs"><span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">double</span>(<span class="hljs-params">t</span>):</span>
+    <span class="hljs-string">"""Returns a tree identical to T, but with all labels doubled."""</span>
+    <span class="hljs-keyword">if</span> is_leaf(t):
+        <span class="hljs-keyword">return</span> tree(label(t) * <span class="hljs-number">2</span>)
+    <span class="hljs-keyword">else</span>:
+        <span class="hljs-keyword">return</span> tree(label(t) * <span class="hljs-number">2</span>,
+            [double(c) <span class="hljs-keyword">for</span> c <span class="hljs-keyword">in</span> children(t)])</code></pre>
+					</div>
+
+					<div class="fragment" data-fragment-index="1">
+					<p>Even shorter!</p>
+					<pre class="code-badge-pre"><div class="code-badge">
+        <div class="code-badge-language">python</div>
+        <div title="Copy to clipboard">
+            <i class="fa fa-copy code-badge-copy-icon">📄</i>
+        </div>
+     </div><code data-trim="" data-noescape="" class="python hljs"><span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">double</span>(<span class="hljs-params">t</span>):</span>
+    <span class="hljs-string">"""Returns the number of leaf nodes in T."""</span>
+    <span class="hljs-keyword">return</span> tree(label(t) * <span class="hljs-number">2</span>,
+            [double(c) <span class="hljs-keyword">for</span> c <span class="hljs-keyword">in</span> children(t)])</code></pre>
+
+                    </div>
+                </section>
+
+				<section class="heading-only future" hidden="" aria-hidden="true" style="display: none;">
+					<h2>Mutation</h2>
+				</section>
+
+				<section hidden="" aria-hidden="true" class="future" style="display: none;">
+                    <h3>Non-destructive 🏛️ vs. Destructive 💥</h3>
+
+					<p>A non-destructive operation:</p>
+
+					<pre class="code-badge-pre"><div class="code-badge">
+        <div class="code-badge-language">python-repl</div>
+        <div title="Copy to clipboard">
+            <i class="fa fa-copy code-badge-copy-icon">📄</i>
+        </div>
+     </div><code data-trim="" data-noescape="" class="hljs python-repl"><span class="hljs-meta">&gt;&gt;&gt;</span> <span class="python">aThing</span>
+<span style="color:blue">&lt;output A&gt;</span>
+<span class="hljs-meta">&gt;&gt;&gt;</span> <span class="python">&lt;operation on aThing (that obey abstraction boundaries)&gt;</span>
+<span class="hljs-meta">&gt;&gt;&gt;</span> <span class="python">aThing</span>
+<span style="color:blue">&lt;output A&gt;</span></code></pre>
+
+					<p style="font-size:smaller">A is never changed by the operation. 🏛️</p>
+					<br>
+
+					<p>A destructive operation:</p>
+
+					<pre class="code-badge-pre"><div class="code-badge">
+        <div class="code-badge-language">python-repl</div>
+        <div title="Copy to clipboard">
+            <i class="fa fa-copy code-badge-copy-icon">📄</i>
+        </div>
+     </div><code data-trim="" data-noescape="" class="hljs python-repl"><span class="hljs-meta">&gt;&gt;&gt;</span> <span class="python">aThing</span>
+<span style="color:blue">&lt;output A&gt;</span>
+<span class="hljs-meta">&gt;&gt;&gt;</span> <span class="python">&lt;operation on aThing (that obey abstraction boundaries)&gt;</span>
+<span class="hljs-meta">&gt;&gt;&gt;</span> <span class="python">aThing</span>
+<span style="color:red">&lt;output B&gt;</span></code></pre>
+
+					<p style="font-size:smaller">A and B don't always differ, but if they ever differ, it's destructive! 💥</p>
+				</section>
+
+                <section hidden="" aria-hidden="true" class="future" style="display: none;">
+                    <h3>Non-destructive 🏛️ vs. Destructive 💥</h3>
+
+					<pre class="code-badge-pre"><div class="code-badge">
+        <div class="code-badge-language">python</div>
+        <div title="Copy to clipboard">
+            <i class="fa fa-copy code-badge-copy-icon">📄</i>
+        </div>
+     </div><code data-trim="" data-noescape="" class="python hljs"><span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">double</span>(<span class="hljs-params">t</span>):</span>
+    <span class="hljs-string">"""Returns the number of leaf nodes in T."""</span>
+    <span class="hljs-keyword">return</span> tree(label(t) * <span class="hljs-number">2</span>,
+            [double(c) <span class="hljs-keyword">for</span> c <span class="hljs-keyword">in</span> children(t)])</code></pre>
+					<br>
+                    <p>Is <code>double(t)</code>...</p>
+                    <ul>
+                        <li>destructive?</li>
+                        <li>non-destructive? <span class="fragment" data-fragment-index="0">⬅</span></li>
+                    </ul>
+
+                    <p class="fragment" data-fragment-index="0" style="font-size:smaller"><code>double(t)</code> did not mutate the original input data, so it is considered a <strong>non-destructive</strong> operation.</p>
+
+				</section>
+
+				<section hidden="" aria-hidden="true" class="future" style="display: none;">
+                    <h3>Immutability vs. Mutability</h3>
+
+					<p style="font-size:smaller;">An <strong>immutable</strong> value is unchanging once created.</p>
+
+					<p style="font-size:smaller;">Immutable types (that we've covered): int, float, string, tuple</p>
+
+					<pre class="code-badge-pre"><div class="code-badge">
+        <div class="code-badge-language">makefile</div>
+        <div title="Copy to clipboard">
+            <i class="fa fa-copy code-badge-copy-icon">📄</i>
+        </div>
+     </div><code data-trim="" data-noescape="" class="hljs makefile">a_tuple = (1, 2)
+a_tuple[0] = 3                  <span class="fragment" data-fragment-index="0"><span class="hljs-comment"># 🚫 Error! Tuple items cannot be set.</span></span>
+a_string = <span class="hljs-string">"Hi y'all"</span>
+a_string[1] = <span class="hljs-string">"I"</span>               <span class="fragment" data-fragment-index="0"><span class="hljs-comment"># 🚫 Error! String elements cannot be set.</span></span>
+a_string += <span class="hljs-string">", how you doing?"</span>  <span class="fragment" data-fragment-index="1"><span class="hljs-comment"># 🤔 How does this work?</span></span>
+an_int = 20
+an_int += 2                     <span class="fragment" data-fragment-index="1"><span class="hljs-comment"># 🤔 And this?</span></span></code></pre>
+
+					<p style="margin-top:32px; font-size:smaller;">A <strong>mutable</strong> value can change in value throughout the course of computation.
+					All names that refer to the same object are affected by a mutation.
+					</p>
+
+					<p style="font-size:smaller;">Mutable types (that we've covered): list, dict</p>
+					<pre class="code-badge-pre"><div class="code-badge">
+        <div class="code-badge-language">apache</div>
+        <div title="Copy to clipboard">
+            <i class="fa fa-copy code-badge-copy-icon">📄</i>
+        </div>
+     </div><code data-trim="" data-noescape="" class="hljs apache"><span class="hljs-attribute">grades</span> =<span class="hljs-meta"> [90, 70, 85]</span>
+<span class="hljs-attribute">grades_copy</span> = grades
+<span class="hljs-attribute">grades</span>[<span class="hljs-number">1</span>] = <span class="hljs-number">100</span>
+<span class="hljs-attribute">words</span> = {<span class="hljs-string">"agua"</span>: <span class="hljs-string">"water"</span>}
+<span class="hljs-attribute">words</span>[<span class="hljs-string">"pavo"</span>] = <span class="hljs-string">"turkey"</span></code></pre>
+
+					<aside class="notes">
+						Show in code.cs61a.org terminal, use id()
+					</aside>
+
+				</section>
+
+				<section hidden="" aria-hidden="true" class="future" style="display: none;">
+                    <h3>Mutation in function calls</h3>
+
+					<p style="font-size:smaller;">An function can change the value of any object in its scope.</p>
+
+					<pre class="code-badge-pre"><div class="code-badge">
+        <div class="code-badge-language">stylus</div>
+        <div title="Copy to clipboard">
+            <i class="fa fa-copy code-badge-copy-icon">📄</i>
+        </div>
+     </div><code data-trim="" data-noescape="" class="hljs stylus">four = [<span class="hljs-number">1</span>, <span class="hljs-number">2</span>, <span class="hljs-number">3</span>, <span class="hljs-number">4</span>]
+<span class="hljs-function"><span class="hljs-title">print</span><span class="hljs-params">(four[<span class="hljs-number">0</span>])</span></span>
+<span class="hljs-function"><span class="hljs-title">do_stuff_to</span><span class="hljs-params">(four)</span></span>
+<span class="hljs-function"><span class="hljs-title">print</span><span class="hljs-params">(four[<span class="hljs-number">0</span>])</span></span></code></pre>
+
+					<p class="python-tutor-link">
+						<a target="_blank" href="http://pythontutor.com/composingprograms.html#code=def%20do_stuff_to%28four%29%3A%0A%20%20%20%20%23%20What%20can%20we%20put%20here%3F%0A%20%20%20%20pass%0A%0Afour%20%3D%20%5B1,%202,%203,%204%5D%0Aprint%28four%5B0%5D%29%0Ado_stuff_to%28four%29%0Aprint%28four%5B0%5D%29&amp;cumulative=true&amp;curInstr=0&amp;mode=display&amp;origin=composingprograms.js&amp;py=3&amp;rawInputLstJSON=%5B%5D">
+						Try in PythonTutor
+						</a>
+					</p>
+					<br>
+
+					<p style="font-size:smaller;">Even without arguments:</p>
+					<pre class="code-badge-pre"><div class="code-badge">
+        <div class="code-badge-language">stylus</div>
+        <div title="Copy to clipboard">
+            <i class="fa fa-copy code-badge-copy-icon">📄</i>
+        </div>
+     </div><code data-trim="" data-noescape="" class="hljs stylus">four = [<span class="hljs-number">1</span>, <span class="hljs-number">2</span>, <span class="hljs-number">3</span>, <span class="hljs-number">4</span>]
+<span class="hljs-function"><span class="hljs-title">print</span><span class="hljs-params">(four[<span class="hljs-number">3</span>])</span></span>
+<span class="hljs-function"><span class="hljs-title">do_other_stuff</span><span class="hljs-params">()</span></span>
+<span class="hljs-function"><span class="hljs-title">print</span><span class="hljs-params">(four[<span class="hljs-number">3</span>])</span></span></code></pre>
+
+					<p class="python-tutor-link">
+						<a target="_blank" href="http://pythontutor.com/composingprograms.html#code=def%20do_other_stuff%28%29%3A%0A%20%20%20%20four%5B3%5D%20%3D%2099%0A%20%20%20%20%0Afour%20%3D%20%5B1,%202,%203,%204%5D%0Aprint%28four%5B3%5D%29%0Ado_other_stuff%28%29%0Aprint%28four%5B3%5D%29&amp;cumulative=true&amp;curInstr=0&amp;mode=display&amp;origin=composingprograms.js&amp;py=3&amp;rawInputLstJSON=%5B%5D">
+						Try in PythonTutor
+						</a>
+					</p>
+
+					<aside class="notes">
+
+					</aside>
+
+				</section>
+
+				<section hidden="" aria-hidden="true" class="future" style="display: none;">
+					<h3>Mutables inside immutables</h3>
+
+					<p>An immutable sequence may still change if it contains a mutable value as an element.</p>
+
+					<pre class="code-badge-pre"><div class="code-badge">
+        <div class="code-badge-language">markdown</div>
+        <div title="Copy to clipboard">
+            <i class="fa fa-copy code-badge-copy-icon">📄</i>
+        </div>
+     </div><code data-trim="" data-noescape="" class="hljs markdown">t = (1, [2, 3])
+t[<span class="hljs-string">1</span>][<span class="hljs-symbol">0</span>] = 99
+t[<span class="hljs-string">1</span>][<span class="hljs-symbol">1</span>] = "Problems"</code></pre>
+
+					<p class="python-tutor-link">
+						<a target="_blank" href="http://pythontutor.com/composingprograms.html#code=t%20%3D%20%281,%20%5B2,%203%5D%29%0At%5B1%5D%5B0%5D%20%3D%2099%0At%5B1%5D%5B1%5D%20%3D%20%22Problems%22&amp;cumulative=true&amp;curInstr=0&amp;mode=display&amp;origin=composingprograms.js&amp;py=3&amp;rawInputLstJSON=%5B%5D">
+							Try in PythonTutor
+						</a>
+					</p>
+
+				</section>
+
+				<section hidden="" aria-hidden="true" class="future" style="display: none;">
+					<h3>Immutability vs. Mutability</h3>
+
+					<pre class="code-badge-pre"><div class="code-badge">
+        <div class="code-badge-language">python</div>
+        <div title="Copy to clipboard">
+            <i class="fa fa-copy code-badge-copy-icon">📄</i>
+        </div>
+     </div><code data-trim="" data-noescape="" class="python hljs"><span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">tree</span>(<span class="hljs-params">label, children=None</span>):</span>
+    <span class="hljs-string">""" Creates a tree whose root node is labeled LABEL and
+        optionally has CHILDREN, a list of trees."""</span>
+    <span class="hljs-keyword">return</span> (label, list(children <span class="hljs-keyword">or</span> []))
+
+<span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">label</span>(<span class="hljs-params">tree</span>):</span>&nbsp;&nbsp;&nbsp;
+    <span class="hljs-string">""" Returns the label of the root node of TREE. """</span>
+    <span class="hljs-keyword">return</span> tree[<span class="hljs-number">0</span>]
+
+<span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">children</span>(<span class="hljs-params">tree</span>):</span>&nbsp;&nbsp;&nbsp;
+    <span class="hljs-string">""" Returns a list of children of TREE. """</span>
+    <span class="hljs-keyword">return</span> tree[<span class="hljs-number">1</span>]</code></pre>
+
+                    <p style="margin-top:32px;">Is <code>tree()</code>...</p>
+                    <ul>
+                        <li>mutable?</li>
+                        <li>immutable? <span class="fragment" data-fragment-index="0">⬅</span></li>
+                    </ul>
+
+					<p class="fragment" data-fragment-index="0" style="font-size:smaller">
+					Our current <code>tree()</code> abstraction is immutable,
+                    as long as we don't break the abstraction barrier.
+                    We <strong>cannot</strong> mutate a tree once it's created.
+                    </p>
+                    <p></p>
+                </section>
+
+                <section hidden="" aria-hidden="true" class="future" style="display: none;">
+                    <h3>A mutable tree()?</h3>
+
+                    <p>Suppose we add two mutators to our abstraction:</p>
+                    <pre class="code-badge-pre"><div class="code-badge">
+        <div class="code-badge-language">python</div>
+        <div title="Copy to clipboard">
+            <i class="fa fa-copy code-badge-copy-icon">📄</i>
+        </div>
+     </div><code data-trim="" data-noescape="" class="python hljs"><span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">set_label</span>(<span class="hljs-params">tree, label</span>):</span>
+    <span class="hljs-string">"""Sets the label of TREE's root node to LABEL"""</span>
+    <span class="fragment" data-fragment-index="0">tree[<span class="hljs-number">0</span>] = label</span>
+
+<span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">set_children</span>(<span class="hljs-params">tree, children</span>):</span>
+    <span class="hljs-string">"""Sets the children of TREE to CHILDREN, a list of trees."""</span>
+    <span class="fragment" data-fragment-index="0">tree[<span class="hljs-number">1</span>] = children</span></code></pre>
+
+                    <p class="fragment" data-fragment-index="0">
+                        Will that work?
+                        Let's find out...
+                    </p>
+
+                    <div class="fragment" data-fragment-index="1">
+                    <p>Remember our current implementation of <code>tree()</code>:</p>
+
+                    <pre class="code-badge-pre"><div class="code-badge">
+        <div class="code-badge-language">python</div>
+        <div title="Copy to clipboard">
+            <i class="fa fa-copy code-badge-copy-icon">📄</i>
+        </div>
+     </div><code data-trim="" data-noescape="" class="python hljs"><span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">tree</span>(<span class="hljs-params">label, children=None</span>):</span>
+    <span class="hljs-keyword">return</span> (label, list(children <span class="hljs-keyword">or</span> []))</code></pre>
+
+                    <p>We can't mutate elements of tuples, since tuples are immutable.</p>
+                    </div>
+
+                    <aside class="notes">Actually try this in code.cs61a.org - mutable_tree1.py</aside>
+
+                </section>
+
+				<section hidden="" aria-hidden="true" class="future" style="display: none;">
+					<h3>A mutable tree()</h3>
+
+					<p>A list with label and a list for each child:</p>
+
+					<pre class="code-badge-pre"><div class="code-badge">
+        <div class="code-badge-language">ruby</div>
+        <div title="Copy to clipboard">
+            <i class="fa fa-copy code-badge-copy-icon">📄</i>
+        </div>
+     </div><code data-trim="" data-noescape="" class="hljs ruby"><span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">tree</span><span class="hljs-params">(label, children=None)</span></span>:
+    <span class="hljs-keyword">return</span> [label] + list(children <span class="hljs-keyword">or</span> [])
+
+<span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">label</span><span class="hljs-params">(tree)</span></span>:
+    <span class="hljs-keyword">return</span> tree[<span class="hljs-number">0</span>]
+
+<span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">children</span><span class="hljs-params">(tree)</span></span>:
+    <span class="hljs-keyword">return</span> tree[<span class="hljs-number">1</span><span class="hljs-symbol">:</span>]
+
+<span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">set_label</span><span class="hljs-params">(tree, label)</span></span>:
+    tree[<span class="hljs-number">0</span>] = label
+
+<span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">set_children</span><span class="hljs-params">(tree, children)</span></span>:
+    tree[<span class="hljs-number">1</span>] = children</code></pre>
+
+					<pre class="code-badge-pre"><div class="code-badge">
+        <div class="code-badge-language">lisp</div>
+        <div title="Copy to clipboard">
+            <i class="fa fa-copy code-badge-copy-icon">📄</i>
+        </div>
+     </div><code data-trim="" data-noescape="" class="hljs lisp"><span class="hljs-literal">t</span> = tree(<span class="hljs-number">20</span>, [tree(<span class="hljs-number">12</span>,
+               [tree(<span class="hljs-number">9</span>,
+                  [tree(<span class="hljs-number">7</span>), tree(<span class="hljs-number">2</span>)]),
+                tree(<span class="hljs-number">3</span>)]),
+              tree(<span class="hljs-number">8</span>,
+                [tree(<span class="hljs-number">4</span>), tree(<span class="hljs-number">4</span>)])])
+set_label(<span class="hljs-name">t</span>, <span class="hljs-number">40</span>)
+set_children(<span class="hljs-name">t</span>, [tree(<span class="hljs-number">24</span>)])</code></pre>
+				</section>
+
+				<section hidden="" aria-hidden="true" class="future" style="display: none;">
+					<h3>A destructive tree doubling</h3>
+
+					<img src="./Mutable Values_files/oGLyaQD.png" alt="Doubling trees diagram">
+
+					<pre class="code-badge-pre"><div class="code-badge">
+        <div class="code-badge-language">python</div>
+        <div title="Copy to clipboard">
+            <i class="fa fa-copy code-badge-copy-icon">📄</i>
+        </div>
+     </div><code data-trim="" data-noescape="" class="python hljs"><span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">double</span>(<span class="hljs-params">t</span>):</span>
+    <span class="hljs-string">"""Doubles every label in T, mutating T."""</span>
+    set_label(t, label(t) * <span class="hljs-number">2</span>)
+    <span class="hljs-keyword">if</span> <span class="hljs-keyword">not</span> is_leaf(t):
+        <span class="hljs-keyword">for</span> c <span class="hljs-keyword">in</span> children(t):
+            double(c)</code></pre>
+
+					<aside class="notes">
+						Notice no return statement, no explicit base case.
+						Whats the base case?
+					</aside>
+				</section>
+
+				<section class="heading-only future" hidden="" aria-hidden="true" style="display: none;">
+					<h3>Lists</h3>
+				</section>
+
+				<section hidden="" aria-hidden="true" class="future" style="display: none;">
+					<h3>Lists in environment diagrams</h3>
+
+					<pre class="code-badge-pre"><div class="code-badge">
+        <div class="code-badge-language">python</div>
+        <div title="Copy to clipboard">
+            <i class="fa fa-copy code-badge-copy-icon">📄</i>
+        </div>
+     </div><code data-trim="" data-noescape="" class="python hljs">pair = [<span class="hljs-number">1</span>, <span class="hljs-number">2</span>]</code></pre>
+					<img src="./Mutable Values_files/bZKoJ5p.png" width="500">
+
+					<ul>
+						<li>Lists are represented as a row of index-labeled adjacent boxes, one per element</li>
+						<li>Each box either contains a primitive value or points to a compound value</li>
+					</ul>
+
+					<p>
+						<a class="python-tutor-link" target="_blank" href="http://pythontutor.com/composingprograms.html#code=pair%20%3D%20%5B1,%202%5D%0A%0A%23matrix%20%3D%20%5B%20%5B1,2,0,4%5D,%20%5B0,1,3,-1%5D,%20%5B0,0,1,8%5D%20%5D%0A%0A%23worst_list%20%3D%20%5B%20%5B1,%202%5D,%0A%23%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%5B%5D,%0A%23%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%5B%20%5B3,%20False,%20None%5D,%0A%23%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%5B4,%20lambda%3A%205%5D%5D%5D&amp;cumulative=true&amp;curInstr=0&amp;mode=display&amp;origin=composingprograms.js&amp;py=3&amp;rawInputLstJSON=%5B%5D">
+						Try in PythonTutor.
+						</a>
+					</p>
+
+					<aside class="notes">
+						Show dragging around.
+					</aside>
+				</section>
+
+				<section hidden="" aria-hidden="true" class="future" style="display: none;">
+					<h3>Lists in environment diagrams</h3>
+
+					<p>A nested list:</p>
+					<pre class="code-badge-pre"><div class="code-badge">
+        <div class="code-badge-language">python</div>
+        <div title="Copy to clipboard">
+            <i class="fa fa-copy code-badge-copy-icon">📄</i>
+        </div>
+     </div><code data-trim="" data-noescape="" class="python hljs">matrix = [ [<span class="hljs-number">1</span>,<span class="hljs-number">2</span>,<span class="hljs-number">0</span>,<span class="hljs-number">4</span>], [<span class="hljs-number">0</span>,<span class="hljs-number">1</span>,<span class="hljs-number">3</span>,<span class="hljs-number">-1</span>], [<span class="hljs-number">0</span>,<span class="hljs-number">0</span>,<span class="hljs-number">1</span>,<span class="hljs-number">8</span>] ]</code></pre>
+					<img src="./Mutable Values_files/zmhUTFu.png" alt="Screenshot of PythonTutor of nested list">
+
+				</section>
+
+				<section hidden="" aria-hidden="true" class="future" style="display: none;">
+					<h3>Lists in environment diagrams</h3>
+
+					<p>A <em>very</em> nested list:</p>
+					<pre class="code-badge-pre"><div class="code-badge">
+        <div class="code-badge-language">python</div>
+        <div title="Copy to clipboard">
+            <i class="fa fa-copy code-badge-copy-icon">📄</i>
+        </div>
+     </div><code data-trim="" data-noescape="" class="python hljs">worst_list = [ [<span class="hljs-number">1</span>, <span class="hljs-number">2</span>],
+               [],
+               [ [<span class="hljs-number">3</span>, <span class="hljs-literal">False</span>, <span class="hljs-literal">None</span>],
+                 [<span class="hljs-number">4</span>, <span class="hljs-keyword">lambda</span>: <span class="hljs-number">5</span>]]]</code></pre>
+					<img src="./Mutable Values_files/JRPn08L.png" alt="Screenshot of PythonTutor of nested list">
+					<aside class="notes">
+					</aside>
+				</section>
+
+				<section hidden="" aria-hidden="true" class="future" style="display: none;">
+					<h3>Copying lists</h3>
+
+					<p>Slicing a whole list copies a list:</p>
+
+					<pre class="code-badge-pre"><div class="code-badge">
+        <div class="code-badge-language">ini</div>
+        <div title="Copy to clipboard">
+            <i class="fa fa-copy code-badge-copy-icon">📄</i>
+        </div>
+     </div><code data-trim="" data-noescape="" class="hljs ini"><span class="hljs-attr">listA</span> = [<span class="hljs-number">2</span>, <span class="hljs-number">3</span>]
+<span class="hljs-attr">listB</span> = listA
+
+<span class="hljs-attr">listC</span> = listA[:]
+<span class="hljs-attr">listA[0]</span> = <span class="hljs-number">4</span>
+<span class="hljs-attr">listB[1]</span> = <span class="hljs-number">5</span></code></pre>
+
+					<p><code>list()</code> creates a new list containing existing elements from any iterable:</p>
+
+					<pre class="code-badge-pre"><div class="code-badge">
+        <div class="code-badge-language">ini</div>
+        <div title="Copy to clipboard">
+            <i class="fa fa-copy code-badge-copy-icon">📄</i>
+        </div>
+     </div><code data-trim="" data-noescape="" class="hljs ini"><span class="hljs-attr">listA</span> = [<span class="hljs-number">2</span>, <span class="hljs-number">3</span>]
+<span class="hljs-attr">listB</span> = listA
+
+<span class="hljs-attr">listC</span> = list(listA)
+<span class="hljs-attr">listA[0]</span> = <span class="hljs-number">4</span>
+<span class="hljs-attr">listB[1]</span> = <span class="hljs-number">5</span></code></pre>
+
+					<p>
+						<a class="python-tutor-link" target="_blank" href="http://pythontutor.com/composingprograms.html#code=listA%20%3D%20%5B2,%203%5D%0AlistB%20%3D%20listA%0A%0A%23listC%20%3D%20list%28listA%29%0AlistC%20%3D%20listA%5B%3A%5D%0AlistA%5B0%5D%20%3D%204%0AlistB%5B1%5D%20%3D%205&amp;cumulative=true&amp;curInstr=0&amp;mode=display&amp;origin=composingprograms.js&amp;py=3&amp;rawInputLstJSON=%5B%5D">
+						Try both in PythonTutor.
+						</a>
+					</p>
+
+					<p style="font-size:smaller;">Python3 provides more ways in the <a target="_blank" href="https://docs.python.org/3/library/copy.html">copy module</a>.</p>
+
+				</section>
+
+                <section hidden="" aria-hidden="true" class="future" style="display: none;">
+                    <h3>Mutability</h3>
+
+                    <p>Is <code>list(l)</code>...</p>
+                    <ul>
+                        <li>destructive?</li>
+                        <li>non-destructive? <span class="fragment" data-fragment-index="0">⬅</span></li>
+                    </ul>
+
+                    <p class="fragment" data-fragment-index="0" style="font-size:smaller"><code>list(l)</code> did not mutate the original iterable, so it is considered a <strong>non-destructive</strong> operation.</p>
+					<br>
+                    <p>Are lists...</p>
+                    <ul>
+                        <li>mutable? <span class="fragment" data-fragment-index="1">⬅</span></li>
+                        <li>immutable?</li>
+                    </ul>
+
+					<p class="fragment" data-fragment-index="1" style="font-size:smaller">
+					Python lists <em>are</em> mutable. Let's see ways to mutate them!
+                    </p>
+                    <p></p>
+				</section>
+
+				<section hidden="" aria-hidden="true" class="future" style="display: none;">
+					<h3>Mutating lists with slicing</h3>
+
+					<p style="font-size:smaller;">We can do a lot with just brackets/slice notation:</p>
+					<pre class="code-badge-pre"><div class="code-badge">
+        <div class="code-badge-language">angelscript</div>
+        <div title="Copy to clipboard">
+            <i class="fa fa-copy code-badge-copy-icon">📄</i>
+        </div>
+     </div><code data-trim="" data-noescape="" class="hljs angelscript">L = [<span class="hljs-number">1</span>, <span class="hljs-number">2</span>, <span class="hljs-number">3</span>, <span class="hljs-number">4</span>, <span class="hljs-number">5</span>]
+
+L[<span class="hljs-number">2</span>] = <span class="hljs-number">6</span>
+
+L[<span class="hljs-number">1</span>:<span class="hljs-number">3</span>] = [<span class="hljs-number">9</span>, <span class="hljs-number">8</span>]
+
+L[<span class="hljs-number">2</span>:<span class="hljs-number">4</span>] = []            # Deleting elements
+
+L[<span class="hljs-number">1</span>:<span class="hljs-number">1</span>] = [<span class="hljs-number">2</span>, <span class="hljs-number">3</span>, <span class="hljs-number">4</span>, <span class="hljs-number">5</span>]  # Inserting elements
+
+L[len(L):] = [<span class="hljs-number">10</span>, <span class="hljs-number">11</span>]  # Appending
+
+L = L + [<span class="hljs-number">20</span>, <span class="hljs-number">30</span>]
+
+L[<span class="hljs-number">0</span>:<span class="hljs-number">0</span>] = range(<span class="hljs-number">-3</span>, <span class="hljs-number">0</span>)  # Prepending</code></pre>
+
+					<p>
+						<a class="python-tutor-link" target="_blank" href="http://pythontutor.com/composingprograms.html#code=L%20%3D%20%5B1,%202,%203,%204,%205%5D%0A%0AL%5B2%5D%20%3D%206%0A%0AL%5B1%3A3%5D%20%3D%20%5B9,%208%5D%0A%0AL%5B2%3A4%5D%20%3D%20%5B%5D%20%20%20%20%20%20%20%20%20%20%20%20%23%20Deleting%20elements%0A%0AL%5B1%3A1%5D%20%3D%20%5B2,%203,%204,%205%5D%20%20%23%20Inserting%20elements%0A%0AL%5Blen%28L%29%3A%5D%20%3D%20%5B10,%2011%5D%20%20%23%20Appending%0A%0AL%20%3D%20L%20%2B%20%5B20,%2030%5D%0A%0AL%5B0%3A0%5D%20%3D%20range%28-3,%200%29%20%20%23%20Prepending&amp;cumulative=true&amp;curInstr=8&amp;mode=display&amp;origin=composingprograms.js&amp;py=3&amp;rawInputLstJSON=%5B%5D">
+						Try in PythonTutor.
+						</a>
+					</p>
+
+					<aside class="notes">
+					</aside>
+				</section>
+
+				<section hidden="" aria-hidden="true" class="future" style="display: none;">
+					<h3>Mutating lists with methods</h3>
+
+					<p><code>append()</code> adds a single element to a list:</p>
+
+					<pre class="code-badge-pre"><div class="code-badge">
+        <div class="code-badge-language">angelscript</div>
+        <div title="Copy to clipboard">
+            <i class="fa fa-copy code-badge-copy-icon">📄</i>
+        </div>
+     </div><code data-trim="" data-noescape="" class="hljs angelscript">s = [<span class="hljs-number">2</span>, <span class="hljs-number">3</span>]
+t = [<span class="hljs-number">5</span>, <span class="hljs-number">6</span>]
+s.append(<span class="hljs-number">4</span>)
+s.append(t)
+t = <span class="hljs-number">0</span></code></pre>
+
+					<p>
+						<a class="python-tutor-link" target="_blank" href="http://pythontutor.com/composingprograms.html#code=s%20%3D%20%5B2,%203%5D%0At%20%3D%20%5B5,%206%5D%0As.append%284%29%0As.append%28t%29%0At%20%3D%200&amp;cumulative=true&amp;curInstr=5&amp;mode=display&amp;origin=composingprograms.js&amp;py=3&amp;rawInputLstJSON=%5B%5D">
+						Try in PythonTutor.
+						</a>
+					</p>
+
+					<br>
+
+					<p><code>extend()</code> adds all the elements in one list to a list:</p>
+
+					<pre class="code-badge-pre"><div class="code-badge">
+        <div class="code-badge-language">angelscript</div>
+        <div title="Copy to clipboard">
+            <i class="fa fa-copy code-badge-copy-icon">📄</i>
+        </div>
+     </div><code data-trim="" data-noescape="" class="hljs angelscript">s = [<span class="hljs-number">2</span>, <span class="hljs-number">3</span>]
+t = [<span class="hljs-number">5</span>, <span class="hljs-number">6</span>]
+s.extend(<span class="hljs-number">4</span>) <span class="fragment" data-fragment-index="0"># 🚫 Error: <span class="hljs-number">4</span> <span class="hljs-keyword">is</span> <span class="hljs-keyword">not</span> an iterable!</span>
+s.extend(t)
+t = <span class="hljs-number">0</span></code></pre>
+
+					<p>
+						<a class="python-tutor-link" target="_blank" href="http://pythontutor.com/composingprograms.html#code=s%20%3D%20%5B2,%203%5D%0At%20%3D%20%5B5,%206%5D%0As.extend%28t%29%0At%20%3D%200&amp;cumulative=true&amp;curInstr=0&amp;mode=display&amp;origin=composingprograms.js&amp;py=3&amp;rawInputLstJSON=%5B%5D">
+						Try in PythonTutor. <span class="fragment" data-fragment-index="0">(After deleting the bad line)</span>
+						</a>
+					</p>
+
+					<aside class="notes">
+					</aside>
+				</section>
+
+				<section hidden="" aria-hidden="true" class="future" style="display: none;">
+					<h3>Mutating lists with methods</h3>
+
+					<p><code>pop()</code> removes and returns the last element:</p>
+
+					<pre class="code-badge-pre"><div class="code-badge">
+        <div class="code-badge-language">ini</div>
+        <div title="Copy to clipboard">
+            <i class="fa fa-copy code-badge-copy-icon">📄</i>
+        </div>
+     </div><code data-trim="" data-noescape="" class="hljs ini"><span class="hljs-attr">s</span> = [<span class="hljs-number">2</span>, <span class="hljs-number">3</span>]
+<span class="hljs-attr">t</span> = [<span class="hljs-number">5</span>, <span class="hljs-number">6</span>]
+<span class="hljs-attr">t</span> = s.pop()</code></pre>
+
+					<p>
+						<a class="python-tutor-link" target="_blank" href="http://pythontutor.com/composingprograms.html#code=s%20%3D%20%5B2,%203%5D%0At%20%3D%20%5B5,%206%5D%0At%20%3D%20s.pop%28%29&amp;cumulative=true&amp;curInstr=0&amp;mode=display&amp;origin=composingprograms.js&amp;py=3&amp;rawInputLstJSON=%5B%5D">
+						Try in PythonTutor.
+						</a>
+					</p>
+					<br>
+
+					<p><code>remove()</code> removes the first element equal to the argument:</p>
+
+					<pre class="code-badge-pre"><div class="code-badge">
+        <div class="code-badge-language">angelscript</div>
+        <div title="Copy to clipboard">
+            <i class="fa fa-copy code-badge-copy-icon">📄</i>
+        </div>
+     </div><code data-trim="" data-noescape="" class="hljs angelscript">s = [<span class="hljs-number">6</span>, <span class="hljs-number">2</span>, <span class="hljs-number">4</span>, <span class="hljs-number">8</span>, <span class="hljs-number">4</span>]
+s.remove(<span class="hljs-number">4</span>)</code></pre>
+
+					<p>
+						<a class="python-tutor-link" target="_blank" href="http://pythontutor.com/composingprograms.html#code=s%20%3D%20%5B6,%202,%204,%208,%204%5D%0As.remove%284%29&amp;cumulative=true&amp;curInstr=0&amp;mode=display&amp;origin=composingprograms.js&amp;py=3&amp;rawInputLstJSON=%5B%5D">
+						Try in PythonTutor.
+						</a>
+					</p>
+
+					<aside class="notes">
+						Try removing a list, too!
+					</aside>
+				</section>
+
+				<section hidden="" aria-hidden="true" class="future" style="display: none;">
+					<h3>Identity of objects vs. Equality of contents</h3>
+
+					<p><strong>Identity</strong>: <code>exp0 is exp1</code><br>
+						<span style="font-size:smaller;">evaluates to <code>True</code>
+						if both <code>exp0</code> and <code>exp1</code> evaluate to the same object</span></p>
+
+					<p><strong>Equality</strong>: <code>exp0 == exp1</code><br>
+						<span style="font-size:smaller;">evaluates to <code>True</code>
+						if both <code>exp0</code> and <code>exp1</code> evaluate to objects containing equal values</span></p>
+
+					<pre class="code-badge-pre"><div class="code-badge">
+        <div class="code-badge-language">python</div>
+        <div title="Copy to clipboard">
+            <i class="fa fa-copy code-badge-copy-icon">📄</i>
+        </div>
+     </div><code data-trim="" data-noescape="" class="python hljs">list1 = [<span class="hljs-number">1</span>,<span class="hljs-number">2</span>,<span class="hljs-number">3</span>]
+list2 = [<span class="hljs-number">1</span>,<span class="hljs-number">2</span>,<span class="hljs-number">3</span>]
+identical = list1 <span class="hljs-keyword">is</span> list2
+are_equal = list1 == list2</code></pre>
+
+					<p>
+						<a class="python-tutor-link" target="_blank" href="http://pythontutor.com/composingprograms.html#code=list1%20%3D%20%5B1,2,3%5D%0Alist2%20%3D%20%5B1,2,3%5D%0A%0Aidentical%20%3D%20list1%20is%20list2%0Aare_equal%20%3D%20list1%20%3D%3D%20list2&amp;cumulative=true&amp;curInstr=0&amp;mode=display&amp;origin=composingprograms.js&amp;py=3&amp;rawInputLstJSON=%5B%5D">
+						Try in PythonTutor.
+						</a>
+					</p>
+
+					<p>Identical objects always have equal values.</p>
+
+					<aside class="notes">
+
+						https://inst.eecs.berkeley.edu/~cs61a/sp17/assets/slides/11_1pp.pdf
+						When dealing with immutable objects, we generally ignore identity;only equality of contents ever matters, and once equal always equal.
+						Allowsreferential transparency: ifS[0] ==3, andSas a whole isnot re-assigned, can substitute 3 forS[0]anywhere
+						When dealing with mutable structures, identity matters, andwedon’t have referential transparency.
+						 last slide
+					</aside>
+				</section>
+
+
+			</div>
+		<div class="backgrounds"><div class="slide-background heading-only present" data-loaded="true" style="display: block;"><div class="slide-background-content"></div></div><div class="slide-background future" data-loaded="true" style="display: block;"><div class="slide-background-content"></div></div><div class="slide-background heading-only future" data-loaded="true" style="display: block;"><div class="slide-background-content"></div></div><div class="slide-background future" style="display: none;"><div class="slide-background-content"></div></div><div class="slide-background future" style="display: none;"><div class="slide-background-content"></div></div><div class="slide-background future" style="display: none;"><div class="slide-background-content"></div></div><div class="slide-background future" style="display: none;"><div class="slide-background-content"></div></div><div class="slide-background future" style="display: none;"><div class="slide-background-content"></div></div><div class="slide-background future" style="display: none;"><div class="slide-background-content"></div></div><div class="slide-background heading-only future" style="display: none;"><div class="slide-background-content"></div></div><div class="slide-background future" style="display: none;"><div class="slide-background-content"></div></div><div class="slide-background future" style="display: none;"><div class="slide-background-content"></div></div><div class="slide-background future" style="display: none;"><div class="slide-background-content"></div></div><div class="slide-background future" style="display: none;"><div class="slide-background-content"></div></div><div class="slide-background future" style="display: none;"><div class="slide-background-content"></div></div><div class="slide-background future" style="display: none;"><div class="slide-background-content"></div></div><div class="slide-background future" style="display: none;"><div class="slide-background-content"></div></div><div class="slide-background future" style="display: none;"><div class="slide-background-content"></div></div><div class="slide-background future" style="display: none;"><div class="slide-background-content"></div></div><div class="slide-background heading-only future" style="display: none;"><div class="slide-background-content"></div></div><div class="slide-background future" style="display: none;"><div class="slide-background-content"></div></div><div class="slide-background future" style="display: none;"><div class="slide-background-content"></div></div><div class="slide-background future" style="display: none;"><div class="slide-background-content"></div></div><div class="slide-background future" style="display: none;"><div class="slide-background-content"></div></div><div class="slide-background future" style="display: none;"><div class="slide-background-content"></div></div><div class="slide-background future" style="display: none;"><div class="slide-background-content"></div></div><div class="slide-background future" style="display: none;"><div class="slide-background-content"></div></div><div class="slide-background future" style="display: none;"><div class="slide-background-content"></div></div><div class="slide-background future" style="display: none;"><div class="slide-background-content"></div></div></div><div class="slide-number" style="display: block;"><a href="https://inst.eecs.berkeley.edu/~cs61a/sp21/assets/slides/13-Mutable_Values.html#/">
+					<span class="slide-number-a">1</span>
+					</a></div><aside class="controls" data-controls-layout="bottom-right" data-controls-back-arrows="faded" style="display: block;"><button class="navigate-left" aria-label="previous slide" disabled="disabled"><div class="controls-arrow"></div></button>
+			<button class="navigate-right enabled highlight" aria-label="next slide"><div class="controls-arrow"></div></button>
+			<button class="navigate-up" aria-label="above slide" disabled="disabled"><div class="controls-arrow"></div></button>
+			<button class="navigate-down" aria-label="below slide" disabled="disabled"><div class="controls-arrow"></div></button></aside><div class="progress" style="display: block;"><span style="transform: scaleX(0);"></span></div><div class="speaker-notes" data-prevent-swipe="" tabindex="0"></div><div class="pause-overlay"><button class="resume-button">Resume presentation</button></div><div class="aria-status" aria-live="polite" aria-atomic="true" style="position: absolute; height: 1px; width: 1px; overflow: hidden; clip: rect(1px, 1px, 1px, 1px);">Mutable Values Tips for navigating the slides: Press O or Escape for overview mode. Visit this link for a nice printable version Press the copy icon on the upper right of code blocks to copy the code </div></div>
+
+		<script src="./Mutable Values_files/reveal.js.下载"></script>
+        <script src="./Mutable Values_files/highlight.js.下载"></script>
+        <script src="./Mutable Values_files/highlightjs-badge.min.js.下载"></script>
+		<script>
+			const srcUrlPrefix = "https://cdn.jsdelivr.net/npm/reveal.js@4.1.0/";
+			Reveal.initialize({
+				hash: true,
+				center: false,
+				slideNumber: true,
+				showNotes: false,
+				margin: 0.1,
+				preloadIframes: true,
+				plugins: [ RevealHighlight ],
+				pdfSeparateFragments: true
+			});
+
+            // add HighlightJS-badge (options are optional)
+            var options = {
+                copyIconContent: "📄",
+                checkIconContent: "✅"
+            };
+            window.highlightJsBadge(options);
+		</script>
+	
+
+<style>
+@media print {
+   .code-badge { display: none; }
+}
+    .code-badge-pre {
+        position: relative;
+    }
+    .code-badge {
+        display: flex;
+        flex-direction: row;
+        white-space: normal;
+        background: transparent;
+        background: #333;
+        color: white;
+        font-size: 0.875em;
+        opacity: 0.5;
+        transition: opacity linear 0.5s;
+        border-radius: 0 0 0 7px;
+        padding: 5px 8px 5px 8px;
+        position: absolute;
+        right: 0;
+        top: 0;
+    }
+    .code-badge.active {
+        opacity: 0.8;
+    }
+
+    .code-badge:hover {
+        opacity: .95;
+    }
+
+    .code-badge a,
+    .code-badge a:hover {
+        text-decoration: none;
+    }
+
+    .code-badge-language {
+        margin-right: 10px;
+        font-weight: 600;
+        color: goldenrod;
+    }
+    .code-badge-copy-icon {
+        font-size: 1.2em;
+        cursor: pointer;
+        padding: 0 7px;
+        margin-top:2;
+    }
+    .fa.text-success:{ color: limegreen !important }
+</style><div id="CodeBadgeTemplate" style="display:none">
+    <div class="code-badge">
+        <div class="code-badge-language">{{language}}</div>
+        <div title="Copy to clipboard">
+            <i class="{{copyIconClass}} code-badge-copy-icon"></i>
+        </div>
+     </div>
+</div></body></html>

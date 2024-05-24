@@ -1,0 +1,716 @@
+<!doctype html>
+<html>
+	<head>
+		<meta charset="utf-8">
+		<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+		<title>Fun with Iterables</title>
+		<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/reveal.js@4.1.0/dist/reset.css">
+		<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/reveal.js@4.1.0/dist/reveal.css">
+		<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/reveal.js@4.1.0/dist/theme/simple.css" id="theme">
+		<link rel="stylesheet" href="https://cs61a.org/assets/css/mono-blue.css">
+		<link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Inconsolata|Roboto:300,400,500|Work+Sans:400,700">
+		<style>
+			.reveal {
+				font-family: "Work Sans", sans-serif;
+			}
+
+			.reveal .slides section {
+				text-align: left;
+				font-size: smaller;
+			}
+
+			.reveal pre {
+				background-color: #f5f5f5;
+				width: 100%;
+				border: 1px solid #ccc;
+				border-radius: 4px;
+				box-shadow: none;
+			}
+
+			.reveal h1, .reveal h2, .reveal h3, .reveal h4, .reveal h5, .reveal h6 {
+				font-family: "Roboto", sans-serif;
+				color: #0072c1;
+			}
+
+			.reveal section.heading-only {
+				text-align:center;
+				padding-top:20%;
+			}
+
+            .column .no-code-badge .code-badge {
+                display: none;
+            }
+
+            .code-badge-language {
+                display: none;
+            }
+
+			.python-tutor-link {
+				font-size: smaller;
+			}
+
+			.python-tutor-link:before {
+				content: "";
+				display: block;
+				background: url("http://pythontutor.com/favicon.ico") no-repeat;
+				width: 48px;
+				height: 48px;
+				float: left;
+				margin: 0 6px 0 0;
+			}
+
+			.reveal h3 {
+				margin-bottom: 40px;
+			}
+
+            .smaller {
+                font-size: smaller;
+            }
+
+            code {
+                padding: 2px 4px;
+                font-size: 90%;
+                color: #0072c1;
+                background-color: #f9f2f4;
+                border-radius: 4px;
+            }
+
+            p.padded {
+                margin-top: 32px;
+            }
+
+            section .row {
+                display: flex;
+            }
+
+            section .column {
+                flex: 48%;
+                margin: 10px;
+            }
+
+            #insertion-demo {
+                height: 200px;
+            }
+            .array-address, .array-index, .array-value {
+                background: #ffffc6;
+                text-align: center;
+                border: 1px solid #888;
+                position: absolute;
+                width: 100px;
+                height: 50px;
+                transition: 1s;
+            }
+
+            .array-address {
+                background: #c6f2ff;
+            }
+
+            .array-addresses, .array-indices, .array-values {
+                margin-bottom: 8px;
+            }
+
+            .array-insert-form input, .array-insert-form button, .linkedlist-insert-form input, .linkedlist-insert-form button {
+                font-size: 32px;
+                width: 120px;
+            }
+
+            .linkedlist-visualization {
+                height: 120px;
+                position: relative;
+            }
+
+            .linkedlist-link {
+                position: absolute;
+                top: 0px;
+                left: 0px;
+                width:80px;
+                border: 1px solid #888;
+                font-size: 0.5em;
+                text-align: center;
+            }
+            .linkedlist-parts {
+                background-color: #ffffc6;
+                display: flex;
+            }
+            .linkedlist-value {
+                display:inline-block;
+                width: 40px;
+                border-right: 1px solid #888;
+            }
+            .linkedlist-pointer {
+                display:inline-block;
+                width: 40px;
+            }
+            .linkedlist-address {
+                width:100%;
+                background: #c6f2ff;
+                border-top: 1px solid #888;
+            }
+
+			@media print
+			{
+				.no-print, .no-print *
+				{
+					display: none !important;
+				}
+			}
+		</style>
+	</head>
+	<body>
+		<div class="reveal">
+			<div class="slides">
+				<section class="heading-only">
+                    <h1 class="smaller">Fun with Iterables</h1>
+
+					<div class="no-print" style="text-align: left; margin-top: 100px; font-size: 70%;">
+						Tips for navigating the slides:
+						<ul>
+							<li>Press O or Escape for overview mode.</li>
+							<li>Visit <a href="?print-pdf" target="_blank">this link</a> for a nice printable version</li>
+							<li>Press the copy icon on the upper right of code blocks to copy the code</li>
+						</ul>
+					</div>
+				</section>
+
+                <section>
+                    <h3>A concept map</h3>
+
+                    <img src="https://ka-perseus-images.s3.amazonaws.com/e239eda4b1092cff33d0fa0a521ec6df9573703f.svg" alt="Concept map of iterators vs. iterables"/>
+                </section>
+
+                <section>
+                    <h3>A concept map (labeled)</h3>
+
+                    <img src="https://ka-perseus-images.s3.amazonaws.com/82d13f0c94418c233ba3146e33cd4064d941a80d.svg" alt="Concept map of iterators vs. iterables with labels"/>
+                </section>
+
+                <section>
+                    <h3>(Re-visit) Lecture quiz questions</h3>
+                    <p class="smaller">1. If we want to be able to iterate through an instance of a custom class in Python, what method name should we define?
+                        <br>
+                        <code>__iter__</code>
+                    </p>
+                    <br>
+                    <p class="smaller">2. What could the definition of that method return?
+                        <ul class="smaller">
+                        <li>A single value (like str or int)
+                        <li>A higher order function
+                        <li>An iterator <span class="fragment" data-fragment-index="1"># ✅ Correct</span>
+                        <li>A list
+                        <li>An iterable
+                        <li>A generator <span class="fragment" data-fragment-index="1"># ✅ Correct</span>
+                        </ul>
+                    </p>
+                </section>
+
+                <section>
+                    <h3>A concept map (complete!?)</h3>
+                    <img src="https://ka-perseus-images.s3.amazonaws.com/c47b3bebfb58fb996e4c33d3ce8804d6ba9040fa.svg" alt="Concept map of iterators vs. iterables with __getitem__ included"/>
+                </section>
+
+                <section>
+                    <h3>Functions that return iterators</h3>
+
+                    <table style="font-size:0.7em;">
+                        <thead>
+                            <th>Function</th>
+                            <th>Description</th>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td><a target="_blank" href="https://docs.python.org/3/library/functions.html#reversed"><code>reversed(sequence)</code></a></td>
+                                <td style="padding-bottom:24px;">Iterate over item in <code>sequence</code> in reverse order
+                                    <br>
+                                    <a style="font-size:0.8em" target="_blank" href="http://pythontutor.com/visualize.html#code=chocolate_bars%20%3D%20%28%2290%25%22,%20%2270%25%22,%20%2255%25%22%29%0A%0Aworst_first%20%3D%20reversed%28chocolate_bars%29%0A%0Afor%20chocolate%20in%20worst_first%3A%0A%20%20%20%20print%28chocolate%29&cumulative=true&curInstr=0&heapPrimitives=nevernest&mode=display&origin=opt-frontend.js&py=3&rawInputLstJSON=%5B%5D&textReferences=false">(See example in PythonTutor)</a>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td><a target="_blank" href="https://docs.python.org/3/library/functions.html#zip"><code>zip(*iterables)</code></a></td>
+                                <td style="padding-bottom:24px;">Iterate over co-indexed tuples with elements from each of the <code>iterables</code>
+                                    <br>
+                                    <a style="font-size:0.8em" target="_blank" href="http://pythontutor.com/composingprograms.html#code=eng_nums%20%3D%20%5B%22one%22,%20%22two%22,%20%22three%22%5D%0Aesp_nums%20%3D%20%5B%22uno%22,%20%22dos%22,%20%22tres%22%5D%0A%0Azip_iter%20%3D%20zip%28eng_nums,%20esp_nums%29%0Aeng,%20esp%20%3D%20next%28zip_iter%29%0Aprint%28eng,%20esp%29%0A%0Afor%20eng,%20esp%20in%20zip%28eng_nums,%20esp_nums%29%3A%0A%20%20%20%20print%28eng,%20esp%29&cumulative=true&curInstr=0&mode=display&origin=composingprograms.js&py=3&rawInputLstJSON=%5B%5D">(See example in PythonTutor)</a>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td><a target="_blank" href="https://docs.python.org/3/library/functions.html#map"><code>map(func, iterable, ...)</code></a></td>
+                                <td style="padding-bottom:24px;">
+                                    Iterate over <code>func(x)</code> for <code>x</code> in <code>iterable</code>
+                                    <br>
+                                    Same as <code>[func(x) for x in iterable]</code>
+                                    <br>
+                                    <a style="font-size:0.8em" target="_blank" href="http://pythontutor.com/visualize.html#code=nums%20%3D%20%5B1,%202,%203,%204,%205%5D%0A%0A%23%20Map%20returns%20an%20iterator%0Asquares1%20%3D%20map%28lambda%20num%3A%20num%20**%202,%20nums%29%0A%0A%23%20Create%20a%20list%20of%20all%20the%20elements%20from%20the%20iterator%0Asquares1%20%3D%20list%28squares1%29%0A%0A%23%20Compare%20to...%0Asquares2%20%3D%20%5Bnum**2%20for%20num%20in%20nums%5D&cumulative=true&curInstr=0&heapPrimitives=nevernest&mode=display&origin=opt-frontend.js&py=3&rawInputLstJSON=%5B%5D&textReferences=false">(See example in PythonTutor)</a>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td><a target="_blank" href="https://docs.python.org/3/library/functions.html#filter"><code>filter(func, iterable)</code></a></td>
+                                <td style="padding-bottom:24px;">Iterate over <code>x</code> in <code>iterable</code> if <code>func(x)</code>
+                                    <br>
+                                    Same as <code>[x for x in iterable if func(x)]</code>
+                                    <br>
+                                    <a style="font-size:0.8em;" target="_blank" href="http://pythontutor.com/visualize.html#code=nums%20%3D%20%5B1,%202,%203,%204,%205%5D%0A%0A%23%20Filter%20returns%20an%20iterator%0Aeven1%20%3D%20filter%28lambda%20num%3A%20num%20%25%202%20%3D%3D%200,%20nums%29%0A%0A%23%20Create%20a%20list%20of%20all%20the%20elements%20from%20the%20iterator%0Aeven1%20%3D%20list%28even1%29%0A%0A%23%20Compare%20to...%0Aeven2%20%3D%20%5Bnum%20for%20num%20in%20nums%20if%20num%20%25%202%20%3D%3D%200%5D&cumulative=true&curInstr=0&heapPrimitives=nevernest&mode=display&origin=opt-frontend.js&py=3&rawInputLstJSON=%5B%5D&textReferences=false">(See example in PythonTutor)</a>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </section>
+
+                <section>
+                    <h3>Using map and filter</h3>
+
+                    <pre style="font-size:0.6em"><code data-trim data-noescape class="python">
+                    nums = [1, 2, 3, 4, 5]
+
+                    for square in map(lambda num: num ** 2, nums):
+                        print(square)
+
+                    for odd in filter(lambda num: num % 2 == 1, nums):
+                        print(odd)
+                    </code></pre>
+
+                    <p class="smaller">Any type of iterable can be passed in!</p>
+                    <pre style="font-size:0.6em"><code data-trim data-noescape class="python">
+                    for letter in map(lambda l: l.upper(), "superkalifragilistikexpialigetisch"):
+                        print(f"{letter}👏🏽")
+                    </code></pre>
+
+                    <p class="smaller"><code>map()</code> can process multiple iterables, as long
+                        as the lambda accepts that number of arguments:</p>
+                    <pre style="font-size:0.6em"><code data-trim data-noescape class="python">
+                    nums2 = (9, 10, 20)
+                    for sum in map(lambda x, y: x+y, nums, nums2):
+                        print(sum)
+                    </code></pre>
+
+                </section>
+
+                <section>
+                    <h3>Things that return iterables</h3>
+
+                    <table style="font-size:0.7em;">
+                        <thead>
+                            <th>Function</th>
+                            <th>Description</th>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td><a target="_blank" href="https://docs.python.org/3/library/functions.html#sorted"><code>sorted(iterable, key=None, reverse=False)</code></a></td>
+                                <td style="padding-bottom:24px;">Returns a sorted list containing all items in <code>iterable</code>,
+                                    using optional <code>key</code> function for comparison key.
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+
+                    <table style="font-size:0.7em;">
+                        <thead>
+                            <th>Constructor</th>
+                            <th>Description</th>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td><a target="_blank" href="https://docs.python.org/3/library/functions.html#func-list"><code>list(iterable)</code></a></td>
+                                <td style="padding-bottom:24px;">Constructs a new <code>list</code> containing all items in <code>iterable</code>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td><a target="_blank" href="https://docs.python.org/3/library/functions.html#func-tuple"><code>tuple(iterable)</code></a></td>
+                                <td style="padding-bottom:24px;">Constructor a new <code>tuple</code> containing all items in <code>iterable</code>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td><a target="_blank" href="https://docs.python.org/3/library/functions.html#func-set"><code>set(iterable)</code></a></td>
+                                <td style="padding-bottom:24px;">Constructs a new <code>set</code> containing all items in <code>iterable</code>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+
+                    <p class="smaller">...plus all the functions on previous slide, since an iterator is iterable!</p>
+
+                    <aside class="notes"></aside>
+                </section>
+
+                <section>
+                    <h3>Creating iterables</h3>
+
+                    <pre style="font-size:0.9em"><code data-trim data-noescape class="python">
+                    nums = [1, 2, 3, 4, 5]
+
+                    squares = list(map(lambda num: num ** 2, nums))
+                    odds = tuple(filter(lambda num: num % 2 == 1, nums))
+                    </code></pre>
+                    <br>
+                    <p class="smaller">Take advantage of optional arguments...</p>
+                    <pre style="font-size:0.9em"><code data-trim data-noescape class="python">
+                    grades = [73, 89, 74, 95]
+                    lowest_first = sorted(grades)
+                    highest_first = sorted(grades, reverse=True)
+                    </code></pre>
+
+                    <pre style="font-size:0.9em"><code data-trim data-noescape class="python">
+                    grades = ["C+", "B+", "C", "A"]
+                    highest_first = sorted(grades)
+                    lowest_first = sorted(grades, reverse=True)
+                    </code></pre>
+
+                </section>
+
+                <section>
+                    <h3>Using key functions</h3>
+
+                    <p class="smaller">Use a key function for sorting complex types:</p>
+                    <pre style="font-size:0.7em"><code data-trim data-noescape class="python">
+                    coords = [ (37, -144), (-22, -115), (56, -163) ]
+
+                    south_first = sorted(coords, key=lambda coord: coord[0])
+
+                    north_first = sorted(coords, key=lambda coord: coord[0], reverse=True)
+                    </code></pre>
+
+                    <div class="fragment">
+                    <pre style="font-size:0.7em"><code data-trim data-noescape class="python">
+                    coords = [{"lat": 37, "lng":-144},
+                              {"lat":-22, "lng":-115},
+                              {"lat":56, "lng":-163}]
+
+                    south_first = sorted(coords, key=lambda coord: coord["lat"])
+                    </code></pre>
+                    <br>
+                    <p class="smaller">🤔 Which <code>coords</code> do you prefer? What else could you do?
+                        <br>Consider readability and error-proneness.</p>
+                    </div>
+
+                </section>
+
+                <section>
+                    <h3>Functions that process iterables</h3>
+
+                    <table style="font-size:0.7em;">
+                        <thead>
+                            <th>Function</th>
+                            <th>Description</th>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td><code>max(iterable, key=None)</code></td>
+                                <td style="padding-bottom:24px;">Return the max value in <code>iterable</code>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td><code>min(iterable, key=None)</code></td>
+                                <td style="padding-bottom:24px;">Return the min value in <code>iterable</code>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td><code>sum(iterable, start)</code></td>
+                                <td style="padding-bottom:24px;">Returns the sum of values in <code>iterable</code>, initializing sum to <code>start</code>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td><a target="_blank" href="https://docs.python.org/3/library/functions.html#all"><code>all(iterable)</code></a></td>
+                                <td style="padding-bottom:24px;">Return <code>True</code> if all elements of <code>iterable</code> are true (or if <code>iterable</code> is empty)
+                                </td>
+                            </tr>
+                            <tr>
+                                <td><a target="_blank" href="https://docs.python.org/3/library/functions.html#any"><code>any(iterable)</code></a></td>
+                                <td style="padding-bottom:24px;">Return <code>True</code> if any element of <code>iterable</code> is true. Return false if <code>iterable</code> is empty.
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+
+                    <aside class="notes"></aside>
+                </section>
+
+                <section>
+                    <h3>Processing iterables</h3>
+
+                    <pre style="font-size:0.8em"><code data-trim data-noescape class="python">
+                    max_grade = max([73, 89, 74, 95])
+                    max_letter = max(["C+", "B+", "C", "A"])
+
+                    coords = [ (37, -144), (-22, -115), (56, -163) ]
+                    most_north = max(coords, key=lambda coord: coord[0])
+                    most_south = min(coords, key=lambda coord: coord[0])
+
+                    total_points = sum([73, 89, 74, 95], 0)
+
+                    all_true = all([True, True, True, True])
+                    any_true = any([False, False, False, True])
+                    </code></pre>
+                </section>
+
+                <section>
+                    <h3>Processing iterators (as iterables)</h3>
+
+                    <pre style="font-size:0.8em"><code data-trim data-noescape class="python">
+                    numbers = [1, 2, 3]
+
+                    print(sum(numbers, 0))
+
+                    print(sum(numbers, 0))
+                    </code></pre>
+
+                    <p>Iterators are also iterables...</p>
+                    <pre style="font-size:0.8em"><code data-trim data-noescape class="python">
+                    it = iter(numbers)
+
+                    print(sum(it, 0))
+
+                    print(sum(it, 0))
+                    </code></pre>
+                    <p class="fragment">...but they can be exhausted!</p>
+                </section>
+
+                <section>
+                    <h3>All together now!</h3>
+
+                    <p class="smaller">What type/value do each of these lines return?</p>
+
+                    <pre style="font-size:0.6em"><code data-trim data-noescape class="python">
+                    nums = [1, 2, 3]
+                    letters = ["A", "B", "C"]
+                    </code></pre>
+
+                    <pre style="font-size:0.6em"><code data-trim data-noescape class="python">
+                    iter(letters)
+                    next(iter(letters))
+                    </code></pre>
+
+                    <pre style="font-size:0.6em"><code data-trim data-noescape class="python">
+                    map(lambda n: n * 3, nums)
+                    sorted(map(lambda n: n * 3, nums))
+                    max(sorted(map(lambda n: n * 3, nums)))
+                    </code></pre>
+
+                    <pre style="font-size:0.6em"><code data-trim data-noescape class="python">
+                    zip(nums, letters)
+                    tuple(map(lambda n: n * 3, nums))
+                    list(tuple(map(lambda n: n * 3, nums)))
+                    </code></pre>
+                </section>
+
+
+                <section class="heading-only">
+                    <h2>Iterable pixels</h2>
+                </section>
+
+                <section>
+                    <h3>An OOP Icon</h3>
+
+                    <p>Goal: Use OOP to represent an Icon with pixels at a particular
+                        location with a particular color.
+                    </p>
+
+                    <img src="https://ka-perseus-images.s3.amazonaws.com/774cbb61de674df2c41e64ed127d24b2c3d56622.png" alt="Diagram of icon with pixels">
+                </section>
+
+
+                <section>
+                    <h3>The Color class</h3>
+
+                    <pre style="font-size:0.8em"><code data-trim data-noescape class="python">
+                    class Color:
+
+                        def __init__(self, r, g, b):
+                            self.r = r
+                            self.g = g
+                            self.b = b
+
+                        def __repr__(self):
+                            return f"Color({self.r},{self.g},{self.b})"
+
+                        def to_hex(self):
+                            return f"#{self.r:02x}{self.g:02x}{self.b:02x}"
+                    </code></pre>
+
+                    <pre style="font-size:0.8em"><code data-trim data-noescape class="python">
+                    red = Color(255, 0, 0)
+                    print(red.to_hex())
+                    </code></pre>
+
+                </section>
+
+                <section>
+                    <h3>The Pixel class</h3>
+
+                    <pre style="font-size:0.8em"><code data-trim data-noescape class="python">
+                    class Pixel:
+                        def __init__(self, x, y, r, g, b):
+                            self.x = x
+                            self.y = y
+                            self.color = Color(r, g, b)
+
+                        def __repr__(self):
+                            return f"Pixel({self.x},{self.y},{self.color})"
+                    </code></pre>
+
+                    <pre style="font-size:0.8em"><code data-trim data-noescape class="python">
+                    pixel = Pixel(0, 7, Color(255, 0, 0))
+                    print(pixel.color.to_hex())
+                    </code></pre>
+
+                </section>
+
+                <section>
+                    <h3>The Icon class</h3>
+
+                    <pre style="font-size:0.55em"><code data-trim data-noescape class="python">
+                    class Icon:
+
+                        def __init__(self, width, height, pixels=None):
+                            self.width = width
+                            self.height = height
+                            self.pixels = pixels
+                            if not self.pixels:
+                                self.pixels = [ Pixel(x, y, 0, 0, 0)
+                                    for x in range(width) for y in range(height)]
+
+                        def __repr__(self):
+                            pixels = ",".join([repr(pixel) for pixel in self.pixels])
+                            return f"Icon({self.width}, {self.height}, {self.pixels})"
+
+                        def __iter__(self):
+                            for pixel in self.pixels:
+                                yield pixel
+                    </code></pre>
+
+                    <pre style="font-size:0.6em"><code data-trim data-noescape class="python">
+                    icon = Icon(2, 2, [Pixel(0, 0, 255, 0, 0),
+                        Pixel(0, 1, 255, 50, 0),
+                        Pixel(1, 0, 255, 100, 0),
+                        Pixel(1, 1, 255, 150, 0)])
+
+                    for pixel in icon:
+                        pixel.color.g += 50
+                    </code></pre>
+
+                </section>
+
+                <section>
+                    <h3>The Icon class with __getitem__</h3>
+
+                    <pre style="font-size:0.55em"><code data-trim data-noescape class="python">
+                    class Icon:
+
+                        def __init__(self, width, height, pixels=None):
+                            self.width = width
+                            self.height = height
+                            self.pixels = pixels
+                            if not self.pixels:
+                                self.pixels = [ Pixel(x, y, 0, 0, 0)
+                                    for x in range(width) for y in range(height)]
+
+                        def __repr__(self):
+                            pixels = ",".join([repr(pixel) for pixel in self.pixels])
+                            return f"Icon({self.width}, {self.height}, {self.pixels})"
+
+                        def __getitem__(self, index):
+                            return self.pixels[index]
+                    </code></pre>
+
+                    <pre style="font-size:0.6em"><code data-trim data-noescape class="python">
+                    icon = Icon(2, 2, [Pixel(0, 0, 255, 0, 0),
+                        Pixel(0, 1, 255, 50, 0),
+                        Pixel(1, 0, 255, 100, 0),
+                        Pixel(1, 1, 255, 150, 0)])
+
+                    for pixel in icon:
+                        pixel.color.g += 50
+                    pixel[0].color.b = 255
+                    </code></pre>
+
+                </section>
+
+                <section>
+                    <h3>Visual demo</h3>
+
+                    <p>Visit the <a  target="_blank" href="https://replit.com/@PamelaFox2/AptImpressionableAfkgaming">Repl.it demo</a>
+                        to see all the classes used with the <a target="_blank" href="https://docs.python.org/3/library/tkinter.html">Python tkinter library</a>
+                         for graphics rendering.</p>
+                </section>
+
+                <section>
+                    <h3>Iterator-producing functions</h3>
+
+                    <p>What happens if we...</p>
+
+                    <p>map the pixels?</p>
+                    <pre style="font-size:0.7em"><code data-trim data-noescape class="python">
+                    changer = lambda p: Pixel(p.x, p.y, p.x * 30, p.color.g + 30, p.y * 30)
+                    icon.pixels = list(map(changer, icon.pixels))
+                    </code></pre>
+                    <br>
+                    <p>filter the pixels?</p>
+                    <pre style="font-size:0.7em"><code data-trim data-noescape class="python">
+                    is_odd = lambda p: p.x % 2 == 0
+                    icon.pixels = list(filter(is_odd, icon.pixels))
+                    </code></pre>
+                </section>
+
+                <section>
+                    <h3>Iterable-processing functions</h3>
+
+                    <p>What happens if we ask for the min and max of the pixels?</p>
+
+                    <pre style="font-size:0.9em"><code data-trim data-noescape class="python">
+                    max_pix = max(icon.pixels)
+                    min_pix = min(icon.pixels)
+                    </code></pre>
+
+                    <div class="fragment">
+                    <p>Python doesn't know how to compare <code>Pixel</code> instances! Two options:
+                    <ul>
+                        <li>Implement dunder methods (<code>__eq__</code>, <code>__lt__</code>, etc)
+                        <li>Pass in a key function that returns a numerical value:
+                    </ul>
+
+                    <pre style="font-size:0.8em"><code data-trim data-noescape class="python">
+                    rgb_adder = lambda pixel: pixel.r + pixel.color.g + pixel.color.b
+                    max_pix = max(icon.pixels, key=rgb_adder)
+                    min_pix = min(icon.pixels, key=rgb_adder)
+                    </code></pre>
+                    </div>
+                </section>
+
+                <section>
+                    <h3>A concept map (complete!?)</h3>
+                    <img src="https://ka-perseus-images.s3.amazonaws.com/c47b3bebfb58fb996e4c33d3ce8804d6ba9040fa.svg" alt="Concept map of iterators vs. iterables with __getitem__ included"/>
+                </section>
+
+			</div>
+		</div>
+
+		<script src="https://cdn.jsdelivr.net/npm/reveal.js@4.1.0/dist/reveal.js"></script>
+        <script src="https://cdn.jsdelivr.net/npm/reveal.js@4.1.0/plugin/highlight/highlight.js"></script>
+        <script src="https://cdn.jsdelivr.net/npm/highlightjs-badge@0.1.9/highlightjs-badge.min.js"></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/jsPlumb/2.15.5/js/jsplumb.min.js"></script>
+		<script>
+			const srcUrlPrefix = "https://cdn.jsdelivr.net/npm/reveal.js@4.1.0/";
+			Reveal.initialize({
+				hash: true,
+				center: false,
+				slideNumber: true,
+				showNotes: false,
+				margin: 0.1,
+				preloadIframes: true,
+				plugins: [ RevealHighlight ],
+				pdfSeparateFragments: true
+			});
+
+            // add HighlightJS-badge (options are optional)
+            var options = {
+                copyIconContent: "📄",
+                checkIconContent: "✅"
+            };
+            window.highlightJsBadge(options);
+
+            if (window.location.search == "?print-pdf") {
+                var uncounted = document.querySelectorAll("[data-visibility='uncounted']");
+                uncounted.forEach(node => {
+                    node.parentNode.classList.add("no-print")
+                })
+            }
+		</script>
+	</body>
+</html>

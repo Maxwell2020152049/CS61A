@@ -1,0 +1,13 @@
+start: calc_expr    // We'll get to those starting ?s later.
+
+?calc_expr: NUMBER | calc_op
+
+calc_op: "(" OPERATOR calc_expr* ")"
+
+OPERATOR: "+" | "-" | "*" | "/"
+
+%ignore /\s+/
+// NUMBER is a terminal symbol defined in the Lark library.  
+// It described a decimal numeric literal (either integer
+// or floating point). 
+%import common.NUMBER

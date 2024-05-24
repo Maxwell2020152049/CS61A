@@ -1,0 +1,19 @@
+; Simple ancestry example from lecture.
+
+; (parent ?parent ?child) means that ?parent is the parent of child
+
+(fact (parent george paul))
+(fact (parent martin george))
+(fact (parent martin martin_jr))
+(fact (parent martin donald))
+(fact (parent george ann))
+
+; (ancestor ?ancestor ?descendant) means that ?descendant is a descendant of
+; ?ancestor.
+
+(fact (ancestor ?X ?Y) (parent ?X ?Y))
+(fact (ancestor ?X ?Y) (parent ?X ?Z) (ancestor ?Z ?Y))
+
+;Queries:
+;(query (ancestor martin ann))
+;(query (ancestor ?who ann))

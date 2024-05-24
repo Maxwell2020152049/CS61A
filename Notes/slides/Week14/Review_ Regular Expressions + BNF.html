@@ -1,0 +1,635 @@
+<!DOCTYPE html>
+<!-- saved from url=(0097)https://inst.eecs.berkeley.edu/~cs61a/sp21/assets/slides/33-Review_Regular_Expressions_+_BNF.html -->
+<html class="reveal-full-page"><head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+		
+		<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+		<title>Review: Regular Expressions + BNF</title>
+		<link rel="stylesheet" href="./Review_ Regular Expressions + BNF_files/reset.css">
+		<link rel="stylesheet" href="./Review_ Regular Expressions + BNF_files/reveal.css">
+		<link rel="stylesheet" href="./Review_ Regular Expressions + BNF_files/simple.css" id="theme">
+		<link rel="stylesheet" href="./Review_ Regular Expressions + BNF_files/mono-blue.css">
+		<link rel="stylesheet" href="./Review_ Regular Expressions + BNF_files/css">
+		<style>
+			.reveal {
+				font-family: "Work Sans", sans-serif;
+			}
+
+			.reveal .slides section {
+				text-align: left;
+				font-size: smaller;
+			}
+
+			.reveal pre {
+				background-color: #f5f5f5;
+				width: 100%;
+				border: 1px solid #ccc;
+				border-radius: 4px;
+				box-shadow: none;
+			}
+
+			.reveal h1, .reveal h2, .reveal h3, .reveal h4, .reveal h5, .reveal h6 {
+				font-family: "Roboto", sans-serif;
+				color: #0072c1;
+			}
+
+			.reveal section.heading-only {
+				text-align:center;
+				padding-top:20%;
+			}
+
+            .column .no-code-badge .code-badge {
+                display: none;
+            }
+
+            .code-badge-language {
+                display: none;
+            }
+
+			.python-tutor-link {
+				font-size: smaller;
+			}
+
+			.python-tutor-link:before {
+				content: "";
+				display: block;
+				background: url("http://pythontutor.com/favicon.ico") no-repeat;
+				width: 48px;
+				height: 48px;
+				float: left;
+				margin: 0 6px 0 0;
+			}
+
+			.reveal h3 {
+				margin-bottom: 40px;
+			}
+
+            .smaller {
+                font-size: smaller;
+            }
+
+            code {
+                padding: 2px 4px;
+                font-size: 90%;
+                color: #0072c1;
+                background-color: #f9f2f4;
+                border-radius: 4px;
+            }
+
+            p.padded {
+                margin-top: 32px;
+            }
+
+            section .row {
+                display: flex;
+            }
+
+            section .column {
+                flex: 48%;
+                margin: 10px;
+            }
+
+			@media print
+			{
+				.no-print, .no-print *
+				{
+					display: none !important;
+				}
+			}
+
+
+            .regex-input {
+                border:1px solid rgb(204, 204, 204);
+                background: rgb(245, 245, 245);
+                padding: 8px;
+            }
+
+            .regex-input input {
+                font-size: inherit;
+            }
+
+            .regex-input input[type=text]:invalid {
+                background-color: pink;
+            }
+
+		</style>
+	<style type="text/css">.hljs-ln{border-collapse:collapse}.hljs-ln td{padding:0}.hljs-ln-n:before{content:attr(data-line-number)}</style></head>
+	<body class="reveal-viewport" style="--slide-width: 960px; --slide-height: 700px;">
+		<div class="reveal slide focused has-horizontal-slides ready" role="application" data-transition-speed="default" data-background-transition="fade" style="">
+			<div class="slides" style="width: 960px; height: 700px; inset: 50% auto auto 50%; transform: translate(-50%, -50%) scale(0.919286);">
+				<section class="heading-only present" style="display: block;">
+                    <h1 class="smaller">RegEx + BNF</h1>
+
+					<div class="no-print" style="text-align: left; margin-top: 100px; font-size: 70%;">
+						Tips for navigating the slides:
+						<ul>
+							<li>Press O or Escape for overview mode.</li>
+							<li>Visit <a href="https://inst.eecs.berkeley.edu/~cs61a/sp21/assets/slides/33-Review_Regular_Expressions_+_BNF.html?print-pdf" target="_blank">this link</a> for a nice printable version</li>
+							<li>Press the copy icon on the upper right of code blocks to copy the code</li>
+						</ul>
+					</div>
+				</section>
+
+                <section class="heading-only future" hidden="" aria-hidden="true" style="display: block;">
+                    <h2>Regular expressions</h2>
+                </section>
+
+                <section hidden="" aria-hidden="true" class="future" style="display: block;">
+                    <h3>RegEx in the real word</h3>
+
+                    <p>Where are regular expressions used?</p>
+
+                    <ul>
+                        <li>Java, Perl, JS, etc.</li>
+                        <li>IDEs (e.g. VSCode)</li>
+                        <li>SQL</li>
+                        <li>Spreadsheets</li>
+                        <li>HTML</li>
+                    </ul>
+
+                    <p>Better question: where aren't they used?</p>
+
+                </section>
+
+                <section hidden="" aria-hidden="true" class="future" style="display: none;">
+                    <h3>RegEx on the Web</h3>
+
+                    <p>Webpages are written with HTML tags,
+                        where each tag specifies an element on the page.</p>
+
+                    <p>The <code>input</code> tag renders a text input field:
+                    </p>
+
+                    <pre style="font-size:0.9em" class="code-badge-pre"><div class="code-badge">
+        <div class="code-badge-language">html</div>
+        <div title="Copy to clipboard">
+            <i class="fa fa-copy code-badge-copy-icon">📄</i>
+        </div>
+     </div><code data-trim="" data-noescape="" class="html hljs xml"><span class="hljs-tag">&lt;<span class="hljs-name">label</span>&gt;</span> Zip code
+<span class="hljs-tag">&lt;<span class="hljs-name">input</span> <span class="hljs-attr">name</span>=<span class="hljs-string">"zip"</span> <span class="hljs-attr">type</span>=<span class="hljs-string">"text"</span> <span class="hljs-attr">pattern</span>=<span class="hljs-string">"\d\d\d\d\d"</span>&gt;</span>
+<span class="hljs-tag">&lt;/<span class="hljs-name">label</span>&gt;</span></code></pre>
+
+                    <p>→</p>
+
+                    <div class="regex-input">
+                    <label>Zip code
+                    <input name="zip" type="text" pattern="\d\d\d\d\d">
+                    </label>
+                    </div>
+
+                    <p>The <code>pattern</code> attribute uses a regular expression
+                    to describe what is valid for that field.</p>
+
+                </section>
+
+                <section hidden="" aria-hidden="true" class="future" style="display: none;">
+                    <h3>Quantifier shortcut: {n,m}</h3>
+
+                    <p>Use <code>{}</code> to specify how many instances to match.
+                    </p>
+
+                    <ul>
+                        <li><code>{n}</code> matches exactly <code>n</code> instances
+                        </li><li><code>{n,}</code> matches <code>n</code> or more instances
+                        </li><li><code>{n,m}</code> matches from <code>n</code> and <code>m</code> instances
+                    </li></ul>
+
+                    <pre style="font-size:0.9em" class="code-badge-pre"><div class="code-badge">
+        <div class="code-badge-language">html</div>
+        <div title="Copy to clipboard">
+            <i class="fa fa-copy code-badge-copy-icon">📄</i>
+        </div>
+     </div><code data-trim="" data-noescape="" class="html hljs xml"><span class="hljs-tag">&lt;<span class="hljs-name">label</span>&gt;</span> Zip code
+<span class="hljs-tag">&lt;<span class="hljs-name">input</span> <span class="hljs-attr">name</span>=<span class="hljs-string">"zip"</span> <span class="hljs-attr">type</span>=<span class="hljs-string">"text"</span> <span class="hljs-attr">pattern</span>=<span class="hljs-string">"\d{5}"</span>&gt;</span>
+<span class="hljs-tag">&lt;/<span class="hljs-name">label</span>&gt;</span></code></pre>
+
+                    <p>→</p>
+
+                    <div class="regex-input">
+                    <label>Zip code
+                    <input name="zip" type="text" pattern="\d{5}">
+                    </label>
+                    </div>
+
+                </section>
+
+                <section hidden="" aria-hidden="true" class="future" style="display: none;">
+
+                    <h3>Name That Input Pattern! #1</h3>
+
+                    <pre style="font-size:0.9em" class="code-badge-pre"><div class="code-badge">
+        <div class="code-badge-language">html</div>
+        <div title="Copy to clipboard">
+            <i class="fa fa-copy code-badge-copy-icon">📄</i>
+        </div>
+     </div><code contenteditable="" data-trim="" data-noescape="" class="html hljs xml"><span class="hljs-tag">&lt;<span class="hljs-name">label</span>&gt;</span>TBD
+<span class="hljs-tag">&lt;<span class="hljs-name">input</span> <span class="hljs-attr">name</span>=<span class="hljs-string">"tbd"</span> <span class="hljs-attr">type</span>=<span class="hljs-string">"text"</span> <span class="hljs-attr">pattern</span>=<span class="hljs-string">"[A-Za-z]{3}"</span>&gt;</span>
+<span class="hljs-tag">&lt;/<span class="hljs-name">label</span>&gt;</span></code></pre>
+
+                    <p>→</p>
+
+                    <div class="regex-input">
+                    <label><span contenteditable="">TBD</span>
+                    <input name="tbd" type="text" pattern="[A-Za-z]{3}">
+                    </label>
+                    </div>
+
+                    <br>
+                    <ul>
+                    <li>What's a valid input?<span class="fragment" data-fragment-index="0">AUS, aus</span>
+                    </li><li>What's an invalid input? <span class="fragment" data-fragment-index="0">australia, au</span>
+                    </li><li>What's a good name for the field? <span class="fragment" data-fragment-index="0">Country Code</span>
+                    </li></ul>
+
+                </section>
+
+                <section hidden="" aria-hidden="true" class="future" style="display: none;">
+
+                    <h3>Name That Input Pattern! #2</h3>
+
+                    <pre style="font-size:0.8em" class="code-badge-pre"><div class="code-badge">
+        <div class="code-badge-language">html</div>
+        <div title="Copy to clipboard">
+            <i class="fa fa-copy code-badge-copy-icon">📄</i>
+        </div>
+     </div><code contenteditable="" data-trim="" data-noescape="" class="html hljs xml"><span class="hljs-tag">&lt;<span class="hljs-name">label</span>&gt;</span>TBD
+<span class="hljs-tag">&lt;<span class="hljs-name">input</span> <span class="hljs-attr">name</span>=<span class="hljs-string">"tbd"</span> <span class="hljs-attr">type</span>=<span class="hljs-string">"text"</span> <span class="hljs-attr">pattern</span>=<span class="hljs-string">"\d{4}-\d{2}-\d{2}"</span>&gt;</span>
+<span class="hljs-tag">&lt;/<span class="hljs-name">label</span>&gt;</span></code></pre>
+
+                    <p>→</p>
+
+                    <div class="regex-input">
+                    <label><span contenteditable="">TBD</span>
+                    <input type="text" pattern="\d{4}-\d{2}-\d{2}">
+                    </label>
+                    </div>
+
+                    <br>
+                    <ul>
+                    <li>What's a valid input? <span class="fragment" data-fragment-index="0">2020-03-13</span>
+                    </li><li>What's an invalid input? <span class="fragment" data-fragment-index="0">2020/03/13, 03-13-2020</span>
+                    </li><li>What's a good name for the field? <span class="fragment" data-fragment-index="0">Date</span>
+                    <p></p>
+
+                </li></ul></section>
+
+                <section hidden="" aria-hidden="true" class="future" style="display: none;">
+
+                    <h3>Name That Input Pattern! #3</h3>
+
+                    <pre style="font-size:0.6em" class="code-badge-pre"><div class="code-badge">
+        <div class="code-badge-language">html</div>
+        <div title="Copy to clipboard">
+            <i class="fa fa-copy code-badge-copy-icon">📄</i>
+        </div>
+     </div><code contenteditable="" data-trim="" data-noescape="" class="html hljs xml"><span class="hljs-tag">&lt;<span class="hljs-name">label</span>&gt;</span>TBD
+<span class="hljs-tag">&lt;<span class="hljs-name">input</span> <span class="hljs-attr">name</span>=<span class="hljs-string">"tbd"</span> <span class="hljs-attr">type</span>=<span class="hljs-string">"text"</span> <span class="hljs-attr">pattern</span>=<span class="hljs-string">"[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,}$"</span>&gt;</span>
+<span class="hljs-tag">&lt;/<span class="hljs-name">label</span>&gt;</span></code></pre>
+
+                    <p>→</p>
+
+                    <div class="regex-input">
+                    <label><span contenteditable="">TBD</span>
+                    <input type="text" pattern="[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,}$">
+                    </label>
+                    </div>
+
+                    <br>
+                    <ul>
+                    <li>What's a valid input? <span class="fragment" data-fragment-index="0">someone@someplace.org</span>
+                    </li><li>What's an invalid input? <span class="fragment" data-fragment-index="0">someone@mod%cloth.co</span>
+                    </li><li>What's a good name for the field? <span class="fragment" data-fragment-index="0">Email address</span>
+                    </li></ul>
+
+                </section>
+
+                <section hidden="" aria-hidden="true" class="future" style="display: none;">
+
+                    <h3>RegEx Makeover! #1</h3>
+
+                    <p>Let's make a regular expression to match 24-hour times
+                        of the format <code>HH:MM</code>.
+                    </p>
+
+                    <p>First draft: <code>[0-2]\d:\d\d</code></p>
+
+                    <ul>
+                        <li>What invalid times would that match? <span class="fragment" data-fragment-index="0">24:99</span>
+                        </li><li>How do we fix minutes? <span class="fragment" data-fragment-index="0"><code>[0-2]\d:[0-5]\d</code></span>
+                        </li><li>How do we fix hours?
+                            <span class="fragment" data-fragment-index="0"><code>((2[0-3])|([0-1]\d)):[0-5]\d</code></span>
+                    </li></ul>
+
+                    <p>Try in <a href="http://regexr.com/">regexr.com</a>!</p>
+
+                </section>
+
+                <section hidden="" aria-hidden="true" class="future" style="display: none;">
+
+                    <h3>RegEx Makeover! #2</h3>
+
+                    <p>Let's make a regular expression to
+                        match any tweet talking about GME stock.
+                    </p>
+
+                    <p>First draft: <code>GME</code></p>
+
+                    <ul>
+                        <li>Would that match any non-GME tweets? <span class="fragment" data-fragment-index="0">Yes, like #HUGME or #HUGMEHARDER</span>
+                        </li><li>How do we match only GME? <span class="fragment" data-fragment-index="0"><code>\bGME\b</code></span>
+                    </li></ul>
+
+                    <p>Try in <a href="http://regexr.com/">regexr.com</a>!</p>
+
+                </section>
+
+                <section class="heading-only future" hidden="" aria-hidden="true" style="display: none;">
+                    <h2>BNF</h2>
+                </section>
+
+                <section hidden="" aria-hidden="true" class="future" style="display: none;">
+                    <h3>BNF for Toddler-ese</h3>
+
+                    <pre style="font-size:0.8em" class="code-badge-pre"><div class="code-badge">
+        <div class="code-badge-language">avrasm</div>
+        <div title="Copy to clipboard">
+            <i class="fa fa-copy code-badge-copy-icon">📄</i>
+        </div>
+     </div><code data-trim="" data-noescape="" class="hljs avrasm"><span class="hljs-symbol">start:</span> sentence
+<span class="hljs-symbol">sentence:</span> describe_wants | describe_feeling
+<span class="hljs-symbol">describe_wants:</span> TODDLER <span class="hljs-string">"wants"</span> noun_phrase <span class="hljs-string">"!"</span>
+<span class="hljs-symbol">noun_phrase:</span> ARTICLE? NOUN
+<span class="hljs-symbol">describe_feeling:</span> TODDLER <span class="hljs-string">"is"</span> EMOTION <span class="hljs-string">"!"</span>
+
+<span class="hljs-symbol">TODDLER:</span> <span class="hljs-string">"beverly"</span> | <span class="hljs-string">"baggy"</span> | <span class="hljs-string">"you"</span>
+<span class="hljs-symbol">ARTICLE:</span> <span class="hljs-string">"the"</span> | <span class="hljs-string">"a"</span> | <span class="hljs-string">"an"</span> | <span class="hljs-string">"un"</span> | <span class="hljs-string">"una"</span>
+<span class="hljs-symbol">NOUN:</span> <span class="hljs-string">"ball"</span> | <span class="hljs-string">"elmo"</span> | <span class="hljs-string">"chalk"</span> | <span class="hljs-string">"gusano"</span>
+<span class="hljs-symbol">EMOTION:</span> <span class="hljs-string">"sad"</span> | <span class="hljs-string">"mad"</span> | <span class="hljs-string">"tired"</span>
+
+%ignore /\s+/</code></pre>
+
+                    <p>What sentences can that parse? <br>
+                    Try in <a href="https://code.cs61a.org/">code.cs61a.org</a>!</p>
+
+                </section>
+
+                <section hidden="" aria-hidden="true" class="future" style="display: none;">
+                    <h3>BNF in the real word</h3>
+
+                    <p>Where is BNF used?</p>
+
+                    <ul>
+                        <li>Language specification:
+                            <a href="https://docs.python.org/3/reference/lexical_analysis.html#numeric-literals">Python</a>,
+                            <a href="https://www.w3.org/TR/css-values-3/#calc-syntax">CSS</a>,
+                            <a href="https://github.com/sass/sass/blob/master/spec/syntax.md">SaSS</a>,
+                            <a href="https://www.w3.org/TR/2008/REC-xml-20081126/#sec-logical-struct">XML</a>
+                        </li><li>File formats:
+                            <a href="https://developers.google.com/search/docs/advanced/robots/robots_txt#formal-syntax-definition">Google's robots.txt</a>
+                        </li><li>Protocols:
+                            <a href="https://kafka.apache.org/0100/protocol.html#protocol_details">Apache Kafka</a>
+                        </li><li>Parsers and compilers
+                        </li><li>Text generation
+                    </li></ul>
+
+                    <p>You will likely use your BNF <em>reading</em> skills
+                        more than your BNF <em>writing</em> skills.</p>
+                </section>
+
+                <section hidden="" aria-hidden="true" class="future" style="display: none;">
+                    <h3>BNF for Calculator</h3>
+
+                    <pre style="font-size:0.9em" class="code-badge-pre"><div class="code-badge">
+        <div class="code-badge-language">sql</div>
+        <div title="Copy to clipboard">
+            <i class="fa fa-copy code-badge-copy-icon">📄</i>
+        </div>
+     </div><code data-trim="" data-noescape="" class="hljs sql"><span class="hljs-keyword">start</span>: calc_expr
+
+?calc_expr: <span class="hljs-built_in">NUMBER</span> | calc_op
+
+calc_op: <span class="hljs-string">"("</span> <span class="hljs-keyword">OPERATOR</span> calc_expr* <span class="hljs-string">")"</span>
+
+<span class="hljs-keyword">OPERATOR</span>: <span class="hljs-string">"+"</span> | <span class="hljs-string">"-"</span> | <span class="hljs-string">"*"</span> | <span class="hljs-string">"/"</span>
+
+%<span class="hljs-keyword">ignore</span> /\s+/
+%<span class="hljs-keyword">import</span> common.NUMBER</code></pre>
+
+                    <p>What expressions can that parse? <br>
+                        Try in <a href="https://code.cs61a.org/">code.cs61a.org</a>!</p>
+
+                </section>
+
+                <section hidden="" aria-hidden="true" class="future" style="display: none;">
+                    <h3>Syntax diagram for Calculator</h3>
+
+                    <p class="smaller">A syntax diagram is
+                        a common way to represent BNF &amp; other context-free grammars.
+                        Also known as railroad diagram.
+                        </p>
+
+                    <table>
+                    <tbody><tr>
+                        <td style="vertical-align:top; font-size:0.7em;"><code>calc_expr: NUMBER | calc_op</code>
+                        </td><td><img src="./Review_ Regular Expressions + BNF_files/UnbQ7vV.png" alt="Syntax diagram for calc_expr non-terminal rule">
+                    </td></tr><tr>
+                        <td style="vertical-align:top; font-size:0.7em;"><code>calc_op: '(' OPERATOR calc_expr* ')'</code>
+                        </td><td><img src="./Review_ Regular Expressions + BNF_files/Kwcls0e.png" alt="Syntax diagram for calc_op non-terminal rule">
+                    </td></tr><tr>
+                        <td style="vertical-align:top; font-size:0.7em;"><code>OPERATOR: '+' | '-' | '*' | '/'</code><p></p>
+                        </td><td><img src="./Review_ Regular Expressions + BNF_files/iuoWpXd.png" alt="Syntax diagram for OPERATOR terminal rule">
+
+                    </td></tr></tbody></table>
+                </section>
+
+
+                <section hidden="" aria-hidden="true" class="future" style="display: none;">
+                    <h3>BNF for Python Integers</h3>
+
+                    <p>Adapted from the <a href="https://docs.python.org/3/reference/lexical_analysis.html#numeric-literals">Python docs</a>:</p>
+                    <pre style="font-size:0.8em" class="code-badge-pre"><div class="code-badge">
+        <div class="code-badge-language">groovy</div>
+        <div title="Copy to clipboard">
+            <i class="fa fa-copy code-badge-copy-icon">📄</i>
+        </div>
+     </div><code data-trim="" data-noescape="" class="hljs groovy">?start: integer
+<span class="hljs-string">integer:</span>  decinteger | bininteger | octinteger | hexinteger
+<span class="hljs-string">decinteger:</span>  nonzerodigit digit*
+<span class="hljs-string">bininteger:</span>  <span class="hljs-string">"0"</span> (<span class="hljs-string">"b"</span> | <span class="hljs-string">"B"</span>) bindigit+
+<span class="hljs-string">octinteger:</span>  <span class="hljs-string">"0"</span> (<span class="hljs-string">"o"</span> | <span class="hljs-string">"O"</span>) octdigit+
+<span class="hljs-string">hexinteger:</span>  <span class="hljs-string">"0"</span> (<span class="hljs-string">"x"</span> | <span class="hljs-string">"X"</span>) hexdigit+
+<span class="hljs-string">nonzerodigit:</span>  <span class="hljs-regexp">/[1-9]/</span>
+<span class="hljs-string">digit:</span>  <span class="hljs-regexp">/[0-9]/</span>
+<span class="hljs-string">bindigit:</span>  <span class="hljs-regexp">/[01]/</span>
+<span class="hljs-string">octdigit:</span>  <span class="hljs-regexp">/[0-7]/</span>
+<span class="hljs-string">hexdigit:</span>  digit | <span class="hljs-regexp">/[a-f]/</span> | <span class="hljs-regexp">/[A-F]/</span></code></pre>
+
+                    <p>What number formats can that parse? <br>
+                    Try in <a href="https://code.cs61a.org/">code.cs61a.org</a>!</p>
+
+                    <!-- Replace hexdigit with [0-9a-fA-F] -->
+                </section>
+
+                <section hidden="" aria-hidden="true" class="future" style="display: none;">
+                    <h3>Syntax diagram: Python numbers</h3>
+
+                    <table>
+                    <tbody><tr>
+                        <td style="vertical-align:top; font-size:0.7em;"><code>decinteger: nonzerodigit digit*</code>
+                        </td><td><img src="./Review_ Regular Expressions + BNF_files/YCcV72Y.png" alt="Syntax diagram for decinteger non-terminal rule">
+                    </td></tr><tr>
+                        <td style="vertical-align:top; font-size:0.7em;"><code>hexinteger:  "0" ("x" | "X") hexdigit+</code>
+                        </td><td><img src="./Review_ Regular Expressions + BNF_files/jdHgDvF.png" alt="Syntax diagram for hexinteger non-terminal rule">
+                    </td></tr><tr>
+                        <td style="vertical-align:top; font-size:0.7em;"><code>hexdigit:  digit | /[a-f]/ | /[A-F]/</code><p></p>
+                        </td><td><img src="./Review_ Regular Expressions + BNF_files/xOro16w.png" alt="Syntax diagram for hexdigit non-terminal rule">
+                    </td></tr><tr>
+                        <td style="vertical-align:top; font-size:0.7em;"><code>digit:  /[0-9]/</code><p></p>
+                        </td><td><img src="./Review_ Regular Expressions + BNF_files/0KrHZQx.png" alt="Syntax diagram for DIGIT non-terminal rule">
+
+                    </td></tr></tbody></table>
+                </section>
+
+                <section hidden="" aria-hidden="true" class="future" style="display: none;">
+                    <h3>BNF for Scheme expressions</h3>
+
+                    <p>Adapted from the <a href="https://www.scheme.com/tspl2d/grammar.html">Scheme docs</a>:</p>
+
+                    <pre style="font-size:0.5em" class="code-badge-pre"><div class="code-badge">
+        <div class="code-badge-language">gams</div>
+        <div title="Copy to clipboard">
+            <i class="fa fa-copy code-badge-copy-icon">📄</i>
+        </div>
+     </div><code data-trim="" data-noescape="" class="hljs gams">?start: expression
+expression: constant | <span class="hljs-keyword">variable</span> | <span class="hljs-string">"(if "</span> expression <span class="hljs-comment">expression expression?</span> <span class="hljs-comment">")"</span> |<span class="hljs-comment"> application</span>
+constant: BOOLEAN |<span class="hljs-comment"> NUMBER</span>
+<span class="hljs-keyword">variable</span>: identifier
+application: <span class="hljs-string">"("</span> expression <span class="hljs-comment">expression*</span> <span class="hljs-comment">")"</span>
+
+identifier: initial <span class="hljs-comment">subsequent*</span> | <span class="hljs-comment">"+"</span> | <span class="hljs-comment">"-"</span> | <span class="hljs-comment">"..."</span>
+initial: LETTER | <span class="hljs-comment">"!"</span> | <span class="hljs-comment">"$"</span> | <span class="hljs-comment">"%"</span> | <span class="hljs-comment">"&amp;"</span> | <span class="hljs-comment">"*"</span> | <span class="hljs-comment">"/"</span> | <span class="hljs-comment">":"</span> | <span class="hljs-comment">"&lt;"</span> | <span class="hljs-comment">"="</span> | <span class="hljs-comment">"&gt;"</span> | <span class="hljs-comment">"?"</span> | <span class="hljs-comment">"~"</span> | <span class="hljs-comment">"_"</span> | <span class="hljs-comment">"^"</span>
+subsequent: initial |<span class="hljs-comment"> DIGIT</span> | <span class="hljs-comment">"."</span> | <span class="hljs-comment">"+"</span> | <span class="hljs-comment">"-"</span>
+LETTER: /[a-zA-z]/
+DIGIT: /[<span class="hljs-number">0</span><span class="hljs-number">-9</span>]/
+BOOLEAN:  <span class="hljs-string">"#t"</span> | <span class="hljs-string">"#f"</span>
+
+%import <span class="hljs-comment">common.NUMBER</span>
+%ignore /\s+/</code></pre>
+
+                    <p class="smaller">*This BNF does not include many of the special forms, for simplicity.</p>
+
+                    <!-- Try adding (define varible expression form)-->
+                </section>
+
+                <section hidden="" aria-hidden="true" class="future" style="display: none;">
+                    <h3>Syntax diagram: Scheme expressions</h3>
+
+                    <table>
+                    <tbody><tr>
+                        <td style="vertical-align:top; font-size:0.6em;"><code>expression: constant | variable | "(if " expression expression expression? ")" | application</code>
+                        </td><td><img src="./Review_ Regular Expressions + BNF_files/ZFIvrbQ.png" alt="Syntax diagram for expression non-terminal rule">
+                    </td></tr><tr>
+                        <td style="vertical-align:top; font-size:0.6em;"><code>application: "(" expression expression* ")"</code>
+                        </td><td><img src="./Review_ Regular Expressions + BNF_files/2viTPCc.png" alt="Syntax diagram for application non-terminal rule">
+                    </td></tr><tr>
+                        <td style="vertical-align:top; font-size:0.6em;"><code>identifier: initial subsequent* | "+" | "-" | "..."</code><p></p>
+                        </td><td><img src="./Review_ Regular Expressions + BNF_files/6NRgHqG.png" alt="Syntax diagram for identifier non-terminal rule">
+                    </td></tr></tbody></table>
+                </section>
+
+			</div>
+		<div class="backgrounds"><div class="slide-background heading-only present" data-loaded="true" style="display: block;"><div class="slide-background-content"></div></div><div class="slide-background heading-only future" data-loaded="true" style="display: block;"><div class="slide-background-content"></div></div><div class="slide-background future" data-loaded="true" style="display: block;"><div class="slide-background-content"></div></div><div class="slide-background future" style="display: none;"><div class="slide-background-content"></div></div><div class="slide-background future" style="display: none;"><div class="slide-background-content"></div></div><div class="slide-background future" style="display: none;"><div class="slide-background-content"></div></div><div class="slide-background future" style="display: none;"><div class="slide-background-content"></div></div><div class="slide-background future" style="display: none;"><div class="slide-background-content"></div></div><div class="slide-background future" style="display: none;"><div class="slide-background-content"></div></div><div class="slide-background future" style="display: none;"><div class="slide-background-content"></div></div><div class="slide-background heading-only future" style="display: none;"><div class="slide-background-content"></div></div><div class="slide-background future" style="display: none;"><div class="slide-background-content"></div></div><div class="slide-background future" style="display: none;"><div class="slide-background-content"></div></div><div class="slide-background future" style="display: none;"><div class="slide-background-content"></div></div><div class="slide-background future" style="display: none;"><div class="slide-background-content"></div></div><div class="slide-background future" style="display: none;"><div class="slide-background-content"></div></div><div class="slide-background future" style="display: none;"><div class="slide-background-content"></div></div><div class="slide-background future" style="display: none;"><div class="slide-background-content"></div></div><div class="slide-background future" style="display: none;"><div class="slide-background-content"></div></div></div><div class="slide-number" style="display: block;"><a href="https://inst.eecs.berkeley.edu/~cs61a/sp21/assets/slides/33-Review_Regular_Expressions_+_BNF.html#/">
+					<span class="slide-number-a">1</span>
+					</a></div><aside class="controls" data-controls-layout="bottom-right" data-controls-back-arrows="faded" style="display: block;"><button class="navigate-left" aria-label="previous slide" disabled="disabled"><div class="controls-arrow"></div></button>
+			<button class="navigate-right enabled highlight" aria-label="next slide"><div class="controls-arrow"></div></button>
+			<button class="navigate-up" aria-label="above slide" disabled="disabled"><div class="controls-arrow"></div></button>
+			<button class="navigate-down" aria-label="below slide" disabled="disabled"><div class="controls-arrow"></div></button></aside><div class="progress" style="display: block;"><span style="transform: scaleX(0);"></span></div><div class="speaker-notes" data-prevent-swipe="" tabindex="0"></div><div class="pause-overlay"><button class="resume-button">Resume presentation</button></div><div class="aria-status" aria-live="polite" aria-atomic="true" style="position: absolute; height: 1px; width: 1px; overflow: hidden; clip: rect(1px, 1px, 1px, 1px);">RegEx + BNF Tips for navigating the slides: Press O or Escape for overview mode. Visit this link for a nice printable version Press the copy icon on the upper right of code blocks to copy the code </div></div>
+
+		<script src="./Review_ Regular Expressions + BNF_files/reveal.js.下载"></script>
+        <script src="./Review_ Regular Expressions + BNF_files/highlight.js.下载"></script>
+        <script src="./Review_ Regular Expressions + BNF_files/highlightjs-badge.min.js.下载"></script>
+        <script src="./Review_ Regular Expressions + BNF_files/jsplumb.min.js.下载"></script>
+		<script>
+			const srcUrlPrefix = "https://cdn.jsdelivr.net/npm/reveal.js@4.1.0/";
+			Reveal.initialize({
+				hash: true,
+				center: false,
+				slideNumber: true,
+				showNotes: false,
+				margin: 0.1,
+				preloadIframes: true,
+				plugins: [ RevealHighlight ],
+				pdfSeparateFragments: true
+			});
+
+            // add HighlightJS-badge (options are optional)
+            var options = {
+                copyIconContent: "📄",
+                checkIconContent: "✅"
+            };
+            window.highlightJsBadge(options);
+
+            if (window.location.search == "?print-pdf") {
+                var uncounted = document.querySelectorAll("[data-visibility='uncounted']");
+                uncounted.forEach(node => {
+                    node.parentNode.classList.add("no-print")
+                })
+            }
+		</script>
+	
+
+<style>
+@media print {
+   .code-badge { display: none; }
+}
+    .code-badge-pre {
+        position: relative;
+    }
+    .code-badge {
+        display: flex;
+        flex-direction: row;
+        white-space: normal;
+        background: transparent;
+        background: #333;
+        color: white;
+        font-size: 0.875em;
+        opacity: 0.5;
+        transition: opacity linear 0.5s;
+        border-radius: 0 0 0 7px;
+        padding: 5px 8px 5px 8px;
+        position: absolute;
+        right: 0;
+        top: 0;
+    }
+    .code-badge.active {
+        opacity: 0.8;
+    }
+
+    .code-badge:hover {
+        opacity: .95;
+    }
+
+    .code-badge a,
+    .code-badge a:hover {
+        text-decoration: none;
+    }
+
+    .code-badge-language {
+        margin-right: 10px;
+        font-weight: 600;
+        color: goldenrod;
+    }
+    .code-badge-copy-icon {
+        font-size: 1.2em;
+        cursor: pointer;
+        padding: 0 7px;
+        margin-top:2;
+    }
+    .fa.text-success:{ color: limegreen !important }
+</style><div id="CodeBadgeTemplate" style="display:none">
+    <div class="code-badge">
+        <div class="code-badge-language">{{language}}</div>
+        <div title="Copy to clipboard">
+            <i class="{{copyIconClass}} code-badge-copy-icon"></i>
+        </div>
+     </div>
+</div></body></html>
