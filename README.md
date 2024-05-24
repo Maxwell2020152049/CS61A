@@ -1,5 +1,3 @@
-[TOC]
-
 # CS61A
 
 ## 简介
@@ -14,6 +12,7 @@
 .
 ├── HW					# Homework的实现代码
 ├── Lab					# Lab的实现代码
+├── Notes				# 课程的课件和笔记
 ├── Project				# Project的实现代码
 └── README.md	        # 说明文档
 ```
