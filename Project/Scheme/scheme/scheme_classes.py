@@ -11,6 +11,7 @@ class SchemeError(Exception):
 ################
 
 
+# 环境类
 class Frame:
     """An environment frame binds Scheme symbols to Scheme values."""
 
@@ -66,10 +67,12 @@ class Frame:
 ##############
 
 
+# 过程 基类
 class Procedure:
     """The the base class for all Procedure classes."""
 
 
+# 内置过程
 class BuiltinProcedure(Procedure):
     """A Scheme procedure defined as a Python function."""
 
@@ -82,6 +85,7 @@ class BuiltinProcedure(Procedure):
         return '#[{0}]'.format(self.name)
 
 
+# lambda过程
 class LambdaProcedure(Procedure):
     """A procedure defined by a lambda expression or a define form."""
 

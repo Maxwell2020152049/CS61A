@@ -38,7 +38,7 @@ def scheme_eval(expr, env, _=None):  # Optional third argument is ignored
         # END PROBLEM 3
 
 
-def scheme_apply(procedure, args, env):
+def scheme_apply(procedure: Procedure, args: Pair, env: Frame):
     """Apply Scheme PROCEDURE to argument values ARGS (a Scheme list) in
     Frame ENV, the current environment."""
     validate_procedure(procedure)
@@ -47,10 +47,18 @@ def scheme_apply(procedure, args, env):
     if isinstance(procedure, BuiltinProcedure):
         # BEGIN PROBLEM 2
         "*** YOUR CODE HERE ***"
+        # 将 args 从 Pair 转换为 列表
+        args_list: list = []
+        while isinstance(args, Pair):
+            args_list.append(args.first)
+            args = args.rest
+        if procedure.need_env:
+            args_list.append(env)
         # END PROBLEM 2
         try:
             # BEGIN PROBLEM 2
             "*** YOUR CODE HERE ***"
+            return procedure.py_func(*args_list)
             # END PROBLEM 2
         except TypeError as err:
             raise SchemeError('incorrect number of arguments: {0}'.format(procedure))

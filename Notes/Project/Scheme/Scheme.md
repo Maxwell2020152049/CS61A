@@ -6,7 +6,7 @@
 
 本项目在`Windows`系统上完成，使用`python`表示`python3`。
 
-## Part I: The Reader
+## Part 1: The Evaluator
 
 测试对基础知识的理解：
 
@@ -134,7 +134,9 @@ OK! All cases for Understanding Eval/Apply unlocked.
 Cannot backup when running ok with --local.
 ```
 
-### Problem 1 (2 pt)
+### Problem 1 (1 pt)
+
+Frame类是将值绑定到scheme变量上的类，实现该类的两个成员函数。
 
 使用如下命令进行解锁测试：
 
@@ -230,6 +232,31 @@ OK! All cases for Problem 1 unlocked.
 Cannot backup when running ok with --local.
 ```
 
+实现代码如下：
+
+```python
+class Frame:
+    """An environment frame binds Scheme symbols to Scheme values."""
+    def define(self, symbol: str, value):
+        """Define Scheme SYMBOL to have VALUE."""
+        # BEGIN PROBLEM 1
+        "*** YOUR CODE HERE ***"
+        self.bindings[symbol] = value
+        # END PROBLEM 1
+
+    def lookup(self, symbol: str):
+        """Return the value bound to SYMBOL. Errors if SYMBOL is not found."""
+        # BEGIN PROBLEM 1
+        "*** YOUR CODE HERE ***"
+        frame: Frame = self
+        while frame is not None:
+            if frame.bindings.get(symbol) is not None:
+                return frame.bindings.get(symbol)
+            frame = frame.parent
+        # END PROBLEM 1
+        raise SchemeError('unknown identifier: {0}'.format(symbol))
+```
+
 进行代码测试：
 
 ```shell
@@ -254,3 +281,182 @@ Test summary
 Cannot backup when running ok with --local.
 ```
 
+### Problem 2 (2 pt)
+
+实现scheme_apply函数中计算内置过程的部分。
+
+进行解锁测试：
+
+```shell
+python ok -q 02 -u --local
+```
+
+结果如下：
+
+```shell
+=====================================================================
+Assignment: Project 4: Scheme Interpreter
+OK, version v1.18.1
+=====================================================================
+
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+Unlocking tests
+
+At each "? ", type what you would expect the output to be.
+Type exit() to quit
+
+---------------------------------------------------------------------
+Problem 2 > Suite 1 > Case 1
+(cases remaining: 11)
+
+>>> from scheme import *
+>>> env = create_global_frame()
+>>> twos = Pair(2, Pair(2, nil))
+>>> plus = BuiltinProcedure(scheme_add) # + procedure
+>>> scheme_apply(plus, twos, env) # Type SchemeError if you think this errors
+? 4
+-- OK! --
+
+---------------------------------------------------------------------
+Problem 2 > Suite 1 > Case 2
+(cases remaining: 10)
+
+>>> from scheme import *
+>>> env = create_global_frame()
+>>> plus = BuiltinProcedure(scheme_add) # + procedure
+>>> scheme_apply(plus, nil, env) # Remember what (+) evaluates to in scheme
+? 0
+-- OK! --
+
+---------------------------------------------------------------------
+Problem 2 > Suite 1 > Case 3
+(cases remaining: 9)
+
+>>> from scheme import *
+>>> env = create_global_frame()
+>>> twos = Pair(2, Pair(2, nil))
+>>> oddp = BuiltinProcedure(scheme_oddp) # odd? procedure
+>>> scheme_apply(oddp, twos, env) # Type SchemeError if you think this errors
+? False
+-- Not quite. Try again! --
+
+? SchemeError
+-- OK! --
+
+---------------------------------------------------------------------
+Problem 2 > Suite 1 > Case 4
+(cases remaining: 8)
+
+-- Already unlocked --
+
+---------------------------------------------------------------------
+Problem 2 > Suite 1 > Case 5
+(cases remaining: 7)
+
+-- Already unlocked --
+
+---------------------------------------------------------------------
+Problem 2 > Suite 1 > Case 6
+(cases remaining: 6)
+
+-- Already unlocked --
+
+---------------------------------------------------------------------
+Problem 2 > Suite 1 > Case 7
+(cases remaining: 5)
+
+-- Already unlocked --
+
+---------------------------------------------------------------------
+Problem 2 > Suite 1 > Case 8
+(cases remaining: 4)
+
+-- Already unlocked --
+
+---------------------------------------------------------------------
+Problem 2 > Suite 1 > Case 9
+(cases remaining: 3)
+
+-- Already unlocked --
+
+---------------------------------------------------------------------
+Problem 2 > Suite 1 > Case 10
+(cases remaining: 2)
+
+-- Already unlocked --
+
+---------------------------------------------------------------------
+Problem 2 > Suite 1 > Case 11
+(cases remaining: 1)
+
+-- Already unlocked --
+
+---------------------------------------------------------------------
+OK! All cases for Problem 2 unlocked.
+
+Cannot backup when running ok with --local.
+```
+
+实现代码如下：
+
+```python
+def scheme_apply(procedure: Procedure, args: Pair, env: Frame):
+    """Apply Scheme PROCEDURE to argument values ARGS (a Scheme list) in
+    Frame ENV, the current environment."""
+    validate_procedure(procedure)
+    if not isinstance(env, Frame):
+       assert False, "Not a Frame: {}".format(env)
+    if isinstance(procedure, BuiltinProcedure):
+        # BEGIN PROBLEM 2
+        "*** YOUR CODE HERE ***"
+        # 将 args 从 Pair 转换为 列表
+        args_list: list = []
+        while isinstance(args, Pair):
+            args_list.append(args.first)
+            args = args.rest
+        if procedure.need_env:
+            args_list.append(env)
+        # END PROBLEM 2
+        try:
+            # BEGIN PROBLEM 2
+            "*** YOUR CODE HERE ***"
+            return procedure.py_func(*args_list)
+            # END PROBLEM 2
+        except TypeError as err:
+            raise SchemeError('incorrect number of arguments: {0}'.format(procedure))
+    ......
+```
+
+进行代码测试：
+
+```shell
+python ok -q 02 --local
+```
+
+结果如下：
+
+```shell
+=====================================================================
+Assignment: Project 4: Scheme Interpreter
+OK, version v1.18.1
+=====================================================================
+
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+Running tests
+
+---------------------------------------------------------------------
+Test summary
+    11 test cases passed! No cases failed.
+
+Cannot backup when running ok with --local.
+```
+
+### Problem 3 (2 pt)
+
+
+
+### Problem 4 (2 pt)
+
+
+
+### Problem 5 (1 pt)
