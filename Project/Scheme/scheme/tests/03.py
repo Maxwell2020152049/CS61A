@@ -6,109 +6,116 @@ test = {
       'cases': [
         {
           'code': r"""
-          >>> env = create_global_frame()
-          >>> twos = Pair(2, Pair(2, nil))
-          >>> plus = BuiltinProcedure(scheme_add) # + procedure
-          >>> scheme_apply(plus, twos, env) # Type SchemeError if you think this errors
+          >>> expr = read_line('(+ 2 2)')
+          >>> scheme_eval(expr, create_global_frame()) # Type SchemeError if you think this errors
           46beb7deeeb5e9af1c8d785b12558317
           # locked
-          """,
-          'hidden': False,
-          'locked': True
-        },
-        {
-          'code': r"""
-          >>> env = create_global_frame()
-          >>> plus = BuiltinProcedure(scheme_add) # + procedure
-          >>> scheme_apply(plus, nil, env) # Remember what (+) evaluates to in scheme
-          a384c59daad07475a000a57b0b47b74f
+          >>> scheme_eval(Pair('+', Pair(2, Pair(2, nil))), create_global_frame()) # Type SchemeError if you think this errors
+          46beb7deeeb5e9af1c8d785b12558317
           # locked
-          """,
-          'hidden': False,
-          'locked': True
-        },
-        {
-          'code': r"""
-          >>> env = create_global_frame()
-          >>> twos = Pair(2, Pair(2, nil))
-          >>> oddp = BuiltinProcedure(scheme_oddp) # odd? procedure
-          >>> scheme_apply(oddp, twos, env) # Type SchemeError if you think this errors
+          >>> expr = read_line('(+ (+ 2 2) (+ 1 3) (* 1 4))')
+          >>> scheme_eval(expr, create_global_frame()) # Type SchemeError if you think this errors
+          4c5d1a42692bacbca88ab48bbcf75c52
+          # locked
+          >>> expr = read_line('(yolo)')
+          >>> scheme_eval(expr, create_global_frame()) # Type SchemeError if you think this errors
           ec908af60f03727428c7ee3f22ec3cd8
           # locked
           """,
           'hidden': False,
-          'locked': True
-        },
-        {
-          'code': r"""
-          >>> env = create_global_frame()
-          >>> two = Pair(2, nil)
-          >>> eval = BuiltinProcedure(scheme_eval, True) # eval procedure
-          >>> scheme_apply(eval, two, env) # be sure to check use_env
-          2
-          """,
-          'hidden': False,
-          'locked': False
-        },
-        {
-          'code': r"""
-          >>> env = create_global_frame()
-          >>> args = nil
-          >>> def make_scheme_counter():
-          ...     x = 0
-          ...     def scheme_counter():
-          ...         nonlocal x
-          ...         x += 1
-          ...         return x
-          ...     return scheme_counter
-          >>> counter = BuiltinProcedure(make_scheme_counter()) # counter
-          >>> scheme_apply(counter, args, env) # only call procedure.fn once!
-          1
-          """,
-          'hidden': False,
-          'locked': False
-        },
-        {
-          'code': r"""
-          >>> env = create_global_frame()
-          >>> args = nil
-          >>> q = BuiltinProcedure(scheme_exit) # same as (exit)
-          >>> scheme_apply(q, args, env) # Make sure youre only excepting TypeErrors!
-          EOFError
-          """,
-          'hidden': False,
-          'locked': False
-        },
-        {
-          'code': r"""
-          >>> env = create_global_frame()
-          >>> fn = lambda g: g is env
-          >>> args = nil
-          >>> q = BuiltinProcedure(fn, True)
-          >>> scheme_apply(q, args, env) # Should return True if you've correctly implemented use_env procedures
-          True
-          """,
-          'hidden': False,
-          'locked': False
-        },
-        {
-          'code': r"""
-          >>> env = create_global_frame()
-          >>> args = nil
-          >>> q = BuiltinProcedure(scheme_exit)
-          >>> scheme_apply(q, args, env) # If you triggered this case, you should make sure that your code *only* catches TypeErrors, and not any others!
-          EOFError
-          """,
-          'hidden': False,
-          'locked': False
+          'locked': True,
+          'multiline': False
         }
       ],
       'scored': True,
       'setup': r"""
+      >>> from scheme_reader import *
       >>> from scheme import *
       """,
       'teardown': '',
       'type': 'doctest'
+    },
+    {
+      'cases': [
+        {
+          'code': r"""
+          scm> (* (+ 3 2) (+ 1 7)) ; Type SchemeError if you think this errors
+          a692eb3d6b9f6889d113635424465221
+          # locked
+          scm> (1 2) ; Type SchemeError if you think this errors
+          ec908af60f03727428c7ee3f22ec3cd8
+          # locked
+          """,
+          'hidden': False,
+          'locked': True,
+          'multiline': False
+        },
+        {
+          'code': r"""
+          scm> (+ 2 3) ; Type SchemeError if you think this errors
+          5
+          scm> (+)
+          0
+          scm> (odd? 13)
+          #t
+          scm> (car (list 1 2 3 4))
+          1
+          scm> (car car)
+          SchemeError
+          scm> (odd? 1 2 3)
+          SchemeError
+          """,
+          'hidden': False,
+          'locked': False,
+          'multiline': False
+        },
+        {
+          'code': r"""
+          scm> (+ (+ 1) (* 2 3) (+ 5) (+ 6 (+ 7)))
+          25
+          scm> (*)
+          1
+          scm> (-)
+          SchemeError
+          scm> (car (cdr (cdr (list 1 2 3 4))))
+          3
+          scm> (car cdr (list 1))
+          SchemeError
+          scm> (* (car (cdr (cdr (list 1 2 3 4)))) (car (cdr (list 1 2 3 4))))
+          6
+          scm> (* (car (cdr (cdr (list 1 2 3 4)))) (cdr (cdr (list 1 2 3 4))))
+          SchemeError
+          scm> (+ (/ 1 0))
+          SchemeError
+          """,
+          'hidden': False,
+          'locked': False,
+          'multiline': False
+        },
+        {
+          'code': r"""
+          scm> ((/ 1 0) (print 5)) ; operator should be evaluated before operands
+          SchemeError
+          scm> (null? (print 5)) ; operands should only be evaluated once
+          5
+          #f
+          scm> ((print-then-return 1 +) 1 2)  ; operator should only be evaluated once
+          1
+          3
+          scm> (+ (print-then-return 1 1) (print-then-return 2 2)) ; operands should be evaluated left to right
+          1
+          2
+          3
+          """,
+          'hidden': False,
+          'locked': False,
+          'multiline': False
+        }
+      ],
+      'scored': True,
+      'setup': '',
+      'teardown': '',
+      'type': 'scheme'
     }
   ]
 }

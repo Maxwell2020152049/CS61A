@@ -1,6 +1,6 @@
 test = {
   'name': 'Problem 15',
-  'points': 1,
+  'points': 2,
   'suites': [
     {
       'cases': [
@@ -12,7 +12,8 @@ test = {
           ((0 9) (1 8) (2 7) (3 6) (4 5) (5 4))
           """,
           'hidden': False,
-          'locked': False
+          'locked': False,
+          'multiline': False
         },
         {
           'code': r"""
@@ -22,7 +23,8 @@ test = {
           ()
           """,
           'hidden': False,
-          'locked': False
+          'locked': False,
+          'multiline': False
         }
       ],
       'scored': True,

@@ -5,52 +5,29 @@ test = {
     {
       'cases': [
         {
-          'answer': 'e92e90f58a272e7a74651635251ade14',
+          'answer': 'fd4dd892ccea3adcf9446dc4a9738d47',
           'choices': [
             r"""
-            Pair(A, Pair(B, nil)), where:
-                A is the symbol being bound,
-                B is an expression whose value should be evaluated and bound to A
+            Pair('quote', Pair(A, nil)), where:
+                A is the quoted expression
             """,
             r"""
-            Pair(A, Pair(B, nil)), where:
-                A is the symbol being bound,
-                B is the value that should be bound to A
+            [A], where:
+                A is the quoted expression
             """,
             r"""
-            Pair(A, B), where:
-                A is the symbol being bound,
-                B is the value that should be bound to A
+            Pair(A, nil), where:
+                A is the quoted expression
             """,
             r"""
-            Pair(A, B), where:
-                A is the symbol being bound,
-                B is an expression whose value should be evaluated and bound to A
-            """,
-            r"""
-            Pair('define', Pair(A, Pair(B, nil))), where:
-                A is the symbol being bound,
-                B is an expression whose value should be evaluated and bound to A
+            A, where:
+                A is the quoted expression
             """
           ],
           'hidden': False,
           'locked': True,
-          'question': 'What is the structure of the expressions argument to do_define_form?'
-        },
-        {
-          'answer': '0ed53dce7bacc4766422abc478c5c895',
-          'choices': [
-            'make_child_frame',
-            'define',
-            'lookup',
-            'bindings'
-          ],
-          'hidden': False,
-          'locked': True,
-          'question': r"""
-          What method of a Frame instance will bind
-          a value to a symbol in that frame?
-          """
+          'multiline': False,
+          'question': 'What is the structure of the expressions argument to do_quote_form?'
         }
       ],
       'scored': False,
@@ -60,80 +37,83 @@ test = {
       'cases': [
         {
           'code': r"""
-          scm> (define size 2)
-          cc3c061fb8167d02a4ddda1f1c19966e
+          >>> do_quote_form(Pair(3, nil), global_frame)
+          3c7e8a3a2176a696c3a66418f78dff6b
           # locked
-          scm> size
-          2b7cdec3904f986982cbd24a0bc12887
+          >>> do_quote_form(Pair('hi', nil), global_frame)
+          95448591e64e04a7a7885d5fb9b45583
           # locked
-          """,
-          'hidden': False,
-          'locked': True
-        },
-        {
-          'code': r"""
-          scm> (define x (+ 2 3))
-          38ba916dc1f41eb239567ee41a251ecd
-          # locked
-          scm> x
-          b33c0f7206201b4aaeae595493888600
-          # locked
-          scm> (define x (+ 2 7))
-          38ba916dc1f41eb239567ee41a251ecd
-          # locked
-          scm> x
-          27c11fef0d1b8697654b38bb53c550c8
-          # locked
-          scm> (eval (define tau 6.28)) ; eval takes an expression represented as a list and evaluates it
-          aa59dd661f134fa3eab23231a65d789e
+          >>> expr = Pair(Pair('+', Pair('x', Pair(2, nil))), nil)
+          >>> do_quote_form(expr, global_frame) # Make sure to use Pair notation
+          2301ee746b57783004f00f39498fdaed
           # locked
           """,
           'hidden': False,
-          'locked': True
-        },
+          'locked': True,
+          'multiline': False
+        }
+      ],
+      'scored': True,
+      'setup': r"""
+      >>> from scheme import *
+      >>> global_frame = create_global_frame()
+      """,
+      'teardown': '',
+      'type': 'doctest'
+    },
+    {
+      'cases': [
         {
           'code': r"""
-          scm> (define pi 3.14159)
-          pi
-          scm> (define radius 10)
-          radius
-          scm> (define area (* pi (* radius radius)))
-          area
-          scm> area
-          314.159
-          scm> (define radius 100)
-          radius
-          scm> radius
-          100
-          scm> area
-          314.159
-          """,
-          'hidden': False,
-          'locked': False
-        },
-        {
-          'code': r"""
-          scm> (define 0 1)
-          SchemeError
-          scm> (define error (/ 1 0))
-          SchemeError
-          """,
-          'hidden': False,
-          'locked': False
-        },
-        {
-          'code': r"""
-          scm> (define x 0)
-          x
-          scm> ((define x (+ x 1)) 2)
-          SchemeError
-          scm> x
+          scm> ''hello
+          (quote hello)
+          # choice: (quote hello)
+          # choice: hello
+          # choice: (hello)
+          # choice: (quote (quote (hello)))
+          scm> (quote (1 2))
+          (1 2)
+          scm> (car '(1 2 3))
           1
-          scm> (define x 2 y 4)
-          SchemeError
+          scm> (cdr '(1 2))
+          (2)
+          scm> (cons 'car '('(4 2)))
+          (car (quote (4 2)))
+          scm> (eval (cons 'car '('(4 2))))
+          4
           """,
           'hidden': False,
-          'locked': False
+          'locked': False,
+          'multiline': False
+        }
+      ],
+      'scored': True,
+      'setup': '',
+      'teardown': '',
+      'type': 'scheme'
+    },
+    {
+      'cases': [
+        {
+          'code': r"""
+          scm> (quote hello)
+          hello
+          scm> 'hello
+          hello
+          scm> ''hello
+          (quote hello)
+          scm> (quote (1 2))
+          (1 2)
+          scm> '(1 2)
+          (1 2)
+          scm> (car (car '((1))))
+          1
+          scm> (quote 3)
+          3
+          """,
+          'hidden': False,
+          'locked': False,
+          'multiline': False
         }
       ],
       'scored': True,

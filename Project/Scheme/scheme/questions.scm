@@ -3,12 +3,6 @@
 (define (cdar x) (cdr (car x)))
 (define (cddr x) (cdr (cdr x)))
 
-; Some utility functions that you may find useful to implement
-
-(define (zip pairs)
-  'replace-this-line)
-
-
 ;; Problem 15
 ;; Returns a list of two-element lists
 (define (enumerate s)
@@ -19,16 +13,15 @@
 
 ;; Problem 16
 
-;; Merge two lists LIST1 and LIST2 according to COMP and return
+;; Merge two lists LIST1 and LIST2 according to ORDERED? and return
 ;; the merged lists.
-(define (merge comp list1 list2)
+(define (merge ordered? list1 list2)
   ; BEGIN PROBLEM 16
   'replace-this-line
   )
   ; END PROBLEM 16
 
-
-;; Problem 17
+;; Optional Problem
 
 ;; Returns a function that checks if an expression is the special form FORM
 (define (check-special form)
@@ -42,34 +35,38 @@
 ;; Converts all let special forms in EXPR into equivalent forms using lambda
 (define (let-to-lambda expr)
   (cond ((atom? expr)
-         ; BEGIN PROBLEM 17
+         ; BEGIN OPTIONAL PROBLEM
          'replace-this-line
-         ; END PROBLEM 17
+         ; END OPTIONAL PROBLEM
          )
         ((quoted? expr)
-         ; BEGIN PROBLEM 17
+         ; BEGIN OPTIONAL PROBLEM
          'replace-this-line
-         ; END PROBLEM 17
+         ; END OPTIONAL PROBLEM
          )
         ((or (lambda? expr)
              (define? expr))
          (let ((form   (car expr))
                (params (cadr expr))
                (body   (cddr expr)))
-           ; BEGIN PROBLEM 17
+           ; BEGIN OPTIONAL PROBLEM
            'replace-this-line
-           ; END PROBLEM 17
+           ; END OPTIONAL PROBLEM
            ))
         ((let? expr)
          (let ((values (cadr expr))
                (body   (cddr expr)))
-           ; BEGIN PROBLEM 17
+           ; BEGIN OPTIONAL PROBLEM
            'replace-this-line
-           ; END PROBLEM 17
+           ; END OPTIONAL PROBLEM
            ))
         (else
-         ; BEGIN PROBLEM 17
+         ; BEGIN OPTIONAL PROBLEM
          'replace-this-line
-         ; END PROBLEM 17
+         ; END OPTIONAL PROBLEM
          )))
 
+; Some utility functions that you may find useful to implement for let-to-lambda
+
+(define (zip pairs)
+  'replace-this-line)

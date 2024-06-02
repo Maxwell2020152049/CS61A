@@ -39,6 +39,7 @@ def valid_symbol(s):
             return False
     return True
 
+
 def next_candidate_token(line, k):
     """A tuple (tok, k'), where tok is the next substring of line at or
     after position k that could be a token (assuming it passes a validity
@@ -53,23 +54,23 @@ def next_candidate_token(line, k):
         elif c in _SINGLE_CHAR_TOKENS:
             if c == ']': c = ')'
             if c == '[': c = '('
-            return c, k+1
+            return c, k + 1
         elif c == '#':  # Boolean values #t and #f
-            return line[k:k+2], min(k+2, len(line))
-        elif c == ',': # Unquote; check for @
-            if k+1 < len(line) and line[k+1] == '@':
-                return ',@', k+2
-            return c, k+1
+            return line[k:k + 2], min(k + 2, len(line))
+        elif c == ',':  # Unquote; check for @
+            if k + 1 < len(line) and line[k + 1] == '@':
+                return ',@', k + 2
+            return c, k + 1
         elif c in _STRING_DELIMS:
-            if k+1 < len(line) and line[k+1] == c: # No triple quotes in Scheme
-                return c+c, k+2
+            if k + 1 < len(line) and line[k + 1] == c:  # No triple quotes in Scheme
+                return c + c, k + 2
             s = ""
             k += 1
             while k < len(line):
                 c = line[k]
                 if c == "\"":
                     check_token_length_warning(s, len(s) + 2)
-                    return "\"" + s + "\"", k+1
+                    return "\"" + s + "\"", k + 1
                 elif c == "\\":
                     if k + 1 == len(line):
                         raise SyntaxError("String ended abruptly")
@@ -90,6 +91,7 @@ def next_candidate_token(line, k):
             check_token_length_warning(line[k:j], min(j, len(line)) - k)
             return line[k:j], min(j, len(line))
     return None, len(line)
+
 
 def tokenize_line(line):
     """The list of Scheme tokens on line.  Excludes comments and whitespace."""
@@ -126,26 +128,30 @@ def tokenize_line(line):
         else:
             error_message = [
                 "warning: invalid token: {0}".format(text),
-                " " * 4       + line,
+                " " * 4 + line,
                 " " * (i + 4) + "^"
             ]
             raise ValueError("\n".join(error_message))
         text, i = next_candidate_token(line, i)
     return result
 
+
 def check_token_length_warning(token, length):
     if length > _MAX_TOKEN_LENGTH:
         import warnings
         warnings.warn("Token {} has exceeded the maximum token length {}".format(token, _MAX_TOKEN_LENGTH, length))
+
 
 def tokenize_lines(inp):
     """An iterator over lists of tokens, one for each line of the iterable
     input sequence inp."""
     return (tokenize_line(line) for line in inp)
 
+
 def count_tokens(inp):
     """Count the number of non-delimiter tokens in inp."""
     return len(list(chain(*tokenize_lines(inp))))
+
 
 @main
 def run(*args):

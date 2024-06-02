@@ -24,7 +24,8 @@ test = {
           # locked
           """,
           'hidden': False,
-          'locked': True
+          'locked': True,
+          'multiline': False
         }
       ],
       'scored': True,
@@ -63,7 +64,8 @@ test = {
           scm> (eval (cond (False 1) (False 2)))
           """,
           'hidden': False,
-          'locked': False
+          'locked': False,
+          'multiline': False
         },
         {
           'code': r"""
@@ -72,7 +74,8 @@ test = {
           yea
           """,
           'hidden': False,
-          'locked': False
+          'locked': False,
+          'multiline': False
         },
         {
           'code': r"""
@@ -95,7 +98,8 @@ test = {
           (1 1 1)
           """,
           'hidden': False,
-          'locked': False
+          'locked': False,
+          'multiline': False
         },
         {
           'code': r"""
@@ -110,7 +114,8 @@ test = {
           ()
           """,
           'hidden': False,
-          'locked': False
+          'locked': False,
+          'multiline': False
         },
         {
           'code': r"""
@@ -140,7 +145,8 @@ test = {
           #t
           """,
           'hidden': False,
-          'locked': False
+          'locked': False,
+          'multiline': False
         }
       ],
       'scored': True,

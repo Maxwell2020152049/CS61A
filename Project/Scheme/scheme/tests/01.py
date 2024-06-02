@@ -1,151 +1,127 @@
 test = {
   'name': 'Problem 1',
-  'points': 2,
+  'points': 1,
   'suites': [
     {
       'cases': [
         {
           'code': r"""
-          >>> scheme_read(Buffer(tokenize_lines(['nil'])))
-          nil
-          >>> scheme_read(Buffer(tokenize_lines(['1'])))
-          1
-          >>> scheme_read(Buffer(tokenize_lines(['true'])))
+          >>> global_frame = create_global_frame()
+          >>> global_frame.define("x", 3)
+          >>> global_frame.parent is None
           True
-          >>> read_tail(Buffer(tokenize_lines(['2)'])))
-          Pair(2, nil)
-          >>> read_tail(Buffer(tokenize_lines(['(2)'])))
-          SyntaxError
-          >>> read_line('3')
+          >>> global_frame.lookup("x")
           3
-          >>> read_line('-123')
-          -123
-          >>> read_line('1.25')
-          1.25
-          >>> read_line('true')
+          >>> global_frame.define("x", 2)
+          >>> global_frame.lookup("x")
+          2
+          >>> global_frame.lookup("foo")
+          SchemeError
+          """,
+          'hidden': False,
+          'locked': False,
+          'multiline': False
+        },
+        {
+          'code': r"""
+          >>> first_frame = create_global_frame()
+          >>> first_frame.define("x", 3)
+          >>> second_frame = Frame(first_frame)
+          >>> second_frame.parent == first_frame
           True
-          >>> read_line('(a)')
-          Pair('a', nil)
-          >>> read_line(')')
-          SyntaxError
-          >>> read_line('(a))')
-          SyntaxError
+          >>> second_frame.define("y", False)
+          >>> second_frame.lookup("x")
+          3
+          >>> second_frame.lookup("y")
+          False
           """,
           'hidden': False,
-          'locked': False
+          'locked': False,
+          'multiline': False
         },
         {
           'code': r"""
-          >>> tokens = tokenize_lines(["(+ 1 ", "(23 4)) ("])
-          >>> src = Buffer(tokens)
-          >>> src.current()
-          2562c1ff5c2fd136738cec508425ad6e
-          # locked
-          >>> src.pop_first()
-          2562c1ff5c2fd136738cec508425ad6e
-          # locked
-          >>> src.current()
-          7cb705e44890ff0de05e8ac610e43827
-          # locked
-          >>> src.pop_first()
-          7cb705e44890ff0de05e8ac610e43827
-          # locked
-          >>> src.pop_first()
-          eb892a26497f936d1f6cae54aacc5f51
-          # locked
-          >>> scheme_read(src)  # Removes the next complete expression in src and returns it as a Pair
-          e4aaa1bb82547d5c561e01aa92ee3d6f
-          # locked
-          >>> src.current()
-          94a32bedd6cf1898cd8986f0b4e2d011
-          # locked
+          >>> first_frame = create_global_frame()
+          >>> first_frame.define("x", 3)
+          >>> second_frame = Frame(first_frame)
+          >>> third_frame = Frame(second_frame)
+          >>> fourth_frame = Frame(third_frame)
+          >>> fourth_frame.lookup("x")
+          3
+          >>> second_frame.define("y", 1)
+          >>> fourth_frame.lookup("y")
+          1
+          >>> first_frame.define("y", 0)
+          >>> fourth_frame.lookup("y")
+          1
+          >>> fourth_frame.define("y", 2)
+          >>> fourth_frame.lookup("y")
+          2
           """,
           'hidden': False,
-          'locked': True
+          'locked': False,
+          'multiline': False
         },
         {
           'code': r"""
-          >>> scheme_read(Buffer(tokenize_lines(['(18 6)']))) # Type SyntaxError if you think this errors
-          050a33077bbae4f681a23354ffb49a9e
-          # locked
-          >>> read_line('(18 6)')  # Shorter version of above!
-          050a33077bbae4f681a23354ffb49a9e
-          # locked
+          >>> first_frame = create_global_frame()
+          >>> first_frame.define("x", 1)
+          >>> second_frame = Frame(first_frame)
+          >>> third_frame = Frame(second_frame)
+          >>> fourth_frame = Frame(first_frame)
+          >>> fifth_frame = Frame(fourth_frame)
+          >>> fifth_frame.lookup("x")
+          1
+          >>> third_frame.lookup("x")
+          1
+          >>> second_frame.define("x", 2)
+          >>> third_frame.lookup("x")
+          2
+          >>> fifth_frame.lookup("x")
+          1
+          >>> fifth_frame.define("x", 5)
+          >>> fifth_frame.lookup("x")
+          5
+          >>> fourth_frame.lookup("x")
+          1
+          >>> first_frame.define("x", 4)
+          >>> fourth_frame.lookup("x")
+          4
+          >>> third_frame.lookup("x")
+          2
           """,
           'hidden': False,
-          'locked': True
-        },
-        {
-          'code': r"""
-          >>> read_tail(Buffer(tokenize_lines([')'])))
-          c24ff8c9a7d7a50f82648d25a4d8fbb1
-          # locked
-          >>> read_tail(Buffer(tokenize_lines(['1 2 3)'])))
-          4ced98984f008e5161274d6481e4b568
-          # locked
-          >>> read_tail(Buffer(tokenize_lines(['2 (3 4))'])))
-          b27a7ad8eaed5119cfd16136ceb9ea5a
-          # locked
-          """,
-          'hidden': False,
-          'locked': True
-        },
-        {
-          'code': r"""
-          >>> read_tail(Buffer(tokenize_lines(['(1 2 3)']))) # Type SyntaxError if you think this errors
-          8c2bf83bd06967ba8dd8731d41d13081
-          # locked
-          >>> read_line('((1 2 3)') # Type SyntaxError if you think this errors
-          8c2bf83bd06967ba8dd8731d41d13081
-          # locked
-          """,
-          'hidden': False,
-          'locked': True
-        },
-        {
-          'code': r"""
-          >>> src = Buffer(tokenize_lines(["(+ 1 2)"]))
-          >>> scheme_read(src)
-          Pair('+', Pair(1, Pair(2, nil)))
-          >>> src.current() # Don't forget to remove the closing parenthesis!
-          """,
-          'hidden': False,
-          'locked': False
-        },
-        {
-          'code': r"""
-          >>> read_line("(+ (- 2 3) 1)")
-          569af9099ed6ccade3e79b6d955b0405
-          # locked
-          # choice: Pair('+', Pair('-', Pair(2, Pair(3, Pair(1, nil)))))
-          # choice: Pair('+', Pair('-', Pair(2, Pair(3, nil))), Pair(1, nil))
-          # choice: Pair('+', Pair(Pair('-', Pair(2, Pair(3, nil))), Pair(1, nil)))
-          """,
-          'hidden': False,
-          'locked': True
-        },
-        {
-          'code': r"""
-          >>> read_line("()")
-          nil
-          >>> read_line("((a))")
-          Pair(Pair('a', nil), nil)
-          >>> read_line("(+ 1 (- 2 3) 8)")
-          Pair('+', Pair(1, Pair(Pair('-', Pair(2, Pair(3, nil))), Pair(8, nil))))
-          # choice: Pair('+', Pair(1, Pair('-', Pair(2, 3), Pair(8, nil))))
-          # choice: Pair('+', Pair(1, Pair(Pair('-', Pair(2, 3)), Pair(8, nil))))
-          # choice: Pair('+', Pair(1, Pair('-', Pair(2, Pair(3, nil)), Pair(8, nil))))
-          """,
-          'hidden': False,
-          'locked': False
+          'locked': False,
+          'multiline': False
         }
       ],
       'scored': True,
       'setup': r"""
-      >>> from scheme_reader import *
+      >>> from scheme import *
       """,
       'teardown': '',
       'type': 'doctest'
+    },
+    {
+      'cases': [
+        {
+          'code': r"""
+          scm> +
+          #[+]
+          scm> display
+          #[display]
+          scm> hello
+          SchemeError
+          """,
+          'hidden': False,
+          'locked': False,
+          'multiline': False
+        }
+      ],
+      'scored': True,
+      'setup': '',
+      'teardown': '',
+      'type': 'scheme'
     }
   ]
 }

@@ -1,6 +1,6 @@
 test = {
-  'name': 'Problem 17',
-  'points': 2,
+  'name': 'Optional Problem',
+  'points': 0,
   'suites': [
     {
       'cases': [
@@ -18,7 +18,8 @@ test = {
           ((lambda (a b) (+ a b)) 1 2)
           """,
           'hidden': False,
-          'locked': False
+          'locked': False,
+          'multiline': False
         },
         {
           'code': r"""
@@ -28,7 +29,8 @@ test = {
           (quote (let ((a 1) (b 2)) (+ a b)))
           """,
           'hidden': False,
-          'locked': False
+          'locked': False,
+          'multiline': False
         }
       ],
       'scored': True,
@@ -50,7 +52,8 @@ test = {
           (lambda (x) a ((lambda (a) a) x))
           """,
           'hidden': False,
-          'locked': False
+          'locked': False,
+          'multiline': False
         },
         {
           'code': r"""
@@ -66,7 +69,8 @@ test = {
           (+ 1 ((lambda (a) a) 1))
           """,
           'hidden': False,
-          'locked': False
+          'locked': False,
+          'multiline': False
         }
       ],
       'scored': True,

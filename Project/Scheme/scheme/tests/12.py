@@ -32,7 +32,8 @@ test = {
           # locked
           """,
           'hidden': False,
-          'locked': True
+          'locked': True,
+          'multiline': False
         },
         {
           'code': r"""
@@ -54,9 +55,14 @@ test = {
           x
           scm> (and x #t)
           #f
+          scm> (eq? (and #t)  #t)
+          #t
+          scm> (eq? (or #t) #t)
+          #t
           """,
           'hidden': False,
-          'locked': False
+          'locked': False,
+          'multiline': False
         },
         {
           'code': r"""
@@ -81,7 +87,8 @@ test = {
           11
           """,
           'hidden': False,
-          'locked': False
+          'locked': False,
+          'multiline': False
         },
         {
           'code': r"""
@@ -95,7 +102,8 @@ test = {
           (lambda () (and #t #t #t #t))
           """,
           'hidden': False,
-          'locked': False
+          'locked': False,
+          'multiline': False
         }
       ],
       'scored': True,
@@ -127,7 +135,8 @@ test = {
           # locked
           """,
           'hidden': False,
-          'locked': True
+          'locked': True,
+          'multiline': False
         },
         {
           'code': r"""
@@ -149,7 +158,8 @@ test = {
           yay
           """,
           'hidden': False,
-          'locked': False
+          'locked': False,
+          'multiline': False
         },
         {
           'code': r"""
@@ -174,7 +184,8 @@ test = {
           11
           """,
           'hidden': False,
-          'locked': False
+          'locked': False,
+          'multiline': False
         },
         {
           'code': r"""
@@ -188,7 +199,8 @@ test = {
           (lambda () (or #f #f #f #f))
           """,
           'hidden': False,
-          'locked': False
+          'locked': False,
+          'multiline': False
         },
         {
           'code': r"""
@@ -208,7 +220,8 @@ test = {
           #t
           """,
           'hidden': False,
-          'locked': False
+          'locked': False,
+          'multiline': False
         }
       ],
       'scored': True,

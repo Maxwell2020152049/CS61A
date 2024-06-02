@@ -545,7 +545,7 @@ one-through-four
 
 ;; len outputs the length of list s
 (define (len s)
-  (if (eqv? s '())
+  (if (eq? s '())
     0
     (+ 1 (len (cdr s)))))
 (len '(1 2 3 4))

@@ -1,113 +1,179 @@
 test = {
   'name': 'Problem 4',
-  'points': 1,
+  'points': 2,
   'suites': [
     {
       'cases': [
         {
-          'code': r"""
-          >>> expr = read_line('(+ 2 2)')
-          >>> scheme_eval(expr, create_global_frame()) # Type SchemeError if you think this errors
-          46beb7deeeb5e9af1c8d785b12558317
-          # locked
-          >>> scheme_eval(Pair('+', Pair(2, Pair(2, nil))), create_global_frame()) # Type SchemeError if you think this errors
-          46beb7deeeb5e9af1c8d785b12558317
-          # locked
-          >>> expr = read_line('(+ (+ 2 2) (+ 1 3) (* 1 4))')
-          >>> scheme_eval(expr, create_global_frame()) # Type SchemeError if you think this errors
-          4c5d1a42692bacbca88ab48bbcf75c52
-          # locked
-          >>> expr = read_line('(yolo)')
-          >>> scheme_eval(expr, create_global_frame()) # Type SchemeError if you think this errors
-          ec908af60f03727428c7ee3f22ec3cd8
-          # locked
-          """,
+          'answer': 'e92e90f58a272e7a74651635251ade14',
+          'choices': [
+            r"""
+            Pair(A, Pair(B, nil)), where:
+                A is the symbol being bound,
+                B is an expression whose value should be evaluated and bound to A
+            """,
+            r"""
+            Pair(A, Pair(B, nil)), where:
+                A is the symbol being bound,
+                B is the value that should be bound to A
+            """,
+            r"""
+            Pair(A, B), where:
+                A is the symbol being bound,
+                B is the value that should be bound to A
+            """,
+            r"""
+            Pair(A, B), where:
+                A is the symbol being bound,
+                B is an expression whose value should be evaluated and bound to A
+            """,
+            r"""
+            Pair('define', Pair(A, Pair(B, nil))), where:
+                A is the symbol being bound,
+                B is an expression whose value should be evaluated and bound to A
+            """
+          ],
           'hidden': False,
-          'locked': True
+          'locked': True,
+          'multiline': False,
+          'question': 'What is the structure of the expressions argument to do_define_form?'
+        },
+        {
+          'answer': '0ed53dce7bacc4766422abc478c5c895',
+          'choices': [
+            'make_child_frame',
+            'define',
+            'lookup',
+            'bindings'
+          ],
+          'hidden': False,
+          'locked': True,
+          'multiline': False,
+          'question': r"""
+          What method of a Frame instance will bind
+          a value to a symbol in that frame?
+          """
         }
       ],
-      'scored': True,
-      'setup': r"""
-      >>> from scheme_reader import *
-      >>> from scheme import *
-      """,
-      'teardown': '',
-      'type': 'doctest'
+      'scored': False,
+      'type': 'concept'
     },
     {
       'cases': [
         {
           'code': r"""
-          scm> (* (+ 3 2) (+ 1 7)) ; Type SchemeError if you think this errors
-          a692eb3d6b9f6889d113635424465221
+          scm> (define size 2)
+          cc3c061fb8167d02a4ddda1f1c19966e
           # locked
-          scm> (1 2) ; Type SchemeError if you think this errors
-          ec908af60f03727428c7ee3f22ec3cd8
+          scm> size
+          2b7cdec3904f986982cbd24a0bc12887
           # locked
-          scm> (1 (print 0)) ; validate_procedure should be called before operands are evaluated
-          ec908af60f03727428c7ee3f22ec3cd8
+          scm> (define x (+ 7 3))
+          38ba916dc1f41eb239567ee41a251ecd
+          # locked
+          scm> x
+          4bc2fb48972a5d1ec1201b01e766a044
           # locked
           """,
           'hidden': False,
-          'locked': True
+          'locked': True,
+          'multiline': False
         },
         {
           'code': r"""
-          scm> (+ 2 3) ; Type SchemeError if you think this errors
+          scm> (define x (+ 2 3))
+          x
+          scm> x
           5
-          scm> (+)
-          0
-          scm> (odd? 13)
-          #t
-          scm> (car (list 1 2 3 4))
-          1
-          scm> (car car)
-          SchemeError
-          scm> (odd? 1 2 3)
-          SchemeError
+          scm> (define x (+ 2 7))
+          x
+          scm> x
+          9
+          scm> (eval (define tau 6.28))
+          6.28
           """,
           'hidden': False,
-          'locked': False
+          'locked': False,
+          'multiline': False
         },
         {
           'code': r"""
-          scm> (+ (+ 1) (* 2 3) (+ 5) (+ 6 (+ 7)))
-          25
-          scm> (*)
-          1
-          scm> (-)
-          SchemeError
-          scm> (car (cdr (cdr (list 1 2 3 4))))
-          3
-          scm> (car cdr (list 1))
-          SchemeError
-          scm> (* (car (cdr (cdr (list 1 2 3 4)))) (car (cdr (list 1 2 3 4))))
-          6
-          scm> (* (car (cdr (cdr (list 1 2 3 4)))) (cdr (cdr (list 1 2 3 4))))
-          SchemeError
-          scm> (+ (/ 1 0))
-          SchemeError
+          scm> (define pi 3.14159)
+          pi
+          scm> (define radius 10)
+          radius
+          scm> (define area (* pi (* radius radius)))
+          area
+          scm> area
+          314.159
+          scm> (define radius 100)
+          radius
+          scm> radius
+          100
+          scm> area
+          314.159
           """,
           'hidden': False,
-          'locked': False
+          'locked': False,
+          'multiline': False
         },
         {
           'code': r"""
-          scm> ((/ 1 0) (print 5)) ; operator should be evaluated before operands
+          scm> (define 0 1)
           SchemeError
-          scm> (null? (print 5)) ; operands should only be evaluated once
-          5
-          #f
-          scm> ((print-then-return 1 +) 1 2)  ; operator should only be evaluated once
-          1
-          3
-          scm> (+ (print-then-return 1 1) (print-then-return 2 2)) ; operands should be evaluated left to right
-          1
-          2
-          3
+          scm> (define error (/ 1 0))
+          SchemeError
           """,
           'hidden': False,
-          'locked': False
+          'locked': False,
+          'multiline': False
+        },
+        {
+          'code': r"""
+          scm> (define x 0)
+          x
+          scm> ((define x (+ x 1)) 2)
+          SchemeError
+          scm> x
+          1
+          scm> (define x 2 y 4)
+          SchemeError
+          """,
+          'hidden': False,
+          'locked': False,
+          'multiline': False
+        },
+        {
+          'code': r"""
+          scm> (define x 15)
+          x
+          scm> (define y (* 2 x))
+          y
+          scm> y
+          30
+          scm> (+ y (* y 2) 1)
+          91
+          scm> (define x 20)
+          x
+          scm> x
+          20
+          """,
+          'hidden': False,
+          'locked': False,
+          'multiline': False
+        },
+        {
+          'code': r"""
+          scm> (define x 0)
+          x
+          scm> ((define x (+ x 1)) 2)
+          SchemeError
+          scm> x
+          1
+          """,
+          'hidden': False,
+          'locked': False,
+          'multiline': False
         }
       ],
       'scored': True,

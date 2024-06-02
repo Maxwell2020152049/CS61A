@@ -18,7 +18,8 @@ test = {
           # locked
           """,
           'hidden': False,
-          'locked': True
+          'locked': True,
+          'multiline': False
         },
         {
           'code': r"""
@@ -31,7 +32,8 @@ test = {
           # choice: y
           """,
           'hidden': False,
-          'locked': True
+          'locked': True,
+          'multiline': False
         },
         {
           'code': r"""
@@ -43,7 +45,8 @@ test = {
           # locked
           """,
           'hidden': False,
-          'locked': True
+          'locked': True,
+          'multiline': False
         },
         {
           'code': r"""
@@ -55,7 +58,8 @@ test = {
           # locked
           """,
           'hidden': False,
-          'locked': True
+          'locked': True,
+          'multiline': False
         },
         {
           'code': r"""
@@ -72,7 +76,8 @@ test = {
           456
           """,
           'hidden': False,
-          'locked': False
+          'locked': False,
+          'multiline': False
         }
       ],
       'scored': True,
@@ -90,7 +95,8 @@ test = {
           SchemeError
           """,
           'hidden': False,
-          'locked': False
+          'locked': False,
+          'multiline': False
         },
         {
           'code': r"""
@@ -100,7 +106,8 @@ test = {
           SchemeError
           """,
           'hidden': False,
-          'locked': False
+          'locked': False,
+          'multiline': False
         },
         {
           'code': r"""
@@ -112,7 +119,8 @@ test = {
           Pair(Pair('x', Pair(2, nil)), Pair(Pair('y', Pair(3, nil)), nil))
           """,
           'hidden': False,
-          'locked': False
+          'locked': False,
+          'multiline': False
         }
       ],
       'scored': True,
@@ -154,7 +162,8 @@ test = {
           SchemeError
           """,
           'hidden': False,
-          'locked': False
+          'locked': False,
+          'multiline': False
         }
       ],
       'scored': True,
