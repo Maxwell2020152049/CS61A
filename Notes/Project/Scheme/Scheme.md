@@ -453,10 +453,215 @@ Cannot backup when running ok with --local.
 
 ### Problem 3 (2 pt)
 
+实现scheme对内置过程的计算。
 
+进行解锁测试：
+
+```shell
+python ok -q 03 -u --local
+```
+
+结果如下：
+
+```shell
+=====================================================================
+Assignment: Project 4: Scheme Interpreter
+OK, version v1.18.1
+=====================================================================
+
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+Unlocking tests
+
+At each "? ", type what you would expect the output to be.
+Type exit() to quit
+
+---------------------------------------------------------------------
+Problem 3 > Suite 1 > Case 1
+(cases remaining: 5)
+
+>>> from scheme_reader import *
+>>> from scheme import *
+>>> expr = read_line('(+ 2 2)')
+>>> scheme_eval(expr, create_global_frame()) # Type SchemeError if you think this errors
+? 4
+-- OK! --
+
+>>> scheme_eval(Pair('+', Pair(2, Pair(2, nil))), create_global_frame()) # Type SchemeError if you think this errors
+? 4
+-- OK! --
+
+>>> expr = read_line('(+ (+ 2 2) (+ 1 3) (* 1 4))')
+>>> scheme_eval(expr, create_global_frame()) # Type SchemeError if you think this errors
+? 12
+-- OK! --
+
+>>> expr = read_line('(yolo)')
+>>> scheme_eval(expr, create_global_frame()) # Type SchemeError if you think this errors
+? SchemeError
+-- OK! --
+
+---------------------------------------------------------------------
+Problem 3 > Suite 2 > Case 1
+(cases remaining: 4)
+
+
+scm> (* (+ 3 2) (+ 1 7)) ; Type SchemeError if you think this errors
+? 35
+-- Not quite. Try again! --
+
+? 40
+-- OK! --
+
+scm> (1 2) ; Type SchemeError if you think this errors
+? SchemeError
+-- OK! --
+
+---------------------------------------------------------------------
+Problem 3 > Suite 2 > Case 2
+(cases remaining: 3)
+
+-- Already unlocked --
+
+---------------------------------------------------------------------
+Problem 3 > Suite 2 > Case 3
+(cases remaining: 2)
+
+-- Already unlocked --
+
+---------------------------------------------------------------------
+Problem 3 > Suite 2 > Case 4
+(cases remaining: 1)
+
+-- Already unlocked --
+
+---------------------------------------------------------------------
+OK! All cases for Problem 3 unlocked.
+
+Cannot backup when running ok with --local.
+```
+
+实现代码如下：
+
+```python
+def scheme_eval(expr: Pair, env: Frame, _=None):  # Optional third argument is ignored
+    def eval(_expr):
+        return scheme_eval(_expr, env)
+    """Evaluate Scheme expression EXPR in Frame ENV.
+
+    >>> expr = read_line('(+ 2 2)')
+    >>> expr
+    Pair('+', Pair(2, Pair(2, nil)))
+    >>> scheme_eval(expr, create_global_frame())
+    4
+    """
+    # Evaluate atoms
+    if scheme_symbolp(expr):
+        return env.lookup(expr)
+    elif self_evaluating(expr):
+        return expr
+
+    # All non-atomic expressions are lists (combinations)
+    if not scheme_listp(expr):
+        raise SchemeError('malformed list: {0}'.format(repl_str(expr)))
+    first, rest = expr.first, expr.rest
+    if scheme_symbolp(first) and first in scheme_forms.SPECIAL_FORMS:
+        return scheme_forms.SPECIAL_FORMS[first](rest, env)
+    else:
+        # BEGIN PROBLEM 3
+        "*** YOUR CODE HERE ***"
+        procedure: Procedure = scheme_eval(first, env) if isinstance(first, Pair) else env.lookup(first)
+        args: Pair = rest.map(eval)
+        return scheme_apply(procedure, args, env)
+        # END PROBLEM 3
+```
+
+进行代码测试：
+
+```shell
+python ok -q 03 --local
+```
+
+结果如下：
+
+```shell
+=====================================================================
+Assignment: Project 4: Scheme Interpreter
+OK, version v1.18.1
+=====================================================================
+
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+Running tests
+
+---------------------------------------------------------------------
+Test summary
+    5 test cases passed! No cases failed.
+
+Cannot backup when running ok with --local.
+```
 
 ### Problem 4 (2 pt)
+
+进行解锁测试：
+
+```shell
+
+```
+
+结果如下：
+
+```shell
+
+```
+
+实现代码如下：
+
+```python
+
+```
+
+进行代码测试：
+
+```shell
+
+```
+
+结果如下：
+
+```shell
+
+```
 
 
 
 ### Problem 5 (1 pt)
+
+进行解锁测试：
+
+```shell
+
+```
+
+结果如下：
+
+```shell
+
+```
+
+实现代码如下：
+
+```python
+
+```
+
+进行代码测试：
+
+```shell
+
+```
+
+结果如下：
+
+```shell
+
+```
+

@@ -11,7 +11,9 @@ import scheme_forms
 ##############
 
 
-def scheme_eval(expr, env, _=None):  # Optional third argument is ignored
+def scheme_eval(expr: Pair, env: Frame, _=None):  # Optional third argument is ignored
+    def eval(_expr):
+        return scheme_eval(_expr, env)
     """Evaluate Scheme expression EXPR in Frame ENV.
 
     >>> expr = read_line('(+ 2 2)')
@@ -35,6 +37,9 @@ def scheme_eval(expr, env, _=None):  # Optional third argument is ignored
     else:
         # BEGIN PROBLEM 3
         "*** YOUR CODE HERE ***"
+        procedure: Procedure = scheme_eval(first, env) if isinstance(first, Pair) else env.lookup(first)
+        args: Pair = rest.map(eval)
+        return scheme_apply(procedure, args, env)
         # END PROBLEM 3
 
 
