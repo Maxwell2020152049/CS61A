@@ -53,7 +53,7 @@ def do_define_form(expressions: Pair, env: Frame):
         raise SchemeError('non-symbol: {0}'.format(bad_signature))
 
 
-def do_quote_form(expressions, env):
+def do_quote_form(expressions: Pair, env: Frame):
     """Evaluate a quote form.
 
     >>> env = create_global_frame()
@@ -63,10 +63,11 @@ def do_quote_form(expressions, env):
     validate_form(expressions, 1, 1)
     # BEGIN PROBLEM 5
     "*** YOUR CODE HERE ***"
+    return expressions.first
     # END PROBLEM 5
 
 
-def do_begin_form(expressions, env):
+def do_begin_form(expressions: Pair, env: Frame):
     """Evaluate a begin form.
 
     >>> env = create_global_frame()
@@ -79,7 +80,7 @@ def do_begin_form(expressions, env):
     return eval_all(expressions, env)
 
 
-def do_lambda_form(expressions, env):
+def do_lambda_form(expressions: Pair, env: Frame):
     """Evaluate a lambda form.
 
     >>> env = create_global_frame()
@@ -94,7 +95,7 @@ def do_lambda_form(expressions, env):
     # END PROBLEM 7
 
 
-def do_if_form(expressions, env):
+def do_if_form(expressions: Pair, env: Frame):
     """Evaluate an if form.
 
     >>> env = create_global_frame()
@@ -110,7 +111,7 @@ def do_if_form(expressions, env):
         return scheme_eval(expressions.rest.rest.first, env)
 
 
-def do_and_form(expressions, env):
+def do_and_form(expressions: Pair, env: Frame):
     """Evaluate a (short-circuited) and form.
 
     >>> env = create_global_frame()
@@ -129,7 +130,7 @@ def do_and_form(expressions, env):
     # END PROBLEM 12
 
 
-def do_or_form(expressions, env):
+def do_or_form(expressions: Pair, env: Frame):
     """Evaluate a (short-circuited) or form.
 
     >>> env = create_global_frame()
@@ -148,7 +149,7 @@ def do_or_form(expressions, env):
     # END PROBLEM 12
 
 
-def do_cond_form(expressions, env):
+def do_cond_form(expressions: Pair, env: Frame):
     """Evaluate a cond form.
 
     >>> do_cond_form(read_line("((#f (print 2)) (#t 3))"), create_global_frame())
@@ -170,7 +171,7 @@ def do_cond_form(expressions, env):
         expressions = expressions.rest
 
 
-def do_let_form(expressions, env):
+def do_let_form(expressions: Pair, env: Frame):
     """Evaluate a let form.
 
     >>> env = create_global_frame()
@@ -196,7 +197,7 @@ def make_let_frame(bindings, env):
     return env.make_child_frame(names, vals)
 
 
-def do_quasiquote_form(expressions, env):
+def do_quasiquote_form(expressions: Pair, env: Frame):
     """Evaluate a quasiquote form with parameters EXPRESSIONS in
     Frame ENV."""
     def quasiquote_item(val, env, level):
@@ -219,7 +220,7 @@ def do_quasiquote_form(expressions, env):
     return quasiquote_item(expressions.first, env, 1)
 
 
-def do_unquote(expressions, env):
+def do_unquote(expressions: Pair, env: Frame):
     raise SchemeError('unquote outside of quasiquote')
 
 
@@ -227,7 +228,7 @@ def do_unquote(expressions, env):
 # Dynamic Scope #
 #################
 
-def do_mu_form(expressions, env):
+def do_mu_form(expressions: Pair, env: Frame):
     """Evaluate a mu form."""
     validate_form(expressions, 2)
     formals = expressions.first

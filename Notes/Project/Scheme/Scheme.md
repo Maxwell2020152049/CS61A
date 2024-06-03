@@ -814,6 +814,300 @@ Cannot backup when running ok with --local.
 
 ### Problem 5 (1 pt)
 
+实现`quote`过程，返回字面值。
+
+进行解锁测试：
+
+```shell
+python ok -q 05 -u --local
+```
+
+结果如下：
+
+```shell
+=====================================================================
+Assignment: Project 4: Scheme Interpreter
+OK, version v1.18.1
+=====================================================================
+
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+Unlocking tests
+
+At each "? ", type what you would expect the output to be.
+Type exit() to quit
+
+---------------------------------------------------------------------
+Problem 5 > Suite 1 > Case 1
+(cases remaining: 4)
+
+Q: What is the structure of the expressions argument to do_quote_form?
+Choose the number of the correct choice:
+0) A, where:
+       A is the quoted expression
+1) [A], where:
+       A is the quoted expression
+2) Pair('quote', Pair(A, nil)), where:
+       A is the quoted expression
+3) Pair(A, nil), where:
+       A is the quoted expression
+? 3
+-- OK! --
+
+---------------------------------------------------------------------
+Problem 5 > Suite 2 > Case 1
+(cases remaining: 3)
+
+>>> from scheme import *
+>>> global_frame = create_global_frame()
+>>> do_quote_form(Pair(3, nil), global_frame)
+? Pair(3, nil)
+-- Not quite. Try again! --
+
+? 3
+-- OK! --
+
+>>> do_quote_form(Pair('hi', nil), global_frame)
+? 'hi'
+-- OK! --
+
+>>> expr = Pair(Pair('+', Pair('x', Pair(2, nil))), nil)
+>>> do_quote_form(expr, global_frame) # Make sure to use Pair notation
+? Pair('+', Pair('x', Pair(2, nil)))
+-- OK! --
+
+---------------------------------------------------------------------
+Problem 5 > Suite 3 > Case 1
+(cases remaining: 2)
+
+-- Already unlocked --
+
+---------------------------------------------------------------------
+Problem 5 > Suite 4 > Case 1
+(cases remaining: 1)
+
+-- Already unlocked --
+
+---------------------------------------------------------------------
+OK! All cases for Problem 5 unlocked.
+
+Cannot backup when running ok with --local.
+```
+
+实现代码如下：
+
+```python
+def do_quote_form(expressions: Pair, env: Frame):
+    """Evaluate a quote form.
+
+    >>> env = create_global_frame()
+    >>> do_quote_form(read_line("((+ x 2))"), env) # evaluating (quote (+ x 2))
+    Pair('+', Pair('x', Pair(2, nil)))
+    """
+    validate_form(expressions, 1, 1)
+    # BEGIN PROBLEM 5
+    "*** YOUR CODE HERE ***"
+    return expressions.first
+    # END PROBLEM 5
+```
+
+进行代码测试：
+
+```shell
+python ok -q 05 --local
+```
+
+结果如下：
+
+```shell
+=====================================================================
+Assignment: Project 4: Scheme Interpreter
+OK, version v1.18.1
+=====================================================================
+
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+Running tests
+
+---------------------------------------------------------------------
+Test summary
+    4 test cases passed! No cases failed.
+
+Cannot backup when running ok with --local.
+```
+
+## Part 2: Procedures
+
+### Problem 6 (1 pt)
+
+进行解锁测试：
+
+```shell
+
+```
+
+结果如下：
+
+```shell
+
+```
+
+实现代码如下：
+
+```python
+
+```
+
+进行代码测试：
+
+```shell
+
+```
+
+结果如下：
+
+```shell
+
+```
+
+
+
+### Problem 7 (2 pt)
+
+进行解锁测试：
+
+```shell
+
+```
+
+结果如下：
+
+```shell
+
+```
+
+实现代码如下：
+
+```python
+
+```
+
+进行代码测试：
+
+```shell
+
+```
+
+结果如下：
+
+```shell
+
+```
+
+
+
+### Problem 8 (2 pt)
+
+进行解锁测试：
+
+```shell
+
+```
+
+结果如下：
+
+```shell
+
+```
+
+实现代码如下：
+
+```python
+
+```
+
+进行代码测试：
+
+```shell
+
+```
+
+结果如下：
+
+```shell
+
+```
+
+
+
+### Problem 9 (2 pt)
+
+进行解锁测试：
+
+```shell
+
+```
+
+结果如下：
+
+```shell
+
+```
+
+实现代码如下：
+
+```python
+
+```
+
+进行代码测试：
+
+```shell
+
+```
+
+结果如下：
+
+```shell
+
+```
+
+
+
+### Problem 10 (1 pt)
+
+进行解锁测试：
+
+```shell
+
+```
+
+结果如下：
+
+```shell
+
+```
+
+实现代码如下：
+
+```python
+
+```
+
+进行代码测试：
+
+```shell
+
+```
+
+结果如下：
+
+```shell
+
+```
+
+
+
+### Problem 11 (1 pt)
+
 进行解锁测试：
 
 ```shell
