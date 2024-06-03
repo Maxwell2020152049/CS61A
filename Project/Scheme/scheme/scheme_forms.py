@@ -13,7 +13,7 @@ from scheme_builtins import *
 # the environment in which the form is to be evaluated.
 
 
-def do_define_form(expressions, env):
+def do_define_form(expressions: Pair, env: Frame):
     """Evaluate a define form.
     >>> env = create_global_frame()
     >>> do_define_form(read_line("(x 2)"), env) # evaluating (define x 2)
@@ -38,6 +38,10 @@ def do_define_form(expressions, env):
         validate_form(expressions, 2, 2)  # Checks that expressions is a list of length exactly 2
         # BEGIN PROBLEM 4
         "*** YOUR CODE HERE ***"
+        first, rest = expressions.first, expressions.rest
+        value = scheme_eval(rest.first, env)
+        env.define(first, value)
+        return first
         # END PROBLEM 4
     elif isinstance(signature, Pair) and scheme_symbolp(signature.first):
         # defining a named procedure e.g. (define (f x y) (+ x y))

@@ -37,7 +37,7 @@ def scheme_eval(expr: Pair, env: Frame, _=None):  # Optional third argument is i
     else:
         # BEGIN PROBLEM 3
         "*** YOUR CODE HERE ***"
-        procedure: Procedure = scheme_eval(first, env) if isinstance(first, Pair) else env.lookup(first)
+        procedure: Procedure = scheme_eval(first, env)
         args: Pair = rest.map(eval)
         return scheme_apply(procedure, args, env)
         # END PROBLEM 3

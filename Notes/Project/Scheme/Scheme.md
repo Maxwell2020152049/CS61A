@@ -601,37 +601,216 @@ Cannot backup when running ok with --local.
 
 ### Problem 4 (2 pt)
 
+实现define过程，使其能够定义一个符号。
+
 进行解锁测试：
 
 ```shell
-
+python ok -q 04 -u --local
 ```
 
 结果如下：
 
 ```shell
+=====================================================================
+Assignment: Project 4: Scheme Interpreter
+OK, version v1.18.1
+=====================================================================
 
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+Unlocking tests
+
+At each "? ", type what you would expect the output to be.
+Type exit() to quit
+
+---------------------------------------------------------------------
+Problem 4 > Suite 1 > Case 1
+(cases remaining: 9)
+
+Q: What is the structure of the expressions argument to do_define_form?
+Choose the number of the correct choice:
+0) Pair(A, B), where:
+       A is the symbol being bound,
+       B is an expression whose value should be evaluated and bound to A
+1) Pair('define', Pair(A, Pair(B, nil))), where:
+       A is the symbol being bound,
+       B is an expression whose value should be evaluated and bound to A
+2) Pair(A, Pair(B, nil)), where:
+       A is the symbol being bound,
+       B is an expression whose value should be evaluated and bound to A
+3) Pair(A, Pair(B, nil)), where:
+       A is the symbol being bound,
+       B is the value that should be bound to A
+4) Pair(A, B), where:
+       A is the symbol being bound,
+       B is the value that should be bound to A
+? 1
+-- Not quite. Try again! --
+
+Choose the number of the correct choice:
+0) Pair(A, B), where:
+       A is the symbol being bound,
+       B is an expression whose value should be evaluated and bound to A
+1) Pair('define', Pair(A, Pair(B, nil))), where:
+       A is the symbol being bound,
+       B is an expression whose value should be evaluated and bound to A
+2) Pair(A, Pair(B, nil)), where:
+       A is the symbol being bound,
+       B is an expression whose value should be evaluated and bound to A
+3) Pair(A, Pair(B, nil)), where:
+       A is the symbol being bound,
+       B is the value that should be bound to A
+4) Pair(A, B), where:
+       A is the symbol being bound,
+       B is the value that should be bound to A
+? 0
+-- Not quite. Try again! --
+
+Choose the number of the correct choice:
+0) Pair(A, B), where:
+       A is the symbol being bound,
+       B is an expression whose value should be evaluated and bound to A
+1) Pair('define', Pair(A, Pair(B, nil))), where:
+       A is the symbol being bound,
+       B is an expression whose value should be evaluated and bound to A
+2) Pair(A, Pair(B, nil)), where:
+       A is the symbol being bound,
+       B is an expression whose value should be evaluated and bound to A
+3) Pair(A, Pair(B, nil)), where:
+       A is the symbol being bound,
+       B is the value that should be bound to A
+4) Pair(A, B), where:
+       A is the symbol being bound,
+       B is the value that should be bound to A
+? 2
+-- OK! --
+
+---------------------------------------------------------------------
+Problem 4 > Suite 1 > Case 2
+(cases remaining: 8)
+
+Q: What method of a Frame instance will bind
+a value to a symbol in that frame?
+Choose the number of the correct choice:
+0) bindings
+1) define
+2) lookup
+3) make_child_frame
+? 1
+-- OK! --
+
+---------------------------------------------------------------------
+Problem 4 > Suite 2 > Case 1
+(cases remaining: 7)
+
+
+scm> (define size 2)
+? size
+-- OK! --
+
+scm> size
+? 2
+-- OK! --
+
+scm> (define x (+ 7 3))
+? x
+-- OK! --
+
+scm> x
+? 10
+-- OK! --
+
+---------------------------------------------------------------------
+Problem 4 > Suite 2 > Case 2
+(cases remaining: 6)
+
+-- Already unlocked --
+
+---------------------------------------------------------------------
+Problem 4 > Suite 2 > Case 3
+(cases remaining: 5)
+
+-- Already unlocked --
+
+---------------------------------------------------------------------
+Problem 4 > Suite 2 > Case 4
+(cases remaining: 4)
+
+-- Already unlocked --
+
+---------------------------------------------------------------------
+Problem 4 > Suite 2 > Case 5
+(cases remaining: 3)
+
+-- Already unlocked --
+
+---------------------------------------------------------------------
+Problem 4 > Suite 2 > Case 6
+(cases remaining: 2)
+
+-- Already unlocked --
+
+---------------------------------------------------------------------
+Problem 4 > Suite 2 > Case 7
+(cases remaining: 1)
+
+-- Already unlocked --
+
+---------------------------------------------------------------------
+OK! All cases for Problem 4 unlocked.
+
+Cannot backup when running ok with --local.
 ```
 
 实现代码如下：
 
 ```python
-
+def do_define_form(expressions: Pair, env: Frame):
+    validate_form(expressions, 2)  # Checks that expressions is a list of length at least 2
+    signature = expressions.first
+    if scheme_symbolp(signature):
+        # assigning a name to a value e.g. (define x (+ 1 2))
+        validate_form(expressions, 2, 2)  # Checks that expressions is a list of length exactly 2
+        # BEGIN PROBLEM 4
+        "*** YOUR CODE HERE ***"
+        first, rest = expressions.first, expressions.rest
+        value = scheme_eval(rest.first, env)
+        env.define(first, value)
+        return first
+        # END PROBLEM 4
+    elif isinstance(signature, Pair) and scheme_symbolp(signature.first):
+        # defining a named procedure e.g. (define (f x y) (+ x y))
+        # BEGIN PROBLEM 10
+        "*** YOUR CODE HERE ***"
+        # END PROBLEM 10
+    else:
+        bad_signature = signature.first if isinstance(signature, Pair) else signature
+        raise SchemeError('non-symbol: {0}'.format(bad_signature))
 ```
 
 进行代码测试：
 
 ```shell
-
+python ok -q 04 --local
 ```
 
 结果如下：
 
 ```shell
+=====================================================================
+Assignment: Project 4: Scheme Interpreter
+OK, version v1.18.1
+=====================================================================
 
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+Running tests
+
+---------------------------------------------------------------------
+Test summary
+    9 test cases passed! No cases failed.
+
+Cannot backup when running ok with --local.
 ```
-
-
 
 ### Problem 5 (1 pt)
 
