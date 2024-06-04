@@ -2391,9 +2391,160 @@ Test summary
 Cannot backup when running ok with --local.
 ```
 
-## Optional Problems
+## 最终测试
 
-### Optional Problem (0 pt)
+对整个项目进行测试
+
+```shell
+python ok --local --score
+```
+
+结果如下：
+
+```shell
+=====================================================================
+Assignment: Project 4: Scheme Interpreter
+OK, version v1.18.1
+=====================================================================
+
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+Scoring tests
+
+---------------------------------------------------------------------
+Understanding Eval/Apply
+    Passed: 0
+    Failed: 0
+[k..........] 0.0% passed
+
+---------------------------------------------------------------------
+Problem 1
+    Passed: 2
+    Failed: 0
+[ooooooooook] 100.0% passed
+
+---------------------------------------------------------------------
+Problem 2
+    Passed: 1
+    Failed: 0
+[ooooooooook] 100.0% passed
+
+---------------------------------------------------------------------
+Problem 3
+    Passed: 2
+    Failed: 0
+[ooooooooook] 100.0% passed
+
+---------------------------------------------------------------------
+Problem 4
+    Passed: 1
+    Failed: 0
+[ooooooooook] 100.0% passed
+
+---------------------------------------------------------------------
+Problem 5
+    Passed: 3
+    Failed: 0
+[ooooooooook] 100.0% passed
+
+---------------------------------------------------------------------
+Problem 6
+    Passed: 2
+    Failed: 0
+[ooooooooook] 100.0% passed
+
+---------------------------------------------------------------------
+Problem 7
+    Passed: 2
+    Failed: 0
+[ooooooooook] 100.0% passed
+
+---------------------------------------------------------------------
+Problem 8
+    Passed: 2
+    Failed: 0
+[ooooooooook] 100.0% passed
+
+---------------------------------------------------------------------
+Problem 9
+    Passed: 3
+    Failed: 0
+[ooooooooook] 100.0% passed
+
+---------------------------------------------------------------------
+Problem 10
+    Passed: 2
+    Failed: 0
+[ooooooooook] 100.0% passed
+
+---------------------------------------------------------------------
+Problem 11
+    Passed: 2
+    Failed: 0
+[ooooooooook] 100.0% passed
+
+---------------------------------------------------------------------
+Problem 12
+    Passed: 2
+    Failed: 0
+[ooooooooook] 100.0% passed
+
+---------------------------------------------------------------------
+Problem 13
+    Passed: 2
+    Failed: 0
+[ooooooooook] 100.0% passed
+
+---------------------------------------------------------------------
+Problem 14
+    Passed: 3
+    Failed: 0
+[ooooooooook] 100.0% passed
+
+---------------------------------------------------------------------
+Scheme tests in tests.scm
+
+Score: 1.0/1
+
+---------------------------------------------------------------------
+Problem 15
+    Passed: 1
+    Failed: 0
+[ooooooooook] 100.0% passed
+
+---------------------------------------------------------------------
+Problem 16
+    Passed: 1
+    Failed: 0
+[ooooooooook] 100.0% passed
+
+---------------------------------------------------------------------
+Point breakdown
+    Understanding Eval/Apply: 0.0/0
+    Problem 1: 1.0/1
+    Problem 2: 2.0/2
+    Problem 3: 2.0/2
+    Problem 4: 2.0/2
+    Problem 5: 1.0/1
+    Problem 6: 1.0/1
+    Problem 7: 2.0/2
+    Problem 8: 2.0/2
+    Problem 9: 2.0/2
+    Problem 10: 1.0/1
+    Problem 11: 1.0/1
+    Problem 12: 2.0/2
+    Problem 13: 2.0/2
+    Problem 14: 2.0/2
+    tests.scm: 1.0/1
+    Problem 15: 2.0/2
+    Problem 16: 2.0/2
+
+Score:
+    Total: 28.0
+
+Cannot backup when running ok with --local.
+```
+
+
 
 
 
