@@ -1957,34 +1957,134 @@ Cannot backup when running ok with --local.
 进行解锁测试：
 
 ```shell
-
+python ok -q 13 -u --local
 ```
 
 结果如下：
 
 ```shell
+=====================================================================
+Assignment: Project 4: Scheme Interpreter
+OK, version v1.18.1
+=====================================================================
 
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+Unlocking tests
+
+At each "? ", type what you would expect the output to be.
+Type exit() to quit
+
+---------------------------------------------------------------------
+Problem 13 > Suite 1 > Case 1
+(cases remaining: 6)
+
+
+scm> (cond ((> 2 3) 5)
+....       ((> 2 4) 6)
+....       ((< 2 5) 7)
+....       (else 8))
+? 7
+-- OK! --
+
+scm> (cond ((> 2 3) 5)
+....       ((> 2 4) 6)
+....       (else 8))
+? 8
+-- OK! --
+
+scm> (cond ((= 1 1))
+....       ((= 4 4) 'huh)
+....       (else 'no))
+? #t
+-- OK! --
+
+---------------------------------------------------------------------
+Problem 13 > Suite 2 > Case 1
+(cases remaining: 5)
+
+-- Already unlocked --
+
+---------------------------------------------------------------------
+Problem 13 > Suite 2 > Case 2
+(cases remaining: 4)
+
+-- Already unlocked --
+
+---------------------------------------------------------------------
+Problem 13 > Suite 2 > Case 3
+(cases remaining: 3)
+
+-- Already unlocked --
+
+---------------------------------------------------------------------
+Problem 13 > Suite 2 > Case 4
+(cases remaining: 2)
+
+-- Already unlocked --
+
+---------------------------------------------------------------------
+Problem 13 > Suite 2 > Case 5
+(cases remaining: 1)
+
+-- Already unlocked --
+
+---------------------------------------------------------------------
+OK! All cases for Problem 13 unlocked.
+
+Cannot backup when running ok with --local.
 ```
 
 实现代码如下：
 
 ```python
+def do_cond_form(expressions: Pair, env: Frame):
+    """Evaluate a cond form.
 
+    >>> do_cond_form(read_line("((#f (print 2)) (#t 3))"), create_global_frame())
+    3
+    """
+    while expressions is not nil:
+        clause = expressions.first
+        validate_form(clause, 1)
+        if clause.first == 'else':
+            test = True
+            if expressions.rest != nil:
+                raise SchemeError('else must be last')
+        else:
+            test = scheme_eval(clause.first, env)
+        if is_scheme_true(test):
+            # BEGIN PROBLEM 13
+            "*** YOUR CODE HERE ***"
+            if clause.rest is nil:
+                return test
+            return eval_all(expressions=clause.rest, env=env)
+            # END PROBLEM 13
+        expressions = expressions.rest
 ```
 
 进行代码测试：
 
 ```shell
-
+python ok -q 13 --local
 ```
 
 结果如下：
 
 ```shell
+=====================================================================
+Assignment: Project 4: Scheme Interpreter
+OK, version v1.18.1
+=====================================================================
 
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+Running tests
+
+---------------------------------------------------------------------
+Test summary
+    6 test cases passed! No cases failed.
+
+Cannot backup when running ok with --local.
 ```
-
-
 
 ### Problem 14 (2 pt)
 
