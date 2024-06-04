@@ -2270,77 +2270,126 @@ Cannot backup when running ok with --local.
 
 ### Additional Scheme Tests (1 pt)
 
+对`scheme`的实现进行完整的测试：
 
+```shell
+python ok -q tests.scm --local
+```
+
+结果如下：
+
+```shell
+=====================================================================
+Assignment: Project 4: Scheme Interpreter
+OK, version v1.18.1
+=====================================================================
+
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+Running tests
+
+---------------------------------------------------------------------
+Scheme tests in tests.scm
+
+136 passed; 0 failed
+-- OK! --
+
+---------------------------------------------------------------------
+Test summary
+    136 test cases passed! No cases failed.
+
+Cannot backup when running ok with --local.
+```
 
 ## Part 4: Write Some Scheme
 
 ### Problem 15 (2 pt)
 
-进行解锁测试：
-
-```shell
-
-```
-
-结果如下：
-
-```shell
-
-```
-
 实现代码如下：
 
 ```python
-
+; ; Returns a list of two-element lists
+(define (enumerate s)
+  ; BEGIN PROBLEM 15
+  (define (func i lst)
+    (cond 
+      ((null? lst)
+       nil)
+      (else
+       (cons (cons i (cons (car lst) nil))
+             (func (+ i 1) (cdr lst))))))
+  (func 0 s))
 ```
 
 进行代码测试：
 
 ```shell
-
+python ok -q 15 --local
 ```
 
 结果如下：
 
 ```shell
+=====================================================================
+Assignment: Project 4: Scheme Interpreter
+OK, version v1.18.1
+=====================================================================
 
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+Running tests
+
+---------------------------------------------------------------------
+Test summary
+    2 test cases passed! No cases failed.
+
+Cannot backup when running ok with --local.
 ```
-
-
 
 ### Problem 16 (2 pt)
 
-进行解锁测试：
-
-```shell
-
-```
-
-结果如下：
-
-```shell
-
-```
-
 实现代码如下：
 
 ```python
-
+; ; Merge two lists LIST1 and LIST2 according to ORDERED? and return
+; ; the merged lists.
+(define (merge ordered? list1 list2)
+  ; BEGIN PROBLEM 16
+  (cond 
+    ((null? list1)
+     list2)
+    ((null? list2)
+     list1)
+    (else
+     (append (cond 
+               ((ordered? (car list1) (car list2))
+                (list (car list1) (car list2)))
+               (else
+                (list (car list2) (car list1))))
+             (merge ordered? (cdr list1) (cdr list2))))))
 ```
 
 进行代码测试：
 
 ```shell
-
+python ok -q 16 --local
 ```
 
 结果如下：
 
 ```shell
+=====================================================================
+Assignment: Project 4: Scheme Interpreter
+OK, version v1.18.1
+=====================================================================
 
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+Running tests
+
+---------------------------------------------------------------------
+Test summary
+    2 test cases passed! No cases failed.
+
+Cannot backup when running ok with --local.
 ```
-
-
 
 ## Optional Problems
 
