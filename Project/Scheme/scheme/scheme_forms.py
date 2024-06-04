@@ -47,6 +47,12 @@ def do_define_form(expressions: Pair, env: Frame):
         # defining a named procedure e.g. (define (f x y) (+ x y))
         # BEGIN PROBLEM 10
         "*** YOUR CODE HERE ***"
+        symbol: str = signature.first
+        formals: Pair = signature.rest
+        body: Pair = expressions.rest
+        lambda_procedure: LambdaProcedure = do_lambda_form(expressions=Pair(formals, body), env=env)
+        env.define(symbol, lambda_procedure)
+        return symbol
         # END PROBLEM 10
     else:
         bad_signature = signature.first if isinstance(signature, Pair) else signature
@@ -92,6 +98,7 @@ def do_lambda_form(expressions: Pair, env: Frame):
     validate_formals(formals)
     # BEGIN PROBLEM 7
     "*** YOUR CODE HERE ***"
+    return LambdaProcedure(formals=formals, body=expressions.rest, env=env)
     # END PROBLEM 7
 
 
@@ -231,10 +238,12 @@ def do_unquote(expressions: Pair, env: Frame):
 def do_mu_form(expressions: Pair, env: Frame):
     """Evaluate a mu form."""
     validate_form(expressions, 2)
-    formals = expressions.first
+    formals: Pair = expressions.first
     validate_formals(formals)
     # BEGIN PROBLEM 11
     "*** YOUR CODE HERE ***"
+    mu_procedure: MuProcedure = MuProcedure(formals, expressions.rest)
+    return mu_procedure
     # END PROBLEM 11
 
 

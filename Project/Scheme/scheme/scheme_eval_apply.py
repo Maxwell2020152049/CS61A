@@ -70,16 +70,20 @@ def scheme_apply(procedure: Procedure, args: Pair, env: Frame):
     elif isinstance(procedure, LambdaProcedure):
         # BEGIN PROBLEM 9
         "*** YOUR CODE HERE ***"
+        frame: Frame = procedure.env.make_child_frame(formals=procedure.formals, vals=args)
+        return eval_all(expressions=procedure.body, env=frame)
         # END PROBLEM 9
     elif isinstance(procedure, MuProcedure):
         # BEGIN PROBLEM 11
         "*** YOUR CODE HERE ***"
+        frame: Frame = env.make_child_frame(formals=procedure.formals, vals=args)
+        return eval_all(expressions=procedure.body, env=frame)
         # END PROBLEM 11
     else:
         assert False, "Unexpected procedure: {}".format(procedure)
 
 
-def eval_all(expressions, env):
+def eval_all(expressions: Pair, env: Frame):
     """Evaluate each expression in the Scheme list EXPRESSIONS in
     Frame ENV (the current environment) and return the value of the last.
 
@@ -95,7 +99,21 @@ def eval_all(expressions, env):
     2
     """
     # BEGIN PROBLEM 6
-    return scheme_eval(expressions.first, env)  # replace this with lines of your own code
+    # if expressions == nil:
+    #     return None
+    # expr: Pair = expressions
+    # while True:
+    #     value = scheme_eval(expr.first, env)
+    #     if expr.rest == nil:
+    #         return value
+    #     expr = expr.rest
+
+    value = None
+    expr: Pair = expressions
+    while isinstance(expr, Pair):
+        value = scheme_eval(expr.first, env)
+        expr = expr.rest
+    return value
     # END PROBLEM 6
 
 
