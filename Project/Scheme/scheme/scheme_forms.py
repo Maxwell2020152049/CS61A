@@ -206,7 +206,7 @@ def do_let_form(expressions: Pair, env: Frame):
     return eval_all(expressions.rest, let_env)
 
 
-def make_let_frame(bindings, env):
+def make_let_frame(bindings: Pair, env: Frame):
     """Create a child frame of Frame ENV that contains the definitions given in
     BINDINGS. The Scheme list BINDINGS must have the form of a proper bindings
     list in a let expression: each item must be a list containing a symbol
@@ -216,6 +216,14 @@ def make_let_frame(bindings, env):
     names = vals = nil
     # BEGIN PROBLEM 14
     "*** YOUR CODE HERE ***"
+    while isinstance(bindings, Pair):
+        pair: Pair = bindings.first
+        validate_form(pair, 2, 2)
+        names = Pair(pair.first, names)
+        val = scheme_eval(expr=pair.rest.first, env=env)
+        vals = Pair(val, vals)
+        bindings = bindings.rest
+    validate_formals(formals=names)
     # END PROBLEM 14
     return env.make_child_frame(names, vals)
 

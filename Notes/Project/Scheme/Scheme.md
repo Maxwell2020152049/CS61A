@@ -2091,34 +2091,182 @@ Cannot backup when running ok with --local.
 进行解锁测试：
 
 ```shell
-
+python ok -q 14 -u --local
 ```
 
 结果如下：
 
 ```shell
+=====================================================================
+Assignment: Project 4: Scheme Interpreter
+OK, version v1.18.1
+=====================================================================
 
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+Unlocking tests
+
+At each "? ", type what you would expect the output to be.
+Type exit() to quit
+
+---------------------------------------------------------------------
+Problem 14 > Suite 1 > Case 1
+(cases remaining: 9)
+
+
+scm> (define x 1)
+? x
+-- OK! --
+
+scm> (let ((x 5))
+....    (+ x 3))
+? 4
+-- Not quite. Try again! --
+
+?
+-- Not quite. Try again! --
+
+? SchemeError
+-- Not quite. Try again! --
+
+? 8
+-- OK! --
+
+scm> x
+? 1
+-- OK! --
+
+---------------------------------------------------------------------
+Problem 14 > Suite 1 > Case 2
+(cases remaining: 8)
+
+
+scm> (let ((a 1) (b a)) b)
+Choose the number of the correct choice:
+0) y
+1) 1
+2) SchemeError
+3) x
+? 2
+-- OK! --
+
+---------------------------------------------------------------------
+Problem 14 > Suite 1 > Case 3
+(cases remaining: 7)
+
+
+scm> (let ((x 5))
+....    (let ((x 2)
+....          (y x))
+....        (+ y (* x 2))))
+? 9
+-- OK! --
+
+---------------------------------------------------------------------
+Problem 14 > Suite 1 > Case 4
+(cases remaining: 6)
+
+
+scm> (let ((a 2) (a 3)) (+ a a)) ; how should we catch something like this?
+? 6
+-- Not quite. Try again! --
+
+? 4
+-- Not quite. Try again! --
+
+? SchemeError
+-- OK! --
+
+scm> (let ((y 2 3)) (+ y y)) ; should this be an allowable form?
+? 6
+-- Not quite. Try again! --
+
+? SchemeError
+-- OK! --
+
+---------------------------------------------------------------------
+Problem 14 > Suite 1 > Case 5
+(cases remaining: 5)
+
+-- Already unlocked --
+
+---------------------------------------------------------------------
+Problem 14 > Suite 2 > Case 1
+(cases remaining: 4)
+
+-- Already unlocked --
+
+---------------------------------------------------------------------
+Problem 14 > Suite 2 > Case 2
+(cases remaining: 3)
+
+-- Already unlocked --
+
+---------------------------------------------------------------------
+Problem 14 > Suite 2 > Case 3
+(cases remaining: 2)
+
+-- Already unlocked --
+
+---------------------------------------------------------------------
+Problem 14 > Suite 3 > Case 1
+(cases remaining: 1)
+
+-- Already unlocked --
+
+---------------------------------------------------------------------
+OK! All cases for Problem 14 unlocked.
+
+Cannot backup when running ok with --local.
 ```
 
 实现代码如下：
 
 ```python
-
+def make_let_frame(bindings: Pair, env: Frame):
+    """Create a child frame of Frame ENV that contains the definitions given in
+    BINDINGS. The Scheme list BINDINGS must have the form of a proper bindings
+    list in a let expression: each item must be a list containing a symbol
+    and a Scheme expression."""
+    if not scheme_listp(bindings):
+        raise SchemeError('bad bindings list in let form')
+    names = vals = nil
+    # BEGIN PROBLEM 14
+    "*** YOUR CODE HERE ***"
+    while isinstance(bindings, Pair):
+        pair: Pair = bindings.first
+        validate_form(pair, 2, 2)
+        names = Pair(pair.first, names)
+        val = scheme_eval(expr=pair.rest.first, env=env)
+        vals = Pair(val, vals)
+        bindings = bindings.rest
+    validate_formals(formals=names)
+    # END PROBLEM 14
+    return env.make_child_frame(names, vals)
 ```
 
 进行代码测试：
 
 ```shell
-
+python ok -q 14 --local
 ```
 
 结果如下：
 
 ```shell
+=====================================================================
+Assignment: Project 4: Scheme Interpreter
+OK, version v1.18.1
+=====================================================================
 
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+Running tests
+
+---------------------------------------------------------------------
+Test summary
+    9 test cases passed! No cases failed.
+
+Cannot backup when running ok with --local.
 ```
-
-
 
 ### Additional Scheme Tests (1 pt)
 
