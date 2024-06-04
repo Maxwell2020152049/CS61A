@@ -1770,34 +1770,187 @@ Cannot backup when running ok with --local.
 进行解锁测试：
 
 ```shell
-
+python ok -q 12 -u --local
 ```
 
 结果如下：
 
 ```shell
+=====================================================================
+Assignment: Project 4: Scheme Interpreter
+OK, version v1.18.1
+=====================================================================
 
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+Unlocking tests
+
+At each "? ", type what you would expect the output to be.
+Type exit() to quit
+
+---------------------------------------------------------------------
+Problem 12 > Suite 1 > Case 1
+(cases remaining: 9)
+
+
+scm> (and)
+Choose the number of the correct choice:
+0) #f
+1) SchemeError
+2) #t
+? 2
+-- OK! --
+
+scm> (and 1 #f)
+Choose the number of the correct choice:
+0) #t
+1) #f
+2) 1
+? 1
+-- OK! --
+
+scm> (and (+ 1 1) 1)
+? 1
+-- OK! --
+
+scm> (and #f 5)
+? #f
+-- OK! --
+
+scm> (and 4 5 (+ 3 3))
+? 6
+-- OK! --
+
+scm> (not (and #t #f 42 (/ 1 0)))
+? #t
+-- OK! --
+
+---------------------------------------------------------------------
+Problem 12 > Suite 1 > Case 2
+(cases remaining: 8)
+
+-- Already unlocked --
+
+---------------------------------------------------------------------
+Problem 12 > Suite 1 > Case 3
+(cases remaining: 7)
+
+-- Already unlocked --
+
+---------------------------------------------------------------------
+Problem 12 > Suite 1 > Case 4
+(cases remaining: 6)
+
+-- Already unlocked --
+
+---------------------------------------------------------------------
+Problem 12 > Suite 2 > Case 1
+(cases remaining: 5)
+
+
+scm> (or)
+? #f
+-- OK! --
+
+scm> (or (+ 1 1))
+? 2
+-- OK! --
+
+scm> (not (or #f))
+? #t
+-- OK! --
+
+scm> (define (zero) 0)
+? zero
+-- OK! --
+
+scm> (or (zero) 3)
+? 0
+-- OK! --
+
+scm> (or 4 #t (/ 1 0))
+? 4
+-- OK! --
+
+---------------------------------------------------------------------
+Problem 12 > Suite 2 > Case 2
+(cases remaining: 4)
+
+-- Already unlocked --
+
+---------------------------------------------------------------------
+Problem 12 > Suite 2 > Case 3
+(cases remaining: 3)
+
+-- Already unlocked --
+
+---------------------------------------------------------------------
+Problem 12 > Suite 2 > Case 4
+(cases remaining: 2)
+
+-- Already unlocked --
+
+---------------------------------------------------------------------
+Problem 12 > Suite 2 > Case 5
+(cases remaining: 1)
+
+-- Already unlocked --
+
+---------------------------------------------------------------------
+OK! All cases for Problem 12 unlocked.
+
+Cannot backup when running ok with --local.
 ```
 
 实现代码如下：
 
 ```python
+def do_and_form(expressions: Pair, env: Frame):
+    # BEGIN PROBLEM 12
+    "*** YOUR CODE HERE ***"
+    ret = True
+    expr: Pair = expressions
+    while isinstance(expr, Pair) and is_scheme_true(ret):
+        ret = scheme_eval(expr.first, env)
+        expr = expr.rest
+    return ret
+    # END PROBLEM 12
 
+
+def do_or_form(expressions: Pair, env: Frame):
+    # BEGIN PROBLEM 12
+    "*** YOUR CODE HERE ***"
+    ret = False
+    expr: Pair = expressions
+    while isinstance(expr, Pair) and is_scheme_false(ret):
+        ret = scheme_eval(expr.first, env)
+        expr = expr.rest
+    return ret
+    # END PROBLEM 12
 ```
 
 进行代码测试：
 
 ```shell
-
+python ok -q 12 --local
 ```
 
 结果如下：
 
 ```shell
+=====================================================================
+Assignment: Project 4: Scheme Interpreter
+OK, version v1.18.1
+=====================================================================
 
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+Running tests
+
+---------------------------------------------------------------------
+Test summary
+    9 test cases passed! No cases failed.
+
+Cannot backup when running ok with --local.
 ```
-
-
 
 ### Problem 13 (2 pt)
 

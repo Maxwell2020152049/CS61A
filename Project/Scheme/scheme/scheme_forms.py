@@ -112,6 +112,7 @@ def do_if_form(expressions: Pair, env: Frame):
     3
     """
     validate_form(expressions, 2, 3)
+    # 如果条件为 #t
     if is_scheme_true(scheme_eval(expressions.first, env)):
         return scheme_eval(expressions.rest.first, env)
     elif len(expressions) == 3:
@@ -134,6 +135,12 @@ def do_and_form(expressions: Pair, env: Frame):
     """
     # BEGIN PROBLEM 12
     "*** YOUR CODE HERE ***"
+    ret = True
+    expr: Pair = expressions
+    while isinstance(expr, Pair) and is_scheme_true(ret):
+        ret = scheme_eval(expr.first, env)
+        expr = expr.rest
+    return ret
     # END PROBLEM 12
 
 
@@ -153,6 +160,12 @@ def do_or_form(expressions: Pair, env: Frame):
     """
     # BEGIN PROBLEM 12
     "*** YOUR CODE HERE ***"
+    ret = False
+    expr: Pair = expressions
+    while isinstance(expr, Pair) and is_scheme_false(ret):
+        ret = scheme_eval(expr.first, env)
+        expr = expr.rest
+    return ret
     # END PROBLEM 12
 
 
