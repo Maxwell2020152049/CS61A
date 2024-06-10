@@ -81,11 +81,11 @@ def interleave(a, b):
 
 根据右侧的环境框架，给左边的程序代码填空：
 
-![](./Resources/image1.png)
+![](./Resources/image6.png)
 
 答案如下：
 
-![](./Resources/image2.png)
+![](./Resources/image7.png)
 
 [在PythonTutor中可以看到效果](https://pythontutor.com/cp/composingprograms.html#code=def%20flip%28flop%29%3A%0A%20%20%20%20if%20flop%20%3D%3D%203%3A%0A%20%20%20%20%20%20%20%20return%20None%0A%20%20%20%20flip%20%3D%20lambda%20flip%3A%203%0A%20%20%20%20return%20flip%0A%0Adef%20flop%28flip%29%3A%0A%20%20%20%20return%20flop%0A%0Aflip,%20flop%20%3D%20flop,%20flip%0A%0Aflip%28flop%281%29%282%29%29%283%29&cumulative=true&curInstr=19&mode=display&origin=composingprograms.js&py=3&rawInputLstJSON=%5B%5D)
 
@@ -208,7 +208,7 @@ def test_good_pair():
 
 在`python`中，有以下几种序列：
 
-![](./Resources/image3.png)
+![](./Resources/image8.png)
 
 #### 字符串字面量（`String Literals`）
 
@@ -504,7 +504,7 @@ return [ list(range(1, i + 1)) for i in range(1, n + 1) ]
 
 本节课介绍了如何实现有理数的`ADT`，详见`Slide`的`P13~P21`，抽象层次图如下：
 
-![](./Resources/image4.png)
+![](./Resources/image9.png)
 
 实现代码如下：
 
